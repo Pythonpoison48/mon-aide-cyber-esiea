@@ -1,12 +1,6 @@
 extends base
 
 block page
-    div(class="entete-page-de-garde")
-        div
-            .logo-republique-francaise-anssi
-        div
-            h2 Votre diagnostic cyber
-            p Généré le !{dateGeneration.date} -  ID !{identifiant}
     div(class="page-mesures")
         section
             div(class="contenu")
@@ -24,9 +18,4 @@ block page
                       div(class="comment")
                           div(class="titre") Comment appliquer cette recommandation ?
                           div(class="libelle") !{include(mesure.comment)}
-            div(class="mes-services-cyber")
-                div(class="contenu")
-                    div(class="corps")
-                        | Retrouvez tous les services et ressources pour vous aider et les contacts utiles de votre région dans votre espace MesServicesCyber
-                    div(class="lien")
-                        a(href=`${mesServicesCyber}`) Accéder à MesServicesCyber
+

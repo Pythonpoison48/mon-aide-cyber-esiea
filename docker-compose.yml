@@ -64,6 +64,13 @@ services:
     command: 'pnpm -F mon-aide-cyber-api run test:migre-bdd'
     depends_on:
       - db-test
+      
+  browserless:
+    image: browserless/chrome:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - reseau-mon-aide-cyber
 
 networks:
   reseau-mon-aide-cyber:
