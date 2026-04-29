@@ -850,6 +850,30 @@ export const donneesContexte: QuestionsThematique = {
       type: 'choixUnique',
     },
     {
+      identifiant: 'test-activites-recherche-et-developpement',
+      libelle:
+        'on va voir ce que ça va donner',
+      poids: 0,
+      reponsesPossibles: [
+        {
+          identifiant: 'test-activites-recherche-et-developpement-nsp',
+          libelle: 'Je ne sais pas',
+          ordre: 0,
+        },
+        {
+          identifiant: 'test-activites-recherche-et-developpement-non',
+          libelle: 'Non',
+          ordre: 1,
+        },
+        {
+          identifiant: 'tesy-activites-recherche-et-developpement-oui',
+          libelle: 'Oui',
+          ordre: 2,
+        },
+      ],
+      type: 'choixUnique',
+    },
+    {
       identifiant: 'contexte-opere-systemes-information-industriels',
       libelle: 'Votre entité opère-t-elle des systèmes industriels ?',
       poids: 0,

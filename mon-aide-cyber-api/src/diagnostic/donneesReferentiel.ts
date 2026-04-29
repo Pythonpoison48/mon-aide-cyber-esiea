@@ -6,6 +6,7 @@ import { donneesSecuritePoste } from './referentiel/donneesSecuritePoste';
 import { donneesSecuriteInfrastructure } from './referentiel/donneesSecuriteInfrastructure';
 import { donneesSensibilisation } from './referentiel/donneesSensibilisation';
 import { donneesReaction } from './referentiel/donneesReaction';
+import { donneesTest } from './referentiel/donneesTest';
 
 const referentiel: Referentiel = {
   contexte: donneesContexte,
@@ -15,6 +16,7 @@ const referentiel: Referentiel = {
   securiteinfrastructure: donneesSecuriteInfrastructure,
   sensibilisation: donneesSensibilisation,
   reaction: donneesReaction,
+  test: donneesTest,
 };
 
 export { referentiel };
