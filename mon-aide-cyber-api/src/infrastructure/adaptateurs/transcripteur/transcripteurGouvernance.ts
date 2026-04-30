@@ -61,8 +61,46 @@ export const transcripteurGouvernance: Thematique = {
     {
       questions: [
         {
+          identifiant:
+            'gouvernance-responsable-protection-donnees-personnelles',
+          'info-bulles': [
+            'gouvernance/dpo.pug',
+            'gouvernance/donnee-personnelle.pug',
+            'gouvernance/formalisation-mission-rgpd.pug',
+          ],
+        },
+      ],
+    },
+    {
+      questions: [
+        {
+          identifiant: 'gouvernance-rgpd-suivi-comite-direction',
+          'info-bulles': ['gouvernance/rgpd.pug'],
+        },
+      ],
+    },
+    {
+      questions: [
+        {
+          identifiant: 'gouvernance-collaborateurs-contact-question-rgpd',
+          'info-bulles': [
+            'gouvernance/rgpd.pug',
+            'gouvernance/point-contact-rgpd.pug',
+          ],
+        },
+      ],
+    },
+    {
+      questions: [
+        {
           identifiant: 'gouvernance-connaissance-rgpd-2',
-          'info-bulles': ['gouvernance/utilisation-donnees-personnelles.pug'],
+          'info-bulles': [
+            'gouvernance/utilisation-donnees-personnelles.pug',
+            'gouvernance/demande-exercice-droits.pug',
+            'gouvernance/outil-ticketing.pug',
+            'gouvernance/delai-reponse-rgpd.pug',
+            'gouvernance/registre-demandes-vs-traitements.pug',
+          ],
         },
       ],
     },

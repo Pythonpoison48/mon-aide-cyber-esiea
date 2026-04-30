@@ -227,6 +227,160 @@ export const donneesGouvernance: QuestionsThematique = {
       ],
     },
     {
+      identifiant: 'gouvernance-responsable-protection-donnees-personnelles',
+      libelle:
+        'Existe-t-il un responsable de la protection des données personnelles dans l’organisme ?',
+      type: 'choixUnique',
+      poids: 0,
+      reponsesPossibles: [
+        {
+          identifiant:
+            'gouvernance-responsable-protection-donnees-personnelles-nsp',
+          libelle: 'Je ne sais pas',
+          ordre: 1,
+        },
+        {
+          identifiant:
+            'gouvernance-responsable-protection-donnees-personnelles-non',
+          libelle: 'Non, il n’y en a pas',
+          ordre: 2,
+        },
+        {
+          identifiant:
+            'gouvernance-responsable-protection-donnees-personnelles-oui-employe',
+          libelle:
+            'Oui, c’est un employé qui a ce titre en plus de ses fonctions',
+          ordre: 3,
+          questions: [
+            {
+              identifiant:
+                'gouvernance-responsabilite-protection-donnees-formalisee-employe',
+              libelle:
+                'Cette responsabilité est-elle formalisée dans une fiche de poste, une lettre de mission ou une procédure interne ?',
+              type: 'choixUnique',
+              poids: 0,
+              reponsesPossibles: [
+                {
+                  identifiant:
+                    'gouvernance-responsabilite-protection-donnees-formalisee-employe-non',
+                  libelle: 'Non',
+                  ordre: 1,
+                },
+                {
+                  identifiant:
+                    'gouvernance-responsabilite-protection-donnees-formalisee-employe-oui',
+                  libelle: 'Oui',
+                  ordre: 2,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          identifiant:
+            'gouvernance-responsable-protection-donnees-personnelles-oui-dpo',
+          libelle: 'Oui, l’entreprise a un poste de DPO/DPD attitré',
+          ordre: 4,
+          questions: [
+            {
+              identifiant:
+                'gouvernance-responsabilite-protection-donnees-formalisee-dpo',
+              libelle:
+                'Cette responsabilité est-elle formalisée dans une fiche de poste, une lettre de mission ou une procédure interne ?',
+              type: 'choixUnique',
+              poids: 0,
+              reponsesPossibles: [
+                {
+                  identifiant:
+                    'gouvernance-responsabilite-protection-donnees-formalisee-dpo-non',
+                  libelle: 'Non',
+                  ordre: 1,
+                },
+                {
+                  identifiant:
+                    'gouvernance-responsabilite-protection-donnees-formalisee-dpo-oui',
+                  libelle: 'Oui',
+                  ordre: 2,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      identifiant: 'gouvernance-rgpd-suivi-comite-direction',
+      libelle:
+        'Le sujet RGPD est-il suivi régulièrement en comité, réunion de direction ou tableau de bord ?',
+      type: 'choixUnique',
+      poids: 0,
+      reponsesPossibles: [
+        {
+          identifiant: 'gouvernance-rgpd-suivi-comite-direction-nsp',
+          libelle: 'Je ne sais pas',
+          ordre: 1,
+        },
+        {
+          identifiant: 'gouvernance-rgpd-suivi-comite-direction-non',
+          libelle: 'Non',
+          ordre: 2,
+        },
+        {
+          identifiant:
+            'gouvernance-rgpd-suivi-comite-direction-oui-reunions-occasionnelles',
+          libelle:
+            'Oui, nous avons quelques réunions occasionnelles traitant ce sujet',
+          ordre: 3,
+        },
+        {
+          identifiant:
+            'gouvernance-rgpd-suivi-comite-direction-oui-reunions-dirigeants',
+          libelle:
+            'Oui, de nombreuses réunions avec les dirigeants sont mises en place afin de parler de la protection des données',
+          ordre: 4,
+        },
+        {
+          identifiant:
+            'gouvernance-rgpd-suivi-comite-direction-oui-dpo-invite',
+          libelle:
+            'Oui, de nombreuses réunions sont en place et le DPO/DPD est systématiquement invité à ces réunions',
+          ordre: 5,
+        },
+      ],
+    },
+    {
+      identifiant: 'gouvernance-collaborateurs-contact-question-rgpd',
+      libelle:
+        'Les collaborateurs savent-ils à qui s’adresser en cas de question RGPD ou de doute sur l’utilisation d’une donnée personnelle ?',
+      type: 'choixUnique',
+      poids: 0,
+      reponsesPossibles: [
+        {
+          identifiant: 'gouvernance-collaborateurs-contact-question-rgpd-nsp',
+          libelle: 'Je ne sais pas',
+          ordre: 1,
+        },
+        {
+          identifiant: 'gouvernance-collaborateurs-contact-question-rgpd-non',
+          libelle: 'Non',
+          ordre: 2,
+        },
+        {
+          identifiant:
+            'gouvernance-collaborateurs-contact-question-rgpd-oui-dpo-connu',
+          libelle: 'Oui, les collaborateurs connaissent le DPO/DPD',
+          ordre: 3,
+        },
+        {
+          identifiant:
+            'gouvernance-collaborateurs-contact-question-rgpd-oui-dpo-mail-dedie',
+          libelle:
+            'Oui, le DPO/DPD est connu des collaborateurs et un mail dédié au service de gestions RGPD est mis en place pour le contacter',
+          ordre: 4,
+        },
+      ],
+    },
+    {
       identifiant: 'gouvernance-connaissance-rgpd-2',
       libelle:
         "Informez-vous les personnes concernées sur l'utilisation de leurs données personnelles et leurs droits ? ",
@@ -272,6 +426,43 @@ export const donneesGouvernance: QuestionsThematique = {
           resultat: {
             indice: { valeur: 3 },
           },
+          questions: [
+            {
+              identifiant:
+                'gouvernance-demandes-droits-suivies-registre-delais',
+              libelle:
+                'Les demandes sont-elles suivies dans un registre ou un outil de ticketing ? Et les délais de réponse sont-ils contrôlés ?',
+              type: 'choixUnique',
+              poids: 0,
+              reponsesPossibles: [
+                {
+                  identifiant:
+                    'gouvernance-demandes-droits-suivies-registre-delais-nsp',
+                  libelle: 'Je ne sais pas',
+                  ordre: 1,
+                },
+                {
+                  identifiant:
+                    'gouvernance-demandes-droits-suivies-registre-delais-non',
+                  libelle: 'Non',
+                  ordre: 2,
+                },
+                {
+                  identifiant:
+                    'gouvernance-demandes-droits-suivies-registre-delais-oui',
+                  libelle: 'Oui',
+                  ordre: 3,
+                },
+                {
+                  identifiant:
+                    'gouvernance-demandes-droits-suivies-registre-delais-oui-controle-delai',
+                  libelle:
+                    'Oui, et il y a un système de contrôle du délai de réponse',
+                  ordre: 4,
+                },
+              ],
+            },
+          ],
         },
       ],
     },

@@ -15,7 +15,10 @@ export const transcripteurSensibilisation: Thematique = {
         {
           identifiant:
             'sensibilisation-actions-sensibilisation-menace-et-bonnes-pratiques',
-          'info-bulles': ['sensibilisation/actions-sensibilisation.pug'],
+          'info-bulles': [
+            'sensibilisation/actions-sensibilisation.pug',
+            'gouvernance/rgpd.pug',
+          ],
         },
         {
           identifiant: 'sensibilisation-risque-espionnage-industriel-r-et-d',
@@ -31,6 +34,18 @@ export const transcripteurSensibilisation: Thematique = {
         {
           identifiant:
             'sensibilisation-collaborateurs-soumis-obligations-usages-securises',
+        },
+      ],
+    },
+    {
+      questions: [
+        {
+          identifiant: 'sensibilisation-utilisation-ia-travail',
+          'info-bulles': [
+            'sensibilisation/ia-utilisee-travail.pug',
+            'sensibilisation/ia-donnees-personnelles.pug',
+            'sensibilisation/usage-encadre-ia.pug',
+          ],
         },
       ],
     },
