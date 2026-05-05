@@ -231,7 +231,7 @@ export const donneesGouvernance: QuestionsThematique = {
       libelle:
         'Existe-t-il un responsable de la protection des données personnelles dans l’organisme ?',
       type: 'choixUnique',
-      poids: 0,
+      poids: 2,
       reponsesPossibles: [
         {
           identifiant:
@@ -243,6 +243,15 @@ export const donneesGouvernance: QuestionsThematique = {
           identifiant:
             'gouvernance-responsable-protection-donnees-personnelles-non',
           libelle: 'Non, il n’y en a pas',
+          resultat: {
+            indice: { valeur: 0 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-pilote-conformite-rgpd',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 2,
         },
         {
@@ -250,6 +259,15 @@ export const donneesGouvernance: QuestionsThematique = {
             'gouvernance-responsable-protection-donnees-personnelles-oui-employe',
           libelle:
             'Oui, c’est un employé qui a ce titre en plus de ses fonctions',
+          resultat: {
+            indice: { valeur: 1.5 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-role-referent-rgpd-renforce',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 3,
           questions: [
             {
@@ -258,18 +276,28 @@ export const donneesGouvernance: QuestionsThematique = {
               libelle:
                 'Cette responsabilité est-elle formalisée dans une fiche de poste, une lettre de mission ou une procédure interne ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 0.5,
               reponsesPossibles: [
                 {
                   identifiant:
                     'gouvernance-responsabilite-protection-donnees-formalisee-employe-non',
                   libelle: 'Non',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant: 'gouvernance-mission-rgpd-formalisee',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 1,
                 },
                 {
                   identifiant:
                     'gouvernance-responsabilite-protection-donnees-formalisee-employe-oui',
                   libelle: 'Oui',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 2,
                 },
               ],
@@ -280,6 +308,7 @@ export const donneesGouvernance: QuestionsThematique = {
           identifiant:
             'gouvernance-responsable-protection-donnees-personnelles-oui-dpo',
           libelle: 'Oui, l’entreprise a un poste de DPO/DPD attitré',
+          resultat: { indice: { valeur: 3 } },
           ordre: 4,
           questions: [
             {
@@ -288,18 +317,28 @@ export const donneesGouvernance: QuestionsThematique = {
               libelle:
                 'Cette responsabilité est-elle formalisée dans une fiche de poste, une lettre de mission ou une procédure interne ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 0.5,
               reponsesPossibles: [
                 {
                   identifiant:
                     'gouvernance-responsabilite-protection-donnees-formalisee-dpo-non',
                   libelle: 'Non',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant: 'gouvernance-mission-rgpd-formalisee',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 1,
                 },
                 {
                   identifiant:
                     'gouvernance-responsabilite-protection-donnees-formalisee-dpo-oui',
                   libelle: 'Oui',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 2,
                 },
               ],
@@ -313,7 +352,7 @@ export const donneesGouvernance: QuestionsThematique = {
       libelle:
         'Le sujet RGPD est-il suivi régulièrement en comité, réunion de direction ou tableau de bord ?',
       type: 'choixUnique',
-      poids: 0,
+      poids: 1.5,
       reponsesPossibles: [
         {
           identifiant: 'gouvernance-rgpd-suivi-comite-direction-nsp',
@@ -323,6 +362,15 @@ export const donneesGouvernance: QuestionsThematique = {
         {
           identifiant: 'gouvernance-rgpd-suivi-comite-direction-non',
           libelle: 'Non',
+          resultat: {
+            indice: { valeur: 0 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-rgpd-strategie-pilotage',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 2,
         },
         {
@@ -330,6 +378,15 @@ export const donneesGouvernance: QuestionsThematique = {
             'gouvernance-rgpd-suivi-comite-direction-oui-reunions-occasionnelles',
           libelle:
             'Oui, nous avons quelques réunions occasionnelles traitant ce sujet',
+          resultat: {
+            indice: { valeur: 1.5 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-suivi-rgpd-structure',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 3,
         },
         {
@@ -337,6 +394,15 @@ export const donneesGouvernance: QuestionsThematique = {
             'gouvernance-rgpd-suivi-comite-direction-oui-reunions-dirigeants',
           libelle:
             'Oui, de nombreuses réunions avec les dirigeants sont mises en place afin de parler de la protection des données',
+          resultat: {
+            indice: { valeur: 2.5 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-dpo-dpd-associe-pilotage',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 4,
         },
         {
@@ -344,6 +410,7 @@ export const donneesGouvernance: QuestionsThematique = {
             'gouvernance-rgpd-suivi-comite-direction-oui-dpo-invite',
           libelle:
             'Oui, de nombreuses réunions sont en place et le DPO/DPD est systématiquement invité à ces réunions',
+          resultat: { indice: { valeur: 3 } },
           ordre: 5,
         },
       ],
@@ -353,7 +420,7 @@ export const donneesGouvernance: QuestionsThematique = {
       libelle:
         'Les collaborateurs savent-ils à qui s’adresser en cas de question RGPD ou de doute sur l’utilisation d’une donnée personnelle ?',
       type: 'choixUnique',
-      poids: 0,
+      poids: 2,
       reponsesPossibles: [
         {
           identifiant: 'gouvernance-collaborateurs-contact-question-rgpd-nsp',
@@ -363,12 +430,30 @@ export const donneesGouvernance: QuestionsThematique = {
         {
           identifiant: 'gouvernance-collaborateurs-contact-question-rgpd-non',
           libelle: 'Non',
+          resultat: {
+            indice: { valeur: 0 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-point-contact-rgpd-accessible',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 2,
         },
         {
           identifiant:
             'gouvernance-collaborateurs-contact-question-rgpd-oui-dpo-connu',
           libelle: 'Oui, les collaborateurs connaissent le DPO/DPD',
+          resultat: {
+            indice: { valeur: 1.5 },
+            mesures: [
+              {
+                identifiant: 'gouvernance-canal-contact-rgpd-dedie',
+                niveau: 1,
+              },
+            ],
+          },
           ordre: 3,
         },
         {
@@ -376,6 +461,7 @@ export const donneesGouvernance: QuestionsThematique = {
             'gouvernance-collaborateurs-contact-question-rgpd-oui-dpo-mail-dedie',
           libelle:
             'Oui, le DPO/DPD est connu des collaborateurs et un mail dédié au service de gestions RGPD est mis en place pour le contacter',
+          resultat: { indice: { valeur: 3 } },
           ordre: 4,
         },
       ],
@@ -433,7 +519,7 @@ export const donneesGouvernance: QuestionsThematique = {
               libelle:
                 'Les demandes sont-elles suivies dans un registre ou un outil de ticketing ? Et les délais de réponse sont-ils contrôlés ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 0.5,
               reponsesPossibles: [
                 {
                   identifiant:
@@ -445,12 +531,31 @@ export const donneesGouvernance: QuestionsThematique = {
                   identifiant:
                     'gouvernance-demandes-droits-suivies-registre-delais-non',
                   libelle: 'Non',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant: 'gouvernance-registre-demandes-droits',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 2,
                 },
                 {
                   identifiant:
                     'gouvernance-demandes-droits-suivies-registre-delais-oui',
                   libelle: 'Oui',
+                  resultat: {
+                    indice: { valeur: 2.5 },
+                    mesures: [
+                      {
+                        identifiant:
+                          'gouvernance-controle-delais-demandes-rgpd',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 3,
                 },
                 {
@@ -458,6 +563,7 @@ export const donneesGouvernance: QuestionsThematique = {
                     'gouvernance-demandes-droits-suivies-registre-delais-oui-controle-delai',
                   libelle:
                     'Oui, et il y a un système de contrôle du délai de réponse',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 4,
                 },
               ],

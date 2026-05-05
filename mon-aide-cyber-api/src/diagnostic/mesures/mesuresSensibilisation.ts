@@ -46,4 +46,55 @@ export const mesuresSensibilisation = {
     },
     priorisation: 30,
   },
+  'sensibilisation-onboarding-protection-donnees': {
+    niveau1: {
+      titre:
+        'Intégrer la protection des données au parcours d’onboarding',
+      pourquoi:
+        '../../mesures/sensibilisation/sensibilisation-onboarding-protection-donnees-niveau1-pourquoi.pug',
+      comment:
+        '../../mesures/sensibilisation/sensibilisation-onboarding-protection-donnees-niveau1-comment.pug',
+    },
+    priorisation: 18,
+  },
+  'sensibilisation-formation-usage-ia': {
+    niveau1: {
+      titre: 'Former les collaborateurs à un usage sécurisé de l’IA',
+      pourquoi:
+        '../../mesures/sensibilisation/sensibilisation-formation-usage-ia-niveau1-pourquoi.pug',
+      comment:
+        '../../mesures/sensibilisation/sensibilisation-formation-usage-ia-niveau1-comment.pug',
+    },
+    priorisation: 17,
+  },
+  'sensibilisation-charte-usage-ia': {
+    niveau1: {
+      titre: 'Formaliser les règles d’usage de l’IA dans une charte',
+      pourquoi:
+        '../../mesures/sensibilisation/sensibilisation-charte-usage-ia-niveau1-pourquoi.pug',
+      comment:
+        '../../mesures/sensibilisation/sensibilisation-charte-usage-ia-niveau1-comment.pug',
+    },
+    priorisation: 30,
+  },
+  'sensibilisation-ia-donnees-personnelles-encadrement': {
+    niveau1: {
+      titre: 'Encadrer les traitements de données personnelles par IA',
+      pourquoi:
+        '../../mesures/sensibilisation/sensibilisation-ia-donnees-personnelles-encadrement-niveau1-pourquoi.pug',
+      comment:
+        '../../mesures/sensibilisation/sensibilisation-ia-donnees-personnelles-encadrement-niveau1-comment.pug',
+    },
+    priorisation: 9,
+  },
+  'sensibilisation-audit-usages-ia-encadres': {
+    niveau1: {
+      titre: 'Auditer périodiquement les usages IA encadrés',
+      pourquoi:
+        '../../mesures/sensibilisation/sensibilisation-audit-usages-ia-encadres-niveau1-pourquoi.pug',
+      comment:
+        '../../mesures/sensibilisation/sensibilisation-audit-usages-ia-encadres-niveau1-comment.pug',
+    },
+    priorisation: 33,
+  },
 };

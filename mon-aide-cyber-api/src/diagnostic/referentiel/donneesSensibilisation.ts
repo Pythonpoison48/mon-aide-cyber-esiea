@@ -54,18 +54,29 @@ export const donneesSensibilisation: QuestionsThematique = {
               libelle:
                 'Les nouveaux arrivants sont-ils sensibilisés à la protection des données lors de leur arrivée ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 1.5,
               reponsesPossibles: [
                 {
                   identifiant:
                     'sensibilisation-nouveaux-arrivants-protection-donnees-ponctuellement-oui',
                   libelle: 'Oui',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 1,
                 },
                 {
                   identifiant:
                     'sensibilisation-nouveaux-arrivants-protection-donnees-ponctuellement-non',
                   libelle: 'Non',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant:
+                          'sensibilisation-onboarding-protection-donnees',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 2,
                 },
               ],
@@ -86,18 +97,29 @@ export const donneesSensibilisation: QuestionsThematique = {
               libelle:
                 'Les nouveaux arrivants sont-ils sensibilisés à la protection des données lors de leur arrivée ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 1.5,
               reponsesPossibles: [
                 {
                   identifiant:
                     'sensibilisation-nouveaux-arrivants-protection-donnees-regulierement-oui',
                   libelle: 'Oui',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 1,
                 },
                 {
                   identifiant:
                     'sensibilisation-nouveaux-arrivants-protection-donnees-regulierement-non',
                   libelle: 'Non',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant:
+                          'sensibilisation-onboarding-protection-donnees',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 2,
                 },
               ],
@@ -222,7 +244,7 @@ export const donneesSensibilisation: QuestionsThematique = {
               libelle:
                 'Les employés sont-ils formés quant à l’usage de l’intelligence artificielle ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 2,
               reponsesPossibles: [
                 {
                   identifiant: 'sensibilisation-formation-usage-ia-nsp',
@@ -232,6 +254,15 @@ export const donneesSensibilisation: QuestionsThematique = {
                 {
                   identifiant: 'sensibilisation-formation-usage-ia-non',
                   libelle: 'Non',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant: 'sensibilisation-formation-usage-ia',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 2,
                 },
                 {
@@ -239,6 +270,15 @@ export const donneesSensibilisation: QuestionsThematique = {
                     'sensibilisation-formation-usage-ia-formations',
                   libelle:
                     'Les employés ont eu une ou plusieurs formations à ce sujet',
+                  resultat: {
+                    indice: { valeur: 2 },
+                    mesures: [
+                      {
+                        identifiant: 'sensibilisation-charte-usage-ia',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 3,
                 },
                 {
@@ -246,6 +286,7 @@ export const donneesSensibilisation: QuestionsThematique = {
                     'sensibilisation-formation-usage-ia-formations-charte',
                   libelle:
                     'Les employés ont eu une ou plusieurs formations à ce sujet et la charte prend en compte l’utilisation des IA.',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 4,
                 },
               ],
@@ -256,24 +297,45 @@ export const donneesSensibilisation: QuestionsThematique = {
               libelle:
                 'L’entreprise utilise-t-elle des outils d’intelligence artificielle traitant des données personnelles ?',
               type: 'choixUnique',
-              poids: 0,
+              poids: 2,
               reponsesPossibles: [
                 {
                   identifiant:
                     'sensibilisation-ia-traitant-donnees-personnelles-non',
                   libelle: 'Non',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 1,
                 },
                 {
                   identifiant:
                     'sensibilisation-ia-traitant-donnees-personnelles-oui',
                   libelle: 'Oui',
+                  resultat: {
+                    indice: { valeur: 0 },
+                    mesures: [
+                      {
+                        identifiant:
+                          'sensibilisation-ia-donnees-personnelles-encadrement',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 2,
                 },
                 {
                   identifiant:
                     'sensibilisation-ia-traitant-donnees-personnelles-oui-encadres',
                   libelle: 'Oui et ses usages sont encadrés',
+                  resultat: {
+                    indice: { valeur: 2.5 },
+                    mesures: [
+                      {
+                        identifiant:
+                          'sensibilisation-audit-usages-ia-encadres',
+                        niveau: 1,
+                      },
+                    ],
+                  },
                   ordre: 3,
                 },
               ],
