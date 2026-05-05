@@ -58,13 +58,6 @@ export const donneesSensibilisation: QuestionsThematique = {
               reponsesPossibles: [
                 {
                   identifiant:
-                    'sensibilisation-nouveaux-arrivants-protection-donnees-ponctuellement-oui',
-                  libelle: 'Oui',
-                  resultat: { indice: { valeur: 3 } },
-                  ordre: 1,
-                },
-                {
-                  identifiant:
                     'sensibilisation-nouveaux-arrivants-protection-donnees-ponctuellement-non',
                   libelle: 'Non',
                   resultat: {
@@ -77,6 +70,13 @@ export const donneesSensibilisation: QuestionsThematique = {
                       },
                     ],
                   },
+                  ordre: 1,
+                },
+                {
+                  identifiant:
+                    'sensibilisation-nouveaux-arrivants-protection-donnees-ponctuellement-oui',
+                  libelle: 'Oui',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 2,
                 },
               ],
@@ -101,13 +101,6 @@ export const donneesSensibilisation: QuestionsThematique = {
               reponsesPossibles: [
                 {
                   identifiant:
-                    'sensibilisation-nouveaux-arrivants-protection-donnees-regulierement-oui',
-                  libelle: 'Oui',
-                  resultat: { indice: { valeur: 3 } },
-                  ordre: 1,
-                },
-                {
-                  identifiant:
                     'sensibilisation-nouveaux-arrivants-protection-donnees-regulierement-non',
                   libelle: 'Non',
                   resultat: {
@@ -120,6 +113,13 @@ export const donneesSensibilisation: QuestionsThematique = {
                       },
                     ],
                   },
+                  ordre: 1,
+                },
+                {
+                  identifiant:
+                    'sensibilisation-nouveaux-arrivants-protection-donnees-regulierement-oui',
+                  libelle: 'Oui',
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 2,
                 },
               ],
@@ -235,9 +235,14 @@ export const donneesSensibilisation: QuestionsThematique = {
       poids: 0,
       reponsesPossibles: [
         {
+          identifiant: 'sensibilisation-utilisation-ia-travail-non',
+          libelle: 'Non',
+          ordre: 1,
+        },
+        {
           identifiant: 'sensibilisation-utilisation-ia-travail-oui',
           libelle: 'Oui',
-          ordre: 1,
+          ordre: 2,
           questions: [
             {
               identifiant: 'sensibilisation-formation-usage-ia',
@@ -332,11 +337,6 @@ export const donneesSensibilisation: QuestionsThematique = {
               ],
             },
           ],
-        },
-        {
-          identifiant: 'sensibilisation-utilisation-ia-travail-non',
-          libelle: 'Non',
-          ordre: 2,
         },
       ],
       type: 'choixUnique',
