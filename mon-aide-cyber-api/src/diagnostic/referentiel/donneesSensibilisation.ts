@@ -326,16 +326,7 @@ export const donneesSensibilisation: QuestionsThematique = {
                   identifiant:
                     'sensibilisation-ia-traitant-donnees-personnelles-oui-encadres',
                   libelle: 'Oui et ses usages sont encadrés',
-                  resultat: {
-                    indice: { valeur: 2.5 },
-                    mesures: [
-                      {
-                        identifiant:
-                          'sensibilisation-audit-usages-ia-encadres',
-                        niveau: 1,
-                      },
-                    ],
-                  },
+                  resultat: { indice: { valeur: 3 } },
                   ordre: 3,
                 },
               ],

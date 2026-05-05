@@ -87,14 +87,4 @@ export const mesuresSensibilisation = {
     },
     priorisation: 9,
   },
-  'sensibilisation-audit-usages-ia-encadres': {
-    niveau1: {
-      titre: 'Auditer périodiquement les usages IA encadrés',
-      pourquoi:
-        '../../mesures/sensibilisation/sensibilisation-audit-usages-ia-encadres-niveau1-pourquoi.pug',
-      comment:
-        '../../mesures/sensibilisation/sensibilisation-audit-usages-ia-encadres-niveau1-comment.pug',
-    },
-    priorisation: 33,
-  },
 };
