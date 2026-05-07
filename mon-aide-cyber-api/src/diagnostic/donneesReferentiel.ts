@@ -7,16 +7,13 @@ import { donneesSecuriteInfrastructure } from './referentiel/donneesSecuriteInfr
 import { donneesSensibilisation } from './referentiel/donneesSensibilisation';
 import { donneesReaction } from './referentiel/donneesReaction';
 import { donneesTest } from './referentiel/donneesTest';
+import { ConfigurationCategories } from './configuration-categorie';
 
-const referentiel: Referentiel = {
-  contexte: donneesContexte,
-  gouvernance: donneesGouvernance,
-  SecuriteAcces: donneesSecuriteAcces,
-  securiteposte: donneesSecuritePoste,
-  securiteinfrastructure: donneesSecuriteInfrastructure,
-  sensibilisation: donneesSensibilisation,
-  reaction: donneesReaction,
-  test: donneesTest,
-};
+const referentiel: Referentiel = {};
+
+ConfigurationCategories.filter(c => c.actif)
+  .forEach(c => {
+    referentiel[c.id] = require(c.fichierQuestions).default;
+  });
 
 export { referentiel };

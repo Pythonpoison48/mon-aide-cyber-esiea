@@ -12,6 +12,7 @@ import { CorpsReponse } from './CapteurSagaAjoutReponse';
 import { Aggregat } from '../domaine/Aggregat';
 import { appliqueRegleDeGestion } from './regleDeGestion';
 import { adaptateurUUID } from '../infrastructure/adaptateurs/adaptateurUUID';
+import { ConfigurationCategories } from './configuration-categorie';
 
 export type Thematique = string;
 
@@ -173,8 +174,8 @@ const genereLaRestitution = (diagnostic: Diagnostic) => {
       .sort(
         (a, b) =>
           (laValeurEstDefinie(a.valeurObtenue) &&
-          laValeurEstDefinie(b.valeurObtenue) &&
-          a.valeurObtenue < b.valeurObtenue
+            laValeurEstDefinie(b.valeurObtenue) &&
+            a.valeurObtenue < b.valeurObtenue
             ? -1
             : 1) || 0
       );
@@ -183,8 +184,8 @@ const genereLaRestitution = (diagnostic: Diagnostic) => {
       .sort(
         (a, b) =>
           (laValeurEstDefinie(a.valeurObtenue) &&
-          laValeurEstDefinie(b.valeurObtenue) &&
-          a.valeurObtenue < b.valeurObtenue
+            laValeurEstDefinie(b.valeurObtenue) &&
+            a.valeurObtenue < b.valeurObtenue
             ? -1
             : 1) || 0
       );
@@ -201,15 +202,11 @@ const genereLaRestitution = (diagnostic: Diagnostic) => {
     },
   };
 };
-const ORDRE_THEMATIQUES = [
-  'contexte',
-  'gouvernance',
-  'SecuriteAcces',
-  'securiteposte',
-  'securiteinfrastructure',
-  'sensibilisation',
-  'reaction',
-];
+const ORDRE_THEMATIQUES = ConfigurationCategories
+  .filter(c => c.actif)
+  .sort((a, b) => a.ordre - b.ordre)
+  .map(c => c.id);
+
 export {
   Diagnostic,
   EntrepotDiagnostic,
