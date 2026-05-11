@@ -125,7 +125,7 @@ export const mesuresSecuriteAcces = {
   },
   'acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles': {
     niveau1: {
-      titre: 'Protéger de manière spéficique les données jugées sensibles',
+      titre: 'Protéger de manière spécifique les données jugées sensibles',
       pourquoi:
         '../../mesures/acces/acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles-niveau1-pourquoi.pug',
       comment:
