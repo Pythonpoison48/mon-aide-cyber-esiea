@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   web:
     container_name: mon-aide-cyber-ui
@@ -8,6 +6,7 @@ services:
       dockerfile: Dockerfile-ui
     volumes:
       - ./mon-aide-cyber-ui:/usr/src/app/mon-aide-cyber-ui
+      - /usr/src/app/mon-aide-cyber-ui/node_modules  # ← masque les node_modules Windows
     networks:
       - reseau-mon-aide-cyber
 
@@ -35,6 +34,7 @@ services:
       - 8081:8081
     volumes:
       - ./mon-aide-cyber-api:/usr/src/app/mon-aide-cyber-api
+      - /usr/src/app/mon-aide-cyber-api/node_modules  # ← masque les node_modules Windows
       - ./mon-aide-cyber-ui/dist/:/usr/src/app/mon-aide-cyber-ui/dist
     depends_on:
       - db
@@ -55,16 +55,18 @@ services:
       - api
 
   migration-test:
-    image: docker.io/node:24
-    environment:
-      - URL_SERVEUR_BASE_DONNEES=postgres://postgres@mon-aide-cyber-bd-test
-    build:
+    build:                           # ← supprimé "image: node:24" (conflit avec build)
       context: .
       dockerfile: Dockerfile-api
+    environment:
+      - URL_SERVEUR_BASE_DONNEES=postgres://postgres@mon-aide-cyber-bd-test
     command: 'pnpm -F mon-aide-cyber-api run test:migre-bdd'
+    volumes:
+      - ./mon-aide-cyber-api:/usr/src/app/mon-aide-cyber-api
+      - /usr/src/app/mon-aide-cyber-api/node_modules  # ← ajouté aussi ici
     depends_on:
       - db-test
-      
+
   browserless:
     image: browserless/chrome:latest
     ports:
