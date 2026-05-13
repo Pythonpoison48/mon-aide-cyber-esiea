@@ -23,6 +23,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-infos-et-activites-a-proteger',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -39,6 +40,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-infos-et-activites-a-proteger',
                 niveau: 2,
+                categorie: "non-technique",
               },
             ],
           },
@@ -75,6 +77,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-schema-si-a-jour',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -90,6 +93,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-schema-si-a-jour',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -105,6 +109,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-schema-si-a-jour',
                 niveau: 2,
+                categorie: "non-technique",
               },
             ],
           },
@@ -147,6 +152,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-schema-si-industriel-a-jour',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -162,6 +168,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-schema-si-industriel-a-jour',
                 niveau: 2,
+                categorie: "non-technique",
               },
             ],
           },
@@ -199,6 +206,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-connaissance-rgpd-1',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -212,7 +220,7 @@ export const donneesGouvernance: QuestionsThematique = {
           resultat: {
             indice: { valeur: 2 },
             mesures: [
-              { identifiant: 'gouvernance-connaissance-rgpd-1', niveau: 2 },
+              { identifiant: 'gouvernance-connaissance-rgpd-1', niveau: 2, categorie: "non-technique", },
             ],
           },
         },
@@ -249,6 +257,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-pilote-conformite-rgpd',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -265,6 +274,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-role-referent-rgpd-renforce',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -288,6 +298,7 @@ export const donneesGouvernance: QuestionsThematique = {
                       {
                         identifiant: 'gouvernance-mission-rgpd-formalisee',
                         niveau: 1,
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -329,6 +340,7 @@ export const donneesGouvernance: QuestionsThematique = {
                       {
                         identifiant: 'gouvernance-mission-rgpd-formalisee',
                         niveau: 1,
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -368,6 +380,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-rgpd-strategie-pilotage',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -384,6 +397,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-suivi-rgpd-structure',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -400,6 +414,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-dpo-dpd-associe-pilotage',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -436,6 +451,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-point-contact-rgpd-accessible',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -451,6 +467,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-canal-contact-rgpd-dedie',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -487,6 +504,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-connaissance-rgpd-2',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -500,7 +518,7 @@ export const donneesGouvernance: QuestionsThematique = {
           resultat: {
             indice: { valeur: 2 },
             mesures: [
-              { identifiant: 'gouvernance-connaissance-rgpd-2', niveau: 2 },
+              { identifiant: 'gouvernance-connaissance-rgpd-2', niveau: 2, categorie: "non-technique", },
             ],
           },
         },
@@ -537,6 +555,7 @@ export const donneesGouvernance: QuestionsThematique = {
                       {
                         identifiant: 'gouvernance-registre-demandes-droits',
                         niveau: 1,
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -553,6 +572,7 @@ export const donneesGouvernance: QuestionsThematique = {
                         identifiant:
                           'gouvernance-controle-delais-demandes-rgpd',
                         niveau: 1,
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -599,6 +619,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-exigence-cyber-securite-presta',
                 niveau: 1,
+                categorie: "non-technique",
               },
             ],
           },
@@ -615,6 +636,7 @@ export const donneesGouvernance: QuestionsThematique = {
               {
                 identifiant: 'gouvernance-exigence-cyber-securite-presta',
                 niveau: 2,
+                categorie: "non-technique",
               },
             ],
           },

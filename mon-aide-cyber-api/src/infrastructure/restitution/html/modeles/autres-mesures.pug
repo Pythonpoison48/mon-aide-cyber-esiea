@@ -1,16 +1,34 @@
-h4 Les autres mesures
-each mesure, index in mesures
-    details
+- const mesuresNonTechniques = mesures.filter(m => m.categorie !== 'technique')
+- const mesuresTechniques = mesures.filter(m => m.categorie === 'technique')
+
+div
+  if mesuresNonTechniques.length > 0
+    h4 Mesures Non Techniques
+    each mesure, index in mesuresNonTechniques
+      details
         summary
-            | !{index + 7} . !{mesure.titre}
+          //- On affiche un numéro simple ou calculé
+          | !{index + 7} . !{mesure.titre}
         div
-            div(class="section-mesure")
-                div
-                    b Pourquoi ?
-                div(class='fr-pt-md-2w fr-pb-md-3w')
-                    | !{include(mesure.pourquoi)}
-            div(class="section-mesure")
-                div
-                    b Comment mettre en œuvre cette mesure ?
-                div(class='fr-pt-md-2w fr-pb-md-3w')
-                    | !{include(mesure.comment)}
+          .section-mesure
+            b Pourquoi ?
+            .fr-pt-md-2w.fr-pb-md-3w !{include(mesure.pourquoi)}
+          .section-mesure
+            b Comment mettre en œuvre ?
+            .fr-pt-md-2w.fr-pb-md-3w !{include(mesure.comment)}
+
+  if mesuresTechniques.length > 0
+    br
+    h4 Mesures Techniques
+    each mesure, index in mesuresTechniques
+      details
+        summary
+          //- Pour suivre la numérotation après les non-techniques :
+          | !{index + 7 + mesuresNonTechniques.length} . !{mesure.titre}
+        div
+          .section-mesure
+            b Pourquoi ?
+            .fr-pt-md-2w.fr-pb-md-3w !{include(mesure.pourquoi)}
+          .section-mesure
+            b Comment mettre en œuvre ?
+            .fr-pt-md-2w.fr-pb-md-3w !{include(mesure.comment)}

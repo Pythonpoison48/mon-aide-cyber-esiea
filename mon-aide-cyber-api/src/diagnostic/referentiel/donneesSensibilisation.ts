@@ -25,7 +25,8 @@ export const donneesSensibilisation: QuestionsThematique = {
               {
                 identifiant:
                   'sensibilisation-actions-sensibilisation-menace-et-bonnes-pratiques',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "non-technique",
               },
             ],
           },
@@ -42,7 +43,8 @@ export const donneesSensibilisation: QuestionsThematique = {
               {
                 identifiant:
                   'sensibilisation-actions-sensibilisation-menace-et-bonnes-pratiques',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "non-technique",
               },
             ],
           },
@@ -66,7 +68,8 @@ export const donneesSensibilisation: QuestionsThematique = {
                       {
                         identifiant:
                           'sensibilisation-onboarding-protection-donnees',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -109,7 +112,8 @@ export const donneesSensibilisation: QuestionsThematique = {
                       {
                         identifiant:
                           'sensibilisation-onboarding-protection-donnees',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -156,7 +160,8 @@ export const donneesSensibilisation: QuestionsThematique = {
               {
                 identifiant:
                   'sensibilisation-risque-espionnage-industriel-r-et-d',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "non-technique",
               },
             ],
           },
@@ -195,7 +200,8 @@ export const donneesSensibilisation: QuestionsThematique = {
               {
                 identifiant:
                   'sensibilisation-collaborateurs-soumis-obligations-usages-securises',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "non-technique",
               },
             ],
           },
@@ -211,7 +217,8 @@ export const donneesSensibilisation: QuestionsThematique = {
               {
                 identifiant:
                   'sensibilisation-collaborateurs-soumis-obligations-usages-securises',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "non-technique",
               },
             ],
           },
@@ -264,7 +271,8 @@ export const donneesSensibilisation: QuestionsThematique = {
                     mesures: [
                       {
                         identifiant: 'sensibilisation-formation-usage-ia',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -280,7 +288,8 @@ export const donneesSensibilisation: QuestionsThematique = {
                     mesures: [
                       {
                         identifiant: 'sensibilisation-charte-usage-ia',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "non-technique",
                       },
                     ],
                   },
@@ -321,7 +330,8 @@ export const donneesSensibilisation: QuestionsThematique = {
                       {
                         identifiant:
                           'sensibilisation-ia-donnees-personnelles-encadrement',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "non-technique",
                       },
                     ],
                   },

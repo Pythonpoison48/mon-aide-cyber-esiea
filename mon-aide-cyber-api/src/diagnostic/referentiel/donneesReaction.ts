@@ -25,6 +25,7 @@ export const donneesReaction: QuestionsThematique = {
                 identifiant:
                   'reaction-surveillance-veille-vulnerabilites-potentielles',
                 niveau: 1,
+                categorie: "technique",
               },
             ],
           },
@@ -41,6 +42,7 @@ export const donneesReaction: QuestionsThematique = {
                 identifiant:
                   'reaction-surveillance-veille-vulnerabilites-potentielles',
                 niveau: 2,
+                categorie: "technique",
               },
             ],
           },
@@ -75,16 +77,19 @@ export const donneesReaction: QuestionsThematique = {
               {
                 identifiant: 'reaction-sauvegardes-donnees-realisees',
                 niveau: 1,
+                categorie: "technique",
               },
               {
                 identifiant:
                   'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-environnement-isole',
                 niveau: 1,
+                categorie: "technique",
               },
               {
                 identifiant:
                   'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-sauvegarde-testee-regulierement',
                 niveau: 1,
+                categorie: "technique",
               },
             ],
           },
@@ -125,6 +130,7 @@ export const donneesReaction: QuestionsThematique = {
                         identifiant:
                           'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-environnement-isole',
                         niveau: 1,
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -141,6 +147,7 @@ export const donneesReaction: QuestionsThematique = {
                         identifiant:
                           'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-environnement-isole',
                         niveau: 1,
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -179,6 +186,7 @@ export const donneesReaction: QuestionsThematique = {
                         identifiant:
                           'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-sauvegarde-testee-regulierement',
                         niveau: 1,
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -201,6 +209,7 @@ export const donneesReaction: QuestionsThematique = {
               {
                 identifiant: 'reaction-sauvegardes-donnees-realisees',
                 niveau: 1,
+                categorie: "technique",
               },
             ],
           },
@@ -242,6 +251,7 @@ export const donneesReaction: QuestionsThematique = {
                         identifiant:
                           'reaction-sauvegardes-donnees-realisees-oui-automatique-et-reguliere-tiroir-environnement-isole',
                         niveau: 1,
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -289,6 +299,7 @@ export const donneesReaction: QuestionsThematique = {
                         identifiant:
                           'reaction-sauvegardes-donnees-realisees-oui-automatique-et-reguliere-tiroir-sauvegarde-testee-regulierement',
                         niveau: 1,
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -330,6 +341,7 @@ export const donneesReaction: QuestionsThematique = {
               {
                 identifiant: 'reaction-dispositif-gestion-crise-adapte-defini',
                 niveau: 1,
+                categorie: "technique",
               },
             ],
             indice: { valeur: 0 },
@@ -344,6 +356,7 @@ export const donneesReaction: QuestionsThematique = {
               {
                 identifiant: 'reaction-dispositif-gestion-crise-adapte-defini',
                 niveau: 2,
+                categorie: "technique",
               },
             ],
             indice: { valeur: 1.5 },

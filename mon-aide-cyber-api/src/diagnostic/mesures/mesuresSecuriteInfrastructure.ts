@@ -1,4 +1,5 @@
-export const mesuresSecuriteInfrastructure = {
+import { ReferentielDeMesures } from './../ReferentielDeMesures';
+export const mesuresSecuriteInfrastructure: ReferentielDeMesures = {
   'securite-infrastructure-pare-feu-deploye': {
     niveau1: {
       titre:
@@ -9,6 +10,7 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-pare-feu-deploye-niveau1-comment.pug',
     },
     priorisation: 21,
+    categorie: 'technique',
   },
   'securite-infrastructure-pare-feu-deploye-interconnexions-protegees': {
     niveau1: {
@@ -27,6 +29,7 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-pare-feu-deploye-interconnexions-protegees-niveau2-comment.pug',
     },
     priorisation: 21,
+    categorie: 'technique',
   },
   'securite-infrastructure-pare-feu-deploye-logs-stockes': {
     niveau1: {
@@ -38,6 +41,7 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-pare-feu-deploye-logs-stockes-niveau1-comment.pug',
     },
     priorisation: 33,
+    categorie: 'technique',
   },
   'securite-infrastructure-si-industriel-pare-feu-deploye': {
     niveau1: {
@@ -57,6 +61,7 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-si-industriel-pare-feu-deploye-niveau2-comment.pug',
     },
     priorisation: 23,
+    categorie: 'technique',
   },
   'securite-infrastructure-mises-a-jour-fonctionnelles-securite-equipements-securite-deployees':
     {
@@ -69,6 +74,7 @@ export const mesuresSecuriteInfrastructure = {
           '../../mesures/infras/securite-infrastructure-mises-a-jour-fonctionnelles-securite-equipements-securite-deployees-niveau1-comment.pug',
       },
       priorisation: 2,
+    categorie: 'technique',
     },
   'securite-infrastructure-mises-a-jour-fonctionnelles-securite-systemes-exploitation-securite-deployees':
     {
@@ -89,6 +95,7 @@ export const mesuresSecuriteInfrastructure = {
           '../../mesures/infras/securite-infrastructure-mises-a-jour-fonctionnelles-securite-systemes-exploitation-securite-deployees-niveau2-comment.pug',
       },
       priorisation: 8,
+    categorie: 'technique',
     },
   'securite-infrastructure-outils-securisation-systeme-messagerie': {
     niveau1: {
@@ -107,6 +114,7 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-outils-securisation-systeme-messagerie-niveau2-comment.pug',
     },
     priorisation: 28,
+    categorie: 'technique',
   },
   'securite-infrastructure-acces-wifi-securises': {
     niveau1: {
@@ -124,6 +132,7 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-acces-wifi-securises-niveau2-comment.pug',
     },
     priorisation: 36,
+    categorie: 'technique',
   },
   'securite-infrastructure-espace-stockage-serveurs': {
     niveau1: {
@@ -142,5 +151,6 @@ export const mesuresSecuriteInfrastructure = {
         '../../mesures/infras/securite-infrastructure-espace-stockage-serveurs-niveau2-comment.pug',
     },
     priorisation: 35,
+    categorie: 'technique',
   },
 };

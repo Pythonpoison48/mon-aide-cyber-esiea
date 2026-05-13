@@ -38,6 +38,7 @@ export type MesureDiagnostic = Omit<Mesure, 'identifiant' | 'niveau'> & {
   niveau: NiveauMesure;
   priorisation: number;
   repondA: string;
+  categorie?: 'technique' | 'non-technique' | undefined;
 };
 
 export type MesurePriorisee = {
@@ -46,11 +47,18 @@ export type MesurePriorisee = {
   comment: string;
   valeurObtenue: Valeur;
   priorisation: number;
+  categorie?: 'technique' | 'non-technique' | undefined;
+};
+
+export type MesuresComplementaires = {
+  techniques: MesurePriorisee[];
+  nonTechniques: MesurePriorisee[];
 };
 
 export type Mesures = {
   mesuresPrioritaires: MesurePriorisee[];
   autresMesures: MesurePriorisee[];
+  mesuresComplementaires?: MesuresComplementaires;
 };
 
 type Indicateurs = {
@@ -161,6 +169,7 @@ const genereLaRestitution = (diagnostic: Diagnostic) => {
           comment: mesure.niveau.comment,
           priorisation: mesure.priorisation,
           valeurObtenue: valeurObtenue,
+          categorie: mesure.categorie,
         } as MesurePriorisee;
       })
       .filter(
@@ -192,12 +201,18 @@ const genereLaRestitution = (diagnostic: Diagnostic) => {
     return [...les8MesuresLesPlusPrioritaires, ...lesAutresMesures];
   };
   const mesuresPriorisees = prioriseLesMesures(mesures, valeursDesIndices);
+  
+  const mesuresComplementaires: MesuresComplementaires = {
+    techniques: mesuresPriorisees.slice(6).filter(m => m.categorie === 'technique'),
+    nonTechniques: mesuresPriorisees.slice(6).filter(m => m.categorie !== 'technique')
+  };
 
   diagnostic.restitution = {
     indicateurs,
     mesures: {
       mesuresPrioritaires: mesuresPriorisees.slice(0, 6),
       autresMesures: mesuresPriorisees.slice(6),
+      mesuresComplementaires,
     },
   };
 };

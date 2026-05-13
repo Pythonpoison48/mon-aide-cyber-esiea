@@ -26,7 +26,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-outil-gestion-des-comptes',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -70,7 +71,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-liste-compte-utilisateurs',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -85,7 +87,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-liste-compte-utilisateurs',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -125,7 +128,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-droits-acces-utilisateurs-limites',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -141,7 +145,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-droits-acces-utilisateurs-limites',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -177,7 +182,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-utilisateurs-administrateurs-poste',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -193,7 +199,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-utilisateurs-administrateurs-poste',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -228,7 +235,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-mesures-securite-robustesse-mdp',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -267,7 +275,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-administrateurs-informatiques-suivie-et-limitee',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -284,7 +293,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-administrateurs-informatiques-suivie-et-limitee',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -324,7 +334,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-utilisation-comptes-administrateurs-droits-limitee',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -341,7 +352,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-utilisation-comptes-administrateurs-droits-limitee',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -387,7 +399,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -404,7 +417,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -449,7 +463,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-teletravail-acces-distants-mesures-particulieres',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -466,7 +481,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-teletravail-acces-distants-mesures-particulieres',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -512,7 +528,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-si-industriel-teletravail-acces-distants-mesures-particulieres',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -529,7 +546,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
               {
                 identifiant:
                   'acces-si-industriel-teletravail-acces-distants-mesures-particulieres',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -565,7 +583,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-administrateurs-si-mesures-specifiques',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -581,7 +600,8 @@ export const donneesSecuriteAcces: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'acces-administrateurs-si-mesures-specifiques',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },

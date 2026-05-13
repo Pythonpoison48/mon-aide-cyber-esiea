@@ -1,4 +1,5 @@
-export const mesuresSensibilisation = {
+import { ReferentielDeMesures } from './../ReferentielDeMesures';
+export const mesuresSensibilisation: ReferentielDeMesures = {
   'sensibilisation-actions-sensibilisation-menace-et-bonnes-pratiques': {
     niveau1: {
       titre: 'Mettre en œuvre des bonnes pratiques de sensibilisation',
@@ -16,6 +17,7 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-actions-sensibilisation-menace-et-bonnes-pratiques-niveau2-comment.pug',
     },
     priorisation: 17,
+    categorie: 'non-technique',
   },
   'sensibilisation-risque-espionnage-industriel-r-et-d': {
     niveau1: {
@@ -27,6 +29,7 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-risque-espionnage-industriel-r-et-d-niveau1-comment.pug',
     },
     priorisation: 18,
+    categorie: 'non-technique',
   },
   'sensibilisation-collaborateurs-soumis-obligations-usages-securises': {
     niveau1: {
@@ -45,6 +48,7 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-collaborateurs-soumis-obligations-usages-securises-niveau2-comment.pug',
     },
     priorisation: 30,
+    categorie: 'non-technique',
   },
   'sensibilisation-onboarding-protection-donnees': {
     niveau1: {
@@ -56,6 +60,7 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-onboarding-protection-donnees-niveau1-comment.pug',
     },
     priorisation: 18,
+    categorie: 'non-technique',
   },
   'sensibilisation-formation-usage-ia': {
     niveau1: {
@@ -66,6 +71,7 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-formation-usage-ia-niveau1-comment.pug',
     },
     priorisation: 17,
+    categorie: 'non-technique',
   },
   'sensibilisation-charte-usage-ia': {
     niveau1: {
@@ -76,6 +82,7 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-charte-usage-ia-niveau1-comment.pug',
     },
     priorisation: 30,
+    categorie: 'non-technique',
   },
   'sensibilisation-ia-donnees-personnelles-encadrement': {
     niveau1: {
@@ -86,5 +93,6 @@ export const mesuresSensibilisation = {
         '../../mesures/sensibilisation/sensibilisation-ia-donnees-personnelles-encadrement-niveau1-comment.pug',
     },
     priorisation: 9,
+    categorie: 'non-technique',
   },
 };

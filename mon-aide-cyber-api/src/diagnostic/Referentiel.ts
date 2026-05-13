@@ -64,4 +64,5 @@ export {
 export type Mesure = {
   identifiant: string;
   niveau: NiveauMesure;
+  categorie?: 'technique' | 'non-technique';
 };

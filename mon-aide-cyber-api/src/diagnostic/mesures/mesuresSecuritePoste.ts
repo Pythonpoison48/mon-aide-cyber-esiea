@@ -1,4 +1,5 @@
-export const mesuresSecuritePoste = {
+import { ReferentielDeMesures } from './../ReferentielDeMesures';
+export const mesuresSecuritePoste: ReferentielDeMesures = {
   'securite-poste-maj-fonctionnelles-et-securite-deployees': {
     niveau1: {
       titre:
@@ -17,6 +18,7 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-maj-fonctionnelles-et-securite-deployees-niveau2-comment.pug',
     },
     priorisation: 5,
+    categorie: 'technique',
   },
   'securite-poste-si-industriel-maj-fonctionnelles-et-securite-deployees': {
     niveau1: {
@@ -36,6 +38,7 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-si-industriel-maj-fonctionnelles-et-securite-deployees-niveau2-comment.pug',
     },
     priorisation: 5,
+    categorie: 'technique',
   },
   'securite-poste-antivirus-deploye': {
     niveau1: {
@@ -54,6 +57,7 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-antivirus-deploye-niveau2-comment.pug',
     },
     priorisation: 4,
+    categorie: 'technique',
   },
   'securite-poste-si-industriel-antivirus-deploye': {
     niveau1: {
@@ -73,6 +77,7 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-si-industriel-antivirus-deploye-niveau2-comment.pug',
     },
     priorisation: 4,
+    categorie: 'technique',
   },
   'securite-poste-pare-feu-local-active': {
     niveau1: {
@@ -84,6 +89,7 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-pare-feu-local-active-niveau1-comment.pug',
     },
     priorisation: 27,
+    categorie: 'technique',
   },
   'securite-poste-outils-complementaires-securisation': {
     niveau1: {
@@ -102,6 +108,7 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-outils-complementaires-securisation-niveau2-comment.pug',
     },
     priorisation: 25,
+    categorie: 'technique',
   },
   'securite-poste-r-et-d-disques-chiffres': {
     niveau1: {
@@ -112,5 +119,6 @@ export const mesuresSecuritePoste = {
         '../../mesures/postes/securite-poste-r-et-d-disques-chiffres-niveau1-comment.pug',
     },
     priorisation: 26,
+    categorie: 'technique',
   },
 };

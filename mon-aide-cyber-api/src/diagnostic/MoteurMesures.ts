@@ -15,7 +15,7 @@ export class MoteurMesures {
         niveau: mesure.niveau,
         repondA: mesure.repondA,
       }))
-      .flatMap((mesure) => [
+      .flatMap((mesure) => mesure.mesureTrouvee.categorie ? [
         {
           niveau:
             mesure.niveau === 1
@@ -23,8 +23,9 @@ export class MoteurMesures {
               : mesure.mesureTrouvee.niveau2!,
           priorisation: mesure.mesureTrouvee.priorisation as number,
           repondA: mesure.repondA,
+          categorie: mesure.mesureTrouvee.categorie,
         },
-      ]);
+      ] : []);
   }
 
   private static mesuresMultiples(question: QuestionDiagnostic) {

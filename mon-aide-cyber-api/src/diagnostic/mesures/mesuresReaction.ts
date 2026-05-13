@@ -1,4 +1,5 @@
-export const mesuresReaction = {
+import { ReferentielDeMesures } from './../ReferentielDeMesures';
+export const mesuresReaction: ReferentielDeMesures = {
   'reaction-surveillance-veille-vulnerabilites-potentielles': {
     niveau1: {
       titre:
@@ -16,6 +17,7 @@ export const mesuresReaction = {
         '../../mesures/reaction/reaction-surveillance-veille-vulnerabilites-potentielles-niveau2-comment.pug',
     },
     priorisation: 32,
+    categorie: 'technique',
   },
   'reaction-sauvegardes-donnees-realisees': {
     niveau1: {
@@ -26,6 +28,7 @@ export const mesuresReaction = {
         '../../mesures/reaction/reaction-sauvegardes-donnees-realisees-niveau1-comment.pug',
     },
     priorisation: 6,
+    categorie: 'technique',
   },
   'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-environnement-isole':
     {
@@ -38,6 +41,7 @@ export const mesuresReaction = {
           '../../mesures/reaction/reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-environnement-isole-niveau1-comment.pug',
       },
       priorisation: 9,
+    categorie: 'technique',
     },
   'reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-sauvegarde-testee-regulierement':
     {
@@ -49,6 +53,7 @@ export const mesuresReaction = {
           '../../mesures/reaction/reaction-sauvegardes-donnees-realisees-oui-ponctuellement-tiroir-sauvegarde-testee-regulierement-niveau1-comment.pug',
       },
       priorisation: 10,
+    categorie: 'technique',
     },
   'reaction-sauvegardes-donnees-realisees-oui-automatique-et-reguliere-tiroir-environnement-isole':
     {
@@ -61,6 +66,7 @@ export const mesuresReaction = {
           '../../mesures/reaction/reaction-sauvegardes-donnees-realisees-oui-automatique-et-reguliere-tiroir-environnement-isole-niveau1-comment.pug',
       },
       priorisation: 9,
+    categorie: 'technique',
     },
   'reaction-sauvegardes-donnees-realisees-oui-automatique-et-reguliere-tiroir-sauvegarde-testee-regulierement':
     {
@@ -72,6 +78,7 @@ export const mesuresReaction = {
           '../../mesures/reaction/reaction-sauvegardes-donnees-realisees-oui-automatique-et-reguliere-tiroir-sauvegarde-testee-regulierement-niveau1-comment.pug',
       },
       priorisation: 10,
+    categorie: 'technique',
     },
   'reaction-dispositif-gestion-crise-adapte-defini': {
     niveau1: {
@@ -89,5 +96,6 @@ export const mesuresReaction = {
         '../../mesures/reaction/reaction-dispositif-gestion-crise-adapte-defini-niveau2-comment.pug',
     },
     priorisation: 22,
+    categorie: 'technique',
   },
 };

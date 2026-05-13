@@ -24,7 +24,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
               {
                 identifiant:
                   'securite-poste-maj-fonctionnelles-et-securite-deployees',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -41,7 +42,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
               {
                 identifiant:
                   'securite-poste-maj-fonctionnelles-et-securite-deployees',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -87,7 +89,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
               {
                 identifiant:
                   'securite-poste-si-industriel-maj-fonctionnelles-et-securite-deployees',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -104,7 +107,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
               {
                 identifiant:
                   'securite-poste-si-industriel-maj-fonctionnelles-et-securite-deployees',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -141,7 +145,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-poste-antivirus-deploye',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -156,7 +161,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-poste-antivirus-deploye',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -196,7 +202,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-poste-si-industriel-antivirus-deploye',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -211,7 +218,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-poste-si-industriel-antivirus-deploye',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -245,7 +253,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-poste-pare-feu-local-active',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -280,7 +289,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
               {
                 identifiant:
                   'securite-poste-outils-complementaires-securisation',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -297,7 +307,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
               {
                 identifiant:
                   'securite-poste-outils-complementaires-securisation',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -337,7 +348,8 @@ export const donneesSecuritePoste: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-poste-r-et-d-disques-chiffres',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },

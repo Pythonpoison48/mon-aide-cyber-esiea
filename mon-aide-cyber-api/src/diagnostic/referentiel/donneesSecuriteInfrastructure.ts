@@ -20,7 +20,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-infrastructure-pare-feu-deploye',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -53,7 +54,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
                       {
                         identifiant:
                           'securite-infrastructure-pare-feu-deploye-interconnexions-protegees',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -69,7 +71,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
                       {
                         identifiant:
                           'securite-infrastructure-pare-feu-deploye-interconnexions-protegees',
-                        niveau: 2,
+                        niveau: 2, 
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -110,7 +113,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
                       {
                         identifiant:
                           'securite-infrastructure-pare-feu-deploye-logs-stockes',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -126,7 +130,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
                       {
                         identifiant:
                           'securite-infrastructure-pare-feu-deploye-logs-stockes',
-                        niveau: 1,
+                        niveau: 1, 
+                        categorie: "technique",
                       },
                     ],
                   },
@@ -177,7 +182,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-si-industriel-pare-feu-deploye',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -193,7 +199,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-si-industriel-pare-feu-deploye',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -239,7 +246,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-mises-a-jour-fonctionnelles-securite-equipements-securite-deployees',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -285,7 +293,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-mises-a-jour-fonctionnelles-securite-systemes-exploitation-securite-deployees',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -302,7 +311,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-mises-a-jour-fonctionnelles-securite-systemes-exploitation-securite-deployees',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -348,7 +358,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-outils-securisation-systeme-messagerie',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -365,7 +376,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
               {
                 identifiant:
                   'securite-infrastructure-outils-securisation-systeme-messagerie',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -405,7 +417,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-infrastructure-acces-wifi-securises',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -420,7 +433,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-infrastructure-acces-wifi-securises',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },
@@ -461,7 +475,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-infrastructure-espace-stockage-serveurs',
-                niveau: 1,
+                niveau: 1, 
+                categorie: "technique",
               },
             ],
           },
@@ -476,7 +491,8 @@ export const donneesSecuriteInfrastructure: QuestionsThematique = {
             mesures: [
               {
                 identifiant: 'securite-infrastructure-espace-stockage-serveurs',
-                niveau: 2,
+                niveau: 2, 
+                categorie: "technique",
               },
             ],
           },

@@ -1,4 +1,5 @@
-export const mesuresGouvernance = {
+import { ReferentielDeMesures } from './../ReferentielDeMesures';
+export const mesuresGouvernance: ReferentielDeMesures = {
   'gouvernance-infos-et-activites-a-proteger': {
     niveau1: {
       titre:
@@ -17,6 +18,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-infos-et-processus-a-proteger-niveau2-comment.pug',
     },
     priorisation: 1,
+    categorie: 'non-technique',
   },
   'gouvernance-schema-si-a-jour': {
     niveau1: {
@@ -36,6 +38,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-schema-si-a-jour-niveau2-comment.pug',
     },
     priorisation: 20,
+    categorie: 'non-technique',
   },
   'gouvernance-schema-si-industriel-a-jour': {
     niveau1: {
@@ -55,6 +58,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-schema-si-industriel-a-jour-niveau2-comment.pug',
     },
     priorisation: 20,
+    categorie: 'non-technique',
   },
   'gouvernance-connaissance-rgpd-1': {
     niveau1: {
@@ -74,6 +78,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-connaissance-rgpd-niveau1-comment.pug',
     },
     priorisation: 15,
+    categorie: 'non-technique',
   },
   'gouvernance-connaissance-rgpd-2': {
     niveau1: {
@@ -93,6 +98,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-connaissance-rgpd-niveau2-comment.pug',
     },
     priorisation: 16,
+    categorie: 'non-technique',
   },
   'gouvernance-exigence-cyber-securite-presta': {
     niveau1: {
@@ -111,6 +117,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-exigence-cyber-securite-presta-niveau2-comment.pug',
     },
     priorisation: 24,
+    categorie: 'non-technique',
   },
   'gouvernance-pilote-conformite-rgpd': {
     niveau1: {
@@ -121,6 +128,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-pilote-conformite-rgpd-niveau1-comment.pug',
     },
     priorisation: 13,
+    categorie: 'non-technique',
   },
   'gouvernance-role-referent-rgpd-renforce': {
     niveau1: {
@@ -131,6 +139,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-role-referent-rgpd-renforce-niveau1-comment.pug',
     },
     priorisation: 30,
+    categorie: 'non-technique',
   },
   'gouvernance-mission-rgpd-formalisee': {
     niveau1: {
@@ -141,6 +150,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-mission-rgpd-formalisee-niveau1-comment.pug',
     },
     priorisation: 34,
+    categorie: 'non-technique',
   },
   'gouvernance-rgpd-strategie-pilotage': {
     niveau1: {
@@ -151,6 +161,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-rgpd-strategie-pilotage-niveau1-comment.pug',
     },
     priorisation: 24,
+    categorie: 'non-technique',
   },
   'gouvernance-suivi-rgpd-structure': {
     niveau1: {
@@ -161,6 +172,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-suivi-rgpd-structure-niveau1-comment.pug',
     },
     priorisation: 28,
+    categorie: 'non-technique',
   },
   'gouvernance-dpo-dpd-associe-pilotage': {
     niveau1: {
@@ -172,6 +184,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-dpo-dpd-associe-pilotage-niveau1-comment.pug',
     },
     priorisation: 32,
+    categorie: 'non-technique',
   },
   'gouvernance-point-contact-rgpd-accessible': {
     niveau1: {
@@ -182,6 +195,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-point-contact-rgpd-accessible-niveau1-comment.pug',
     },
     priorisation: 15,
+    categorie: 'non-technique',
   },
   'gouvernance-canal-contact-rgpd-dedie': {
     niveau1: {
@@ -192,6 +206,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-canal-contact-rgpd-dedie-niveau1-comment.pug',
     },
     priorisation: 25,
+    categorie: 'non-technique',
   },
   'gouvernance-registre-demandes-droits': {
     niveau1: {
@@ -203,6 +218,7 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-registre-demandes-droits-niveau1-comment.pug',
     },
     priorisation: 35,
+    categorie: 'non-technique',
   },
   'gouvernance-controle-delais-demandes-rgpd': {
     niveau1: {
@@ -213,5 +229,6 @@ export const mesuresGouvernance = {
         '../../mesures/gouvernance/gouvernance-controle-delais-demandes-rgpd-niveau1-comment.pug',
     },
     priorisation: 36,
+    categorie: 'non-technique',
   },
 };

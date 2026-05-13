@@ -1,4 +1,5 @@
-export const mesuresSecuriteAcces = {
+import { ReferentielDeMesures } from './../ReferentielDeMesures';
+export const mesuresSecuriteAcces: ReferentielDeMesures = {
   'acces-outil-gestion-des-comptes': {
     niveau1: {
       titre:
@@ -17,6 +18,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-outil-gestion-des-comptes-niveau2-comment.pug',
     },
     priorisation: 14,
+    categorie: 'technique',
   },
   'acces-liste-compte-utilisateurs': {
     niveau1: {
@@ -36,6 +38,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-liste-compte-utilisateurs-niveau2-comment.pug',
     },
     priorisation: 25,
+    categorie: 'technique',
   },
   'acces-droits-acces-utilisateurs-limites': {
     niveau1: {
@@ -55,6 +58,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-droits-acces-utilisateurs-limites-niveau2-comment.pug',
     },
     priorisation: 31,
+    categorie: 'technique',
   },
   'acces-administrateurs-informatiques-suivie-et-limitee': {
     niveau1: {
@@ -74,6 +78,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-administrateurs-informatiques-suivie-et-limitee-niveau2-comment.pug',
     },
     priorisation: 29,
+    categorie: 'technique',
   },
   'acces-utilisation-comptes-administrateurs-droits-limitee': {
     niveau1: {
@@ -92,6 +97,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-utilisation-comptes-administrateurs-droits-limitee-niveau2-comment.pug',
     },
     priorisation: 11,
+    categorie: 'technique',
   },
   'acces-utilisateurs-administrateurs-poste': {
     niveau1: {
@@ -103,6 +109,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-utilisateurs-administrateurs-poste-niveau1-comment.pug',
     },
     priorisation: 7,
+    categorie: 'technique',
   },
   'acces-mesures-securite-robustesse-mdp': {
     niveau1: {
@@ -122,6 +129,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-mesures-securite-robustesse-mdp-niveau1-comment.pug',
     },
     priorisation: 19,
+    categorie: 'technique',
   },
   'acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles': {
     niveau1: {
@@ -140,6 +148,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles-niveau2-comment.pug',
     },
     priorisation: 34,
+    categorie: 'technique',
   },
   'acces-teletravail-acces-distants-mesures-particulieres': {
     niveau1: {
@@ -159,6 +168,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-teletravail-acces-distants-mesures-particulieres-niveau2-comment.pug',
     },
     priorisation: 12,
+    categorie: 'technique',
   },
   'acces-si-industriel-teletravail-acces-distants-mesures-particulieres': {
     niveau1: {
@@ -178,6 +188,7 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-si-industriel-teletravail-acces-distants-mesures-particulieres-niveau2-comment.pug',
     },
     priorisation: 12,
+    categorie: 'technique',
   },
   'acces-administrateurs-si-mesures-specifiques': {
     niveau1: {
@@ -195,5 +206,6 @@ export const mesuresSecuriteAcces = {
         '../../mesures/acces/acces-administrateurs-si-mesures-specifiques-niveau2-comment.pug',
     },
     priorisation: 13,
+    categorie: 'technique',
   },
 };
