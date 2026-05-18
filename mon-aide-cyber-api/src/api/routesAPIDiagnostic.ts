@@ -12,7 +12,7 @@ import { ErreurMAC } from '../domaine/erreurMAC';
 import { Restitution } from '../restitution/Restitution';
 import { RequeteUtilisateur } from './routesAPI';
 import { CommandeLanceDiagnostic } from '../diagnostic/CapteurCommandeLanceDiagnostic';
-import { Diagnostic } from '../diagnostic/Diagnostic';
+import { Diagnostic, MesurePriorisee } from '../diagnostic/Diagnostic';
 import { constructeurActionsHATEOAS, ReponseHATEOAS } from './hateoas/hateoas';
 import { RepresentationDiagnostic } from './representateurs/types';
 import { RestitutionHTML } from '../infrastructure/adaptateurs/AdaptateurDeRestitutionHTML';
@@ -28,6 +28,7 @@ import { uneRechercheUtilisateursMAC } from '../recherche-utilisateurs-mac/reche
 import { body } from 'express-validator';
 import { Evenement } from '../domaine/BusEvenement';
 import { FournisseurHorloge } from '../infrastructure/horloge/FournisseurHorloge';
+import { GenerateurLaTeX } from '../infrastructure/restitution/latex/GenerateurLaTeX';
 
 export type ReponseDiagnostic = ReponseHATEOAS & RepresentationDiagnostic;
 
@@ -59,6 +60,11 @@ export type CorpsRequeteLanceDiagnostic = {
   emailEntiteAidee: string;
 };
 
+export type CorpsRequeteRecompilationRestitution = {
+  mesuresPrioritaires: MesurePriorisee[];
+  mesuresComplementaires: MesurePriorisee[];
+};
+
 export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
   const routes = express.Router();
 
@@ -74,6 +80,33 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
     adaptateurRelations,
     busEvenement,
   } = configuration;
+
+  // Endpoint pour récupérer les mesures d'un diagnostic
+  routes.get(
+    '/:id/mesures',
+    async (
+      requete: RequeteUtilisateur,
+      reponse: Response,
+      suite: NextFunction
+    ) => {
+      try {
+        const { id } = requete.params;
+        const diagnostic = await entrepots.diagnostic().lis(id);
+
+        reponse.json({
+          mesuresPrioritaires: diagnostic.restitution?.mesures?.mesuresPrioritaires || [],
+          mesuresComplementaires: diagnostic.restitution?.mesures?.autresMesures || [],
+        });
+      } catch (erreur) {
+        return suite(
+          ErreurMAC.cree(
+            'Accès diagnostic',
+            erreur instanceof Error ? erreur : new Error(String(erreur))
+          )
+        );
+      }
+    }
+  );
 
   routes.post(
     '/',
@@ -270,7 +303,91 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
       }
     }
   );
+  // Endpoint pour recompiler le rapport avec mesures réorganisées
+  routes.post(
+    '/:id/restitution/recompile',
+    express.json(),
+    async (
+      requete: RequeteUtilisateur<CorpsRequeteRecompilationRestitution>,
+      reponse: Response,
+      suite: NextFunction
+    ) => {
+      try {
+        const { id } = requete.params;
+        const { mesuresPrioritaires, mesuresComplementaires } = requete.body;
 
+        if (!mesuresPrioritaires || !mesuresComplementaires) {
+          return reponse.status(400).json({
+            message: 'mesuresPrioritaires et mesuresComplementaires sont requis',
+          });
+        }
+
+        // Récupérer la restitution et la modifier avec les nouvelles mesures
+        const restitution = await configuration.entrepots.restitution().lis(id);
+        const restitutionModifiee: Restitution = {
+          ...restitution,
+          mesures: {
+            mesuresPrioritaires,
+            autresMesures: mesuresComplementaires,
+          },
+        };
+
+        // Recompiler avec les nouvelles mesures
+        const pdfRecompile = await configuration.adaptateursRestitution
+          .pdf()
+          .genereRestitution(restitutionModifiee);
+
+        reponse.contentType('application/pdf').send(pdfRecompile);
+      } catch (erreur) {
+        return suite(
+          ErreurMAC.cree(
+            'Demande la restitution',
+            erreur instanceof Error ? erreur : new Error(String(erreur))
+          )
+        );
+      }
+    }
+  );
+
+  // Endpoint pour retourner le code LaTeX généré
+  routes.post(
+    '/:id/restitution/latex',
+    express.json(),
+    async (
+      requete: RequeteUtilisateur<CorpsRequeteRecompilationRestitution>,
+      reponse: Response,
+      suite: NextFunction
+    ) => {
+      try {
+        const { id } = requete.params;
+        const { mesuresPrioritaires, mesuresComplementaires } = requete.body;
+
+        if (!mesuresPrioritaires || !mesuresComplementaires) {
+          return reponse.status(400).json({
+            message: 'mesuresPrioritaires et mesuresComplementaires sont requis',
+          });
+        }
+
+        // Générer le code LaTeX
+        const generateurLaTeX = new GenerateurLaTeX();
+        const codeLatex = generateurLaTeX.genere({
+          diagnosticId: id,
+          mesuresPrioritaires,
+          mesuresComplementaires,
+        });
+
+        // Retourner le code LaTeX en tant que texte brut
+        reponse.contentType('text/plain; charset=utf-8').send(codeLatex);
+      } catch (erreur) {
+        return suite(
+          ErreurMAC.cree(
+            'Demande la restitution',
+            erreur instanceof Error ? erreur : new Error(String(erreur))
+          )
+        );
+      }
+    }
+  );
   return routes;
 };
 
