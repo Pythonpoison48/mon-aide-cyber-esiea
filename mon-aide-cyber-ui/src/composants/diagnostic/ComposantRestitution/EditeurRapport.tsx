@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Button from '../../atomes/Button/Button';
 import './EditeurRapport.scss';
 
@@ -232,7 +233,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     </div>
   );
 
-  return (
+  return createPortal(
     <div className="editeur-rapport-modal">
       <div className="editeur-rapport-backdrop" onClick={onClose} />
       <div className="editeur-rapport-contenu">
@@ -377,6 +378,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
           </Button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
