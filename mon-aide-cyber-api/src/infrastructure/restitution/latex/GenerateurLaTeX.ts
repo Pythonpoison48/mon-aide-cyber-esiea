@@ -31,12 +31,14 @@ export class GenerateurLaTeX {
     // Charger le template
     const template = fs.readFileSync(this.templatePath, 'utf-8');
 
-    // Générer les mesures
+    // Générer les mesures (prioritaires sans groupement, complémentaires avec groupement)
     const mesuresPrioritaires = this.genereMesures(
-      donnees.mesuresPrioritaires
+      donnees.mesuresPrioritaires,
+      true
     );
     const mesuresComplementaires = this.genereMesures(
-      donnees.mesuresComplementaires
+      donnees.mesuresComplementaires,
+      false
     );
 
     // Remplacer les placeholders
@@ -49,13 +51,46 @@ export class GenerateurLaTeX {
   }
 
   /**
-   * Génère les commandes LaTeX pour une liste de mesures
+   * Génère les commandes LaTeX pour une liste de mesures groupées par catégorie (sauf pour prioritaires)
    * @param mesures Liste des mesures à générer
+   * @param estPrioritaire true si ce sont les mesures prioritaires (pas de groupement)
    * @returns Contenu LaTeX des mesures
    */
-  private genereMesures(mesures: MesurePriorisee[]): string {
-    return mesures
-      .map((mesure, index) => this.genereMesure(mesure, index))
+  private genereMesures(mesures: MesurePriorisee[], estPrioritaire: boolean = false): string {
+    if (estPrioritaire) {
+      // Mesures prioritaires: pas de groupement par catégorie
+      return mesures
+        .map((mesure, index) => this.genereMesure(mesure, index + 1))
+        .join('\n\n');
+    }
+
+    // Mesures complémentaires: grouper avec non-techniques d'abord
+    const mesuresNonTechniques = mesures.filter(m => m.categorie === 'non-technique' || !m.categorie);
+    const mesurestechniques = mesures.filter(m => m.categorie === 'technique');
+
+    let resultat = '';
+
+    // Section mesures non-techniques d'abord
+    if (mesuresNonTechniques.length > 0) {
+      resultat += '\\subsubsection*{Mesures non-techniques}\n\n';
+      resultat += mesuresNonTechniques
+        .map((mesure, index) => this.genereMesure(mesure, index + 1))
+        .join('\n\n');
+    }
+
+    // Section mesures techniques
+    if (mesurestechniques.length > 0) {
+      if (resultat) resultat += '\n\n';
+      resultat += '\\subsubsection*{Mesures techniques}\n\n';
+      resultat += mesurestechniques
+        .map((mesure, index) => 
+          this.genereMesure(mesure, (mesuresNonTechniques.length || 0) + index + 1)
+        )
+        .join('\n\n');
+    }
+
+    return resultat || mesures
+      .map((mesure, index) => this.genereMesure(mesure, index + 1))
       .join('\n\n');
   }
 

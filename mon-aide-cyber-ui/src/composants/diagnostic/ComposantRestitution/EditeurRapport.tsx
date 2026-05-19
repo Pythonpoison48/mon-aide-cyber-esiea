@@ -183,6 +183,13 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     }
   }, [mesuresPrioritaires, mesuresComplementaires, idDiagnostic]);
 
+  const groupeMesuresParCategorie = (mesures: any[]) => {
+    return {
+      techniques: mesures.filter(m => m.categorie === 'technique'),
+      nonTechniques: mesures.filter(m => m.categorie === 'non-technique' || !m.categorie),
+    };
+  };
+
   const renderMesureItem = (
     mesure: any,
     index: number,
@@ -304,11 +311,33 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
                     Faites glisser les mesures pour les réorganiser, ou utilisez les
                     boutons ↑/↓
                   </p>
-                  <div className="mesures-list">
-                    {mesuresComplementaires.map((mesure, index) =>
-                      renderMesureItem(mesure, index, 'complementaires')
-                    )}
-                  </div>
+                  {(() => {
+                    const groupes = groupeMesuresParCategorie(mesuresComplementaires);
+                    return (
+                      <>
+                        {groupes.nonTechniques.length > 0 && (
+                          <div className="mesures-categorie">
+                            <h4>📋 Mesures non-techniques</h4>
+                            <div className="mesures-list">
+                              {groupes.nonTechniques.map((mesure, index) =>
+                                renderMesureItem(mesure, mesuresComplementaires.indexOf(mesure), 'complementaires')
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {groupes.techniques.length > 0 && (
+                          <div className="mesures-categorie">
+                            <h4>🔧 Mesures techniques</h4>
+                            <div className="mesures-list">
+                              {groupes.techniques.map((mesure, index) =>
+                                renderMesureItem(mesure, mesuresComplementaires.indexOf(mesure), 'complementaires')
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                 </>
               )}
             </div>
