@@ -113,6 +113,20 @@
     margin-bottom: 1rem;
   }
 
+  .mesures-categorie {
+    margin-bottom: 2rem;
+
+    h4 {
+      margin: 0 0 1rem 0;
+      padding: 0.5rem 1rem;
+      background: #f0f0f0;
+      border-left: 4px solid #161616;
+      font-size: 0.95rem;
+      color: #161616;
+      border-radius: 4px;
+    }
+  }
+
   .mesures-list {
     display: flex;
     flex-direction: column;
@@ -157,6 +171,25 @@
       color: #333;
       font-size: 0.95rem;
       line-height: 1.4;
+    }
+
+    .mesure-categorie {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      font-weight: 600;
+      margin-left: auto;
+      white-space: nowrap;
+
+      &.mesure-categorie-technique {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+
+      &.mesure-categorie-non-technique {
+        background: #fff3e0;
+        color: #e65100;
+      }
     }
   }
 
