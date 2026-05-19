@@ -21,7 +21,7 @@ services:
       - ./bdd-mac/:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d mac"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 2s
       timeout: 5s
       retries: 30

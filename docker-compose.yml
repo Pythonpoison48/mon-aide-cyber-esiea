@@ -20,6 +20,11 @@ services:
     volumes:
       - ./bdd-mac/:/var/lib/postgresql/data
       - ./docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
     networks:
       - reseau-mon-aide-cyber
 
@@ -37,7 +42,8 @@ services:
       - /usr/src/app/mon-aide-cyber-api/node_modules  # ← masque les node_modules Windows
       - ./mon-aide-cyber-ui/dist/:/usr/src/app/mon-aide-cyber-ui/dist
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - reseau-mon-aide-cyber
 
