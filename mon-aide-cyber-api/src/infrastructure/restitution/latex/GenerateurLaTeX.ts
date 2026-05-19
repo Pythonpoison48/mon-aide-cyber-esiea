@@ -1,11 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { execSync } from 'child_process';
 import { MesurePriorisee } from '../../../diagnostic/Diagnostic';
 
 export interface DonneesRapport {
   diagnosticId: string;
   mesuresPrioritaires: MesurePriorisee[];
   mesuresComplementaires: MesurePriorisee[];
+  indicateurs?: { [thematique: string]: { moyennePonderee: number } };
 }
 
 /**
@@ -13,13 +15,15 @@ export interface DonneesRapport {
  */
 export class GenerateurLaTeX {
   private templatePath: string;
+  private dossierTemp: string | null = null;
 
-  constructor() {
+  constructor(dossierTemp?: string) {
     this.templatePath = path.join(
       __dirname,
       'templates',
       'rapport-template.tex'
     );
+    this.dossierTemp = dossierTemp || null;
   }
 
   /**
@@ -41,13 +45,199 @@ export class GenerateurLaTeX {
       false
     );
 
+    // Générer l'indicateur polaire si disponible
+    let indicateur = '';
+    if (donnees.indicateurs) {
+      const svgContent = this.genereIndicateurSVG(donnees.indicateurs);
+      indicateur = this.genereLatexPourGraphique(svgContent, donnees.diagnosticId);
+    }
+
     // Remplacer les placeholders
     let contenuLatex = template
       .replace('<<DIAGNOSTIC_ID>>', donnees.diagnosticId)
       .replace('<<MESURES_PRIORITAIRES>>', mesuresPrioritaires)
-      .replace('<<MESURES_COMPLEMENTAIRES>>', mesuresComplementaires);
+      .replace('<<MESURES_COMPLEMENTAIRES>>', mesuresComplementaires)
+      .replace('<<INDICATEUR_POLAIRE>>', indicateur);
 
     return contenuLatex;
+  }
+
+  /**
+   * Génère le code SVG du graphique polaire (identique à la page web)
+   * @param indicateurs Indicateurs par thématique
+   * @returns Code SVG
+   */
+  private genereIndicateurSVG(indicateurs: { [thematique: string]: { moyennePonderee: number } }): string {
+    // Mapping des thématiques avec leurs couleurs
+    const couleursThematiques: Map<string, string> = new Map([
+      ['gouvernance', '#6369F1'],
+      ['SecuriteAcces', '#FEC54B'],
+      ['securiteposte', '#8248A1'],
+      ['securiteinfrastructure', '#F26C85'],
+      ['sensibilisation', '#8ED4A3'],
+      ['reaction', '#FD8FB9'],
+    ]);
+
+    const libellesThematiques: Map<string, string> = new Map([
+      ['gouvernance', 'Gouvernance'],
+      ['SecuriteAcces', 'Sécurité Accès'],
+      ['securiteposte', 'Sécurité Poste'],
+      ['securiteinfrastructure', 'Sécurité Infrastructure'],
+      ['sensibilisation', 'Sensibilisation'],
+      ['reaction', 'Réaction'],
+    ]);
+
+    // Extraire configuration similaire à la page web
+    const configurationIndicateurs = Object.entries(indicateurs)
+      .map(([thematique, indicateur]) => ({
+        thematique: thematique.toLowerCase(),
+        legende: libellesThematiques.get(thematique) || thematique,
+        couleur: couleursThematiques.get(thematique) || '#000000',
+        valeur: indicateur.moyennePonderee * 5 / 3, // Normaliser 0-3 → 0-5
+      }));
+
+    const values = configurationIndicateurs.map(c => c.valeur);
+    const colors = configurationIndicateurs.map(c => c.couleur);
+
+    // Générateur de SVG identique au Pug
+    const size = 1200;
+    const height = 1200;
+    const tailleRadar = 550;
+
+    const polaireVersCartesien = (r: number, theta: number) => ({
+      x: r * Math.cos(theta),
+      y: r * Math.sin(theta),
+    });
+
+    const calculeAngleAIndex = (index: number) => (index * 2 * Math.PI) / 6 + Math.PI / 2 + 2 * Math.PI / 3;
+
+    // Générer les points du polygone
+    const pointsDuPolygone: string[] = [];
+    for (let index = 0; index < 6; index++) {
+      const valeur = values[index];
+      const r = ((valeur || 0) / 5) * tailleRadar;
+      const theta = calculeAngleAIndex(index);
+      const theta2 = calculeAngleAIndex(index + 1);
+      const point1 = polaireVersCartesien(r, theta);
+      const point2 = polaireVersCartesien(r, theta2);
+      pointsDuPolygone.push(`M 0 0 L ${point1.x} ${point1.y} L ${point2.x} ${point2.y} Z`);
+    }
+
+    // Construire le SVG complet
+    let svgContent = `<svg viewBox="-600 -600 ${size} ${height}" xmlns="http://www.w3.org/2000/svg" width="600" height="600">\n`;
+    
+
+    // Lignes radiales
+    svgContent += `  <!-- Lignes radiales -->\n`;
+    for (let index = 0; index < 6; index++) {
+      const theta = calculeAngleAIndex(index);
+      const thetaSuivant = calculeAngleAIndex(index + 1);
+      const coordonnees = polaireVersCartesien(tailleRadar, theta);
+      
+      svgContent += `  <line x1="0" y1="0" x2="${coordonnees.x}" y2="${coordonnees.y}" stroke="#ddd" stroke-width="3"/>\n`;
+      
+      for (let index2 = 0; index2 < 6; index2++) {
+        const decalage = (tailleRadar / 5) * index2;
+        const coordonneesActuelles = polaireVersCartesien(decalage, theta);
+        const coordonneesSuivantes = polaireVersCartesien(decalage, thetaSuivant);
+        svgContent += `  <line x1="${coordonneesActuelles.x}" y1="${coordonneesActuelles.y}" x2="${coordonneesSuivantes.x}" y2="${coordonneesSuivantes.y}" stroke="#ddd" stroke-width="3"/>\n`;
+      }
+    }
+
+    // Polygone des données
+    svgContent += `  <!-- Données -->\n`;
+    pointsDuPolygone.forEach((chemin, i) => {
+      svgContent += `  <path d="${chemin}" fill-opacity="0.7" fill="${colors[i]}"/>\n`;
+    });
+
+    // Valeurs sur l'échelle
+    svgContent += `  <!-- Étiquettes d'échelle -->\n`;
+    for (let index = 1; index <= 5; index++) {
+      const r = (tailleRadar / 5) * index;
+      const y = -r * Math.sin(Math.PI / 2);
+      svgContent += `  <text x="0" y="${y}" text-anchor="middle" font-size="32" font-weight="bold" dominant-baseline="middle" fill="#666">${index}</text>\n`;
+    }
+
+    svgContent += `</svg>\n`;
+
+    return svgContent;
+  }
+
+  /**
+   * Génère le code LaTeX pour inclure le graphique SVG
+   * @param svgContent Contenu SVG
+   * @param diagnosticId ID du diagnostic
+   * @returns Code LaTeX avec légende
+   */
+  private genereLatexPourGraphique(svgContent: string, diagnosticId: string): string {
+    // Sauvegarder le SVG dans un fichier temporaire
+    const dossierTemp = this.dossierTemp || path.join(__dirname, 'temp');
+    if (!fs.existsSync(dossierTemp)) {
+      fs.mkdirSync(dossierTemp, { recursive: true });
+    }
+
+    const nomFichierSvg = `graphique-polaire-${diagnosticId}.svg`;
+    const cheminSvg = path.join(dossierTemp, nomFichierSvg);
+    const nomFichierPdf = `graphique-polaire-${diagnosticId}.pdf`;
+    const cheminPdf = path.join(dossierTemp, nomFichierPdf);
+
+    // Sauvegarder le SVG
+    fs.writeFileSync(cheminSvg, svgContent, 'utf-8');
+
+    // Convertir SVG → PDF avec rsvg-convert
+    try {
+      // Utiliser des guillemets appropriés pour les chemins
+      const cmdSvgToPdf = `rsvg-convert -f pdf -o "${cheminPdf}" "${cheminSvg}"`;
+      execSync(cmdSvgToPdf, { 
+        encoding: 'utf-8',
+        cwd: dossierTemp,
+      });
+    } catch (e) {
+      console.error('Erreur lors de la conversion SVG→PDF:', e);
+      // Si la conversion échoue, retourner un message d'erreur
+      return `\\vspace{1cm}\n\\begin{center}\n\\textit{Graphique polaire: erreur de conversion SVG}\n\\end{center}\n`;
+    }
+
+    // Vérifier que le PDF a été créé
+    if (!fs.existsSync(cheminPdf)) {
+      console.warn(`PDF non généré: ${cheminPdf}`);
+      return `\\vspace{1cm}\n\\begin{center}\n\\textit{Graphique polaire: fichier PDF non généré}\n\\end{center}\n`;
+    }
+
+    // Générer le LaTeX pour inclure le PDF
+    // Utiliser le chemin complet pour \includegraphics
+    let latex = `\\vspace{1cm}\n`;
+    latex += `\\begin{figure}[h]\n`;
+    latex += `\\centering\n`;
+    latex += `\\includegraphics[width=0.6\\textwidth]{${cheminPdf}}\n`;
+    latex += `\\end{figure}\n\n`;
+
+    // Ajouter la légende
+    latex += `\\begin{center}\n`;
+    latex += `\\begin{tabular}{ll}\n`;
+    latex += `\\toprule\n`;
+    latex += `\\textbf{Thématique}\\\\\n`;
+    latex += `\\midrule\n`;
+    
+    const themes = [
+      { label: 'Gouvernance', couleur: '#6369F1' },
+      { label: 'Sécurité Accès', couleur: '#FEC54B' },
+      { label: 'Sécurité Poste', couleur: '#8248A1' },
+      { label: 'Sécurité Infrastructure', couleur: '#F26C85' },
+      { label: 'Sensibilisation', couleur: '#8ED4A3' },
+      { label: 'Réaction', couleur: '#FD8FB9' },
+    ];
+
+    themes.forEach(theme => {
+      const couleurHex = theme.couleur.substring(1);
+      latex += `{\\color[HTML]{${couleurHex}} \\rule{6pt}{6pt}} ${theme.label} \\\\\n`;
+    });
+
+    latex += `\\bottomrule\n`;
+    latex += `\\end{tabular}\n`;
+    latex += `\\end{center}\n`;
+
+    return latex;
   }
 
   /**

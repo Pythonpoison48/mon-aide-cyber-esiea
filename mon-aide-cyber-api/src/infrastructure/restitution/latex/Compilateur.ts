@@ -18,6 +18,13 @@ export class Compilateur {
   }
 
   /**
+   * Retourne le chemin du dossier temporaire
+   */
+  getDossierTemporaire(): string {
+    return this.dossierTemporaire;
+  }
+
+  /**
    * Compile un document LaTeX en PDF
    * @param options Options de compilation
    * @returns Buffer contenant le PDF généré

@@ -368,12 +368,17 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
           });
         }
 
+        // Récupérer les indicateurs depuis la restitution
+        const restitution = await configuration.entrepots.restitution().lis(id);
+        const indicateurs = restitution.indicateurs;
+
         // Générer le code LaTeX
         const generateurLaTeX = new GenerateurLaTeX();
         const codeLatex = generateurLaTeX.genere({
           diagnosticId: id,
           mesuresPrioritaires,
           mesuresComplementaires,
+          indicateurs,
         });
 
         // Retourner le code LaTeX en tant que texte brut

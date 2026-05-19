@@ -1,6 +1,6 @@
 import { MesurePriorisee } from '../../../diagnostic/Diagnostic';
 import { GenerateurLaTeX } from './GenerateurLaTeX';
-import { Compilateur } from './Compilateur';
+import { Compilateur, creerCompilateur } from './Compilateur';
 
 export interface DonneesRapportModifiees {
   diagnosticId: string;
@@ -17,8 +17,10 @@ export class EditeurLatex {
   private compilateur: Compilateur;
 
   constructor() {
-    this.generateurLaTeX = creerGenerateurLaTeX();
+    // Créer le compilateur en premier pour obtenir le dossier temporaire
     this.compilateur = creerCompilateur();
+    // Passer le dossier temporaire au générateur LaTeX
+    this.generateurLaTeX = new GenerateurLaTeX(this.compilateur.getDossierTemporaire());
   }
 
   /**

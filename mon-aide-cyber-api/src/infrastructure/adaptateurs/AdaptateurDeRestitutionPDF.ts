@@ -4,7 +4,6 @@ import {
 } from '../../adaptateurs/AdaptateurDeRestitution';
 import { Restitution } from '../../restitution/Restitution';
 import {
-  creerGenerateurLaTeX,
   GenerateurLaTeX,
 } from '../restitution/latex/GenerateurLaTeX';
 import {
@@ -24,8 +23,10 @@ export class AdaptateurDeRestitutionPDF
   private compilateur: Compilateur;
 
   constructor() {
-    this.generateurLaTeX = creerGenerateurLaTeX();
+    // Créer le compilateur en premier pour obtenir le dossier temporaire
     this.compilateur = creerCompilateur();
+    // Passer le dossier temporaire au générateur LaTeX
+    this.generateurLaTeX = new GenerateurLaTeX(this.compilateur.getDossierTemporaire());
   }
 
   async genereRestitution(restitution: Restitution): Promise<Buffer> {
@@ -37,6 +38,7 @@ export class AdaptateurDeRestitutionPDF
         diagnosticId: identifiant,
         mesuresPrioritaires: restitution.mesures.mesuresPrioritaires,
         mesuresComplementaires: restitution.mesures.autresMesures,
+        indicateurs: restitution.indicateurs,
       });
 
       // Compiler en PDF
