@@ -315,17 +315,55 @@ export class GenerateurLaTeX {
     }
 
     try {
-      // Résoudre le chemin absolu du fichier
-      // Les chemins Pug sont relatifs comme "../../mesures/postes/..."
-      // Depuis /src/infrastructure/restitution/latex, path.resolve() normalise automatiquement
-      const cheminAbsolu = path.resolve(
+      // Extraire le nom du fichier (en cas de chemin relatif comme ../../mesures/postes/nom.pug)
+      let nomFichier = path.basename(cheminOuContenu);
+      
+      // Essayer d'ajouter l'extension .pug s'il manque
+      if (!nomFichier.endsWith('.pug')) {
+        nomFichier += '.pug';
+      }
+
+      // Chercher le fichier dans le répertoire des mesures
+      // Les fichiers de mesures sont dans /restitution/mesures/
+      // this.templatePath = .../restitution/latex/templates/rapport-template.tex
+      // dirname = .../restitution/latex/templates/
+      // Nous avons besoin de remonter à .../restitution/mesures/ (2 niveaux + mesures)
+      const dossierMesures = path.join(
         path.dirname(this.templatePath),
-        cheminOuContenu
+        '..',
+        '..',
+        'mesures'
       );
 
-      // Vérifier si le fichier existe
-      if (!fs.existsSync(cheminAbsolu)) {
-        console.warn(`Fichier Pug non trouvé: ${cheminAbsolu}`);
+      // Chercher d'abord dans les sous-dossiers de mesures (postes, gouvernance, etc.)
+      const dossiersPossibles = [
+        path.join(dossierMesures, 'postes'),
+        path.join(dossierMesures, 'gouvernance'),
+        path.join(dossierMesures, 'acces'),
+        path.join(dossierMesures, 'infras'),
+        path.join(dossierMesures, 'sensibilisation'),
+        path.join(dossierMesures, 'reaction'),
+        dossierMesures, // Chercher aussi à la racine de mesures
+        path.dirname(this.templatePath), // Chercher dans le dossier du template en dernier
+      ];
+
+      let cheminAbsolu = '';
+      for (const dossier of dossiersPossibles) {
+        const chemin = path.join(dossier, nomFichier);
+        if (fs.existsSync(chemin)) {
+          cheminAbsolu = chemin;
+          console.log(`✓ Fichier trouvé: ${chemin}`);
+          break;
+        }
+      }
+
+      // Si le fichier n'a pas été trouvé, logger et retourner l'original
+      if (!cheminAbsolu) {
+        console.error(
+          `✗ Fichier Pug non trouvé: ${nomFichier}\n` +
+          `  Répertoires cherchés:\n` +
+          `  ${dossiersPossibles.map(d => `  - ${d}`).join('\n')}`
+        );
         return cheminOuContenu;
       }
 
@@ -343,18 +381,41 @@ export class GenerateurLaTeX {
   /**
    * Extrait le texte d'un fichier Pug simple
    * Gère les formes basiques: div, p, etc. avec contenu texte
+   * Traite aussi les directives include en chargeant les fichiers inclus
    * @param contenuPug Contenu brut du fichier Pug
+   * @param cheminRacine Chemin racine pour les includes
    * @returns Texte extrait
    */
-  private extraitTextePug(contenuPug: string): string {
+  private extraitTextePug(contenuPug: string, cheminRacine?: string): string {
     // Supprimer les lignes vides
     let lignes = contenuPug
       .split('\n')
       .map((ligne) => ligne.trim())
       .filter((ligne) => ligne.length > 0);
 
+    // Traiter les directives include
+    lignes = lignes.map((ligne) => {
+      // Détecte les includes: include nom-du-fichier
+      const matchInclude = ligne.match(/^include\s+(.+?)(?:\s|$)/);
+      if (matchInclude) {
+        const [, nomFichier] = matchInclude;
+        try {
+          // Charger le fichier inclus
+          const contenuInclude = this.chargeContenuFichier(nomFichier);
+          // Traiter récursivement le contenu inclus
+          return this.extraitTextePug(contenuInclude, cheminRacine);
+        } catch (e) {
+          console.warn(`Impossible de charger l'include: ${nomFichier}`, e);
+          return ''; // Retourner vide si le fichier n'existe pas
+        }
+      }
+      return ligne;
+    });
+
     // Traiter les lignes Pug avec liens
     lignes = lignes.map((ligne) => {
+      if (ligne.length === 0) return ligne; // Ne pas traiter les lignes vides
+      
       // Gérer les liens Pug: a(href="...") texte
       // Extraire juste le texte du lien ou l'URL
       const matchLien = ligne.match(/^a\s*\(\s*href\s*=\s*["']([^"']+)["']\s*\)\s*(.*)$/);
@@ -369,14 +430,32 @@ export class GenerateurLaTeX {
     // Extraire le texte (tout après le pipe | ou après une balise)
     let texte = lignes
       .map((ligne) => {
-        // Ignorer les lignes qui sont juste une balise ou un commentaire
-        if (ligne.match(/^(div|p|span|li|ul|ol|h\d|html|head|body)(\s|$|\.|\#|\()/)) {
-          return '';
-        }
-        // Supprimer le pipe et l'indentation
+        if (ligne.length === 0) return '';
         if (ligne.startsWith('|')) {
           return ligne.substring(1).trim();
         }
+
+        const matchTagAvecTexte = ligne.match(
+          /^(div|p|span|li|ul|ol|h\d|html|head|body|a)(\([^)]*\))?(?:\s+(.*))?$/
+        );
+
+        if (matchTagAvecTexte) {
+          const [, balise, , texteInline] = matchTagAvecTexte;
+
+          if (
+            balise === 'ul' ||
+            balise === 'ol' ||
+            balise === 'div' ||
+            balise === 'html' ||
+            balise === 'head' ||
+            balise === 'body'
+          ) {
+            return '';
+          }
+
+          return (texteInline ?? '').trim();
+        }
+
         // Retourner la ligne telle quelle (peut être du texte direct)
         return ligne;
       })
