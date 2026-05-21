@@ -292,8 +292,12 @@ export class GenerateurLaTeX {
    */
   private genereMesure(mesure: MesurePriorisee, index: number): string {
     const titre = this.echappeLaTeX(mesure.titre);
-    const pourquoi = this.echappeLaTeX(this.chargeContenuFichier(mesure.pourquoi));
-    const comment = this.echappeLaTeX(this.chargeContenuFichier(mesure.comment));
+    const pourquoi = this.formateTextePourLaTeX(
+      this.echappeLaTeX(this.chargeContenuFichier(mesure.pourquoi))
+    );
+    const comment = this.formateTextePourLaTeX(
+      this.echappeLaTeX(this.chargeContenuFichier(mesure.comment))
+    );
 
     return `%--- ${index + 1}
 \\recommandation{${titre}}{%
@@ -387,88 +391,172 @@ export class GenerateurLaTeX {
    * @returns Texte extrait
    */
   private extraitTextePug(contenuPug: string, cheminRacine?: string): string {
-    // Supprimer les lignes vides
-    let lignes = contenuPug
-      .split('\n')
-      .map((ligne) => ligne.trim())
-      .filter((ligne) => ligne.length > 0);
+    const lignes = contenuPug.split(/\r?\n/);
+    const outputLines: string[] = [];
 
-    // Traiter les directives include
-    lignes = lignes.map((ligne) => {
-      // Détecte les includes: include nom-du-fichier
+    const getIndentation = (ligne: string): number => ligne.match(/^\s*/)?.[0].length ?? 0;
+    const normaliseTexte = (texte: string): string => texte.replace(/\s+/g, ' ').trim();
+
+    const extraireTexteDeBloc = (indexDepart: number, indentationParent: number): { texte: string; indexFin: number } => {
+      const lignesBloc: string[] = [];
+      let index = indexDepart;
+
+      while (index < lignes.length) {
+        const brute = lignes[index];
+        const ligne = brute.trim();
+
+        if (ligne.length === 0) {
+          index += 1;
+          continue;
+        }
+
+        const indentation = getIndentation(brute);
+        if (indentation <= indentationParent) {
+          break;
+        }
+
+        if (ligne.startsWith('|')) {
+          lignesBloc.push(normaliseTexte(ligne.substring(1)));
+          index += 1;
+          continue;
+        }
+
+        const matchLienInline = ligne.match(/^a\s*\(\s*href\s*=\s*["']([^"']+)["']\s*\)\s*(.*)$/);
+        if (matchLienInline) {
+          const [, href, texteAffiche] = matchLienInline;
+          lignesBloc.push(normaliseTexte(texteAffiche.trim() || href));
+          index += 1;
+          continue;
+        }
+
+        const matchTagAvecTexte = ligne.match(/^(div|p|span|li|ul|ol|h\d|html|head|body|a)(\([^)]*\))?(?:\s+(.*))?$/);
+        if (matchTagAvecTexte) {
+          const [, balise, params, texteInline] = matchTagAvecTexte;
+          if (balise === 'ul' || balise === 'ol' || balise === 'div' || balise === 'html' || balise === 'head' || balise === 'body') {
+            const bloc = extraireTexteDeBloc(index + 1, indentation);
+            if (bloc.texte.length > 0) {
+              lignesBloc.push(bloc.texte);
+            }
+            index = bloc.indexFin;
+            continue;
+          }
+
+          if (balise === 'a') {
+            const href = params?.match(/href\s*=\s*["']([^"']+)["']/)?.[1] ?? '';
+            const contenu = (texteInline ?? '').trim();
+            const bloc = extraireTexteDeBloc(index + 1, indentation);
+            const texteLien = normaliseTexte([contenu || href, bloc.texte].filter(Boolean).join(' '));
+            if (texteLien.length > 0) {
+              lignesBloc.push(texteLien);
+            }
+            index = bloc.indexFin;
+            continue;
+          }
+
+          if (balise === 'p' || balise === 'span' || balise === 'h1' || balise === 'h2' || balise === 'h3' || balise === 'h4' || balise === 'h5' || balise === 'h6') {
+            const contenu = (texteInline ?? '').trim();
+            const bloc = extraireTexteDeBloc(index + 1, indentation);
+            const texte = normaliseTexte([contenu, bloc.texte].filter(Boolean).join(' '));
+            if (texte.length > 0) {
+              lignesBloc.push(texte);
+            }
+            index = bloc.indexFin;
+            continue;
+          }
+
+          if (balise === 'li') {
+            const contenu = (texteInline ?? '').trim();
+            const bloc = extraireTexteDeBloc(index + 1, indentation);
+            const texte = normaliseTexte([contenu, bloc.texte].filter(Boolean).join(' '));
+            if (texte.length > 0) {
+              lignesBloc.push(`- ${texte}`);
+            }
+            index = bloc.indexFin;
+            continue;
+          }
+        }
+
+        lignesBloc.push(normaliseTexte(ligne));
+        index += 1;
+      }
+
+      return { texte: lignesBloc.filter((ligneBloc) => ligneBloc.length > 0).join('\n'), indexFin: index };
+    };
+
+    for (let i = 0; i < lignes.length; i += 1) {
+      const brute = lignes[i];
+      const ligne = brute.trim();
+      if (ligne.length === 0) continue;
+
+      const indentation = getIndentation(brute);
+
       const matchInclude = ligne.match(/^include\s+(.+?)(?:\s|$)/);
       if (matchInclude) {
         const [, nomFichier] = matchInclude;
         try {
-          // Charger le fichier inclus
           const contenuInclude = this.chargeContenuFichier(nomFichier);
-          // Traiter récursivement le contenu inclus
-          return this.extraitTextePug(contenuInclude, cheminRacine);
+          const texteInclude = this.extraitTextePug(contenuInclude, cheminRacine);
+          if (texteInclude.length > 0) {
+            outputLines.push(texteInclude);
+          }
         } catch (e) {
           console.warn(`Impossible de charger l'include: ${nomFichier}`, e);
-          return ''; // Retourner vide si le fichier n'existe pas
         }
+        continue;
       }
-      return ligne;
-    });
-
-    // Traiter les lignes Pug avec liens
-    lignes = lignes.map((ligne) => {
-      if (ligne.length === 0) return ligne; // Ne pas traiter les lignes vides
-      
-      // Gérer les liens Pug: a(href="...") texte
-      // Extraire juste le texte du lien ou l'URL
-      const matchLien = ligne.match(/^a\s*\(\s*href\s*=\s*["']([^"']+)["']\s*\)\s*(.*)$/);
-      if (matchLien) {
-        const [, href, texteAffiche] = matchLien;
-        // Si le texte du lien existe et n'est pas vide, l'utiliser, sinon utiliser l'URL
-        return texteAffiche.trim() || href;
-      }
-      return ligne;
-    });
-
-    // Extraire le texte (tout après le pipe | ou après une balise)
-    const outputLines: string[] = [];
-
-    for (const ligne of lignes) {
-      if (ligne.length === 0) continue;
 
       if (ligne.startsWith('|')) {
         outputLines.push(ligne.substring(1).trim());
         continue;
       }
 
-      const matchTagAvecTexte = ligne.match(
-        /^(div|p|span|li|ul|ol|h\d|html|head|body|a)(\([^)]*\))?(?:\s+(.*))?$/
-      );
-
-      if (matchTagAvecTexte) {
-        const [, balise, , texteInline] = matchTagAvecTexte;
-
-        if (balise === 'ul' || balise === 'ol') {
-          continue; // the list container itself doesn't carry text
+      const matchLi = ligne.match(/^li(?:\s*\(([^)]*)\))?(?:\s+(.*))?$/);
+      if (matchLi) {
+        const [, , texteInline = ''] = matchLi;
+        const morceaux = [texteInline.trim()].filter((part) => part.length > 0);
+        const bloc = extraireTexteDeBloc(i + 1, indentation);
+        if (bloc.texte.length > 0) {
+          morceaux.push(bloc.texte);
         }
-
-        if (balise === 'li') {
-          const itemText = (texteInline ?? '').trim();
-          if (itemText.length > 0) {
-            outputLines.push(`- ${itemText}`);
-          }
-          continue;
-        }
-
-        // For simple inline tags like p, span, a, hN, return their inline text
-        if (['p', 'span', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(balise)) {
-          const t = (texteInline ?? '').trim();
-          if (t.length > 0) outputLines.push(t);
-          continue;
-        }
-
-        // ignore container tags like div/html/head/body
+        outputLines.push(`- ${normaliseTexte(morceaux.join(' '))}`);
+        i = bloc.indexFin - 1;
         continue;
       }
 
-      // Plain text line
+      const matchLien = ligne.match(/^a\s*\(\s*href\s*=\s*["']([^"']+)["']\s*\)\s*(.*)$/);
+      if (matchLien) {
+        const [, href, texteAffiche] = matchLien;
+        const bloc = extraireTexteDeBloc(i + 1, indentation);
+        const texteLien = normaliseTexte([texteAffiche.trim(), bloc.texte].filter(Boolean).join(' '));
+        outputLines.push(texteLien === href ? href : texteLien || href);
+        i = bloc.indexFin - 1;
+        continue;
+      }
+
+      const matchTagAvecTexte = ligne.match(/^(div|p|span|ul|ol|h\d|html|head|body)(\([^)]*\))?(?:\s+(.*))?$/);
+      if (matchTagAvecTexte) {
+        const [, balise, , texteInline] = matchTagAvecTexte;
+
+        if (balise === 'ul' || balise === 'ol' || balise === 'div' || balise === 'html' || balise === 'head' || balise === 'body') {
+          const bloc = extraireTexteDeBloc(i + 1, indentation);
+          if (bloc.texte.length > 0) {
+            outputLines.push(bloc.texte);
+          }
+          i = bloc.indexFin - 1;
+          continue;
+        }
+
+        if (balise === 'p' || balise === 'span' || balise === 'h1' || balise === 'h2' || balise === 'h3' || balise === 'h4' || balise === 'h5' || balise === 'h6') {
+          const bloc = extraireTexteDeBloc(i + 1, indentation);
+          const texte = normaliseTexte([texteInline ?? '', bloc.texte].filter(Boolean).join(' '));
+          if (texte.length > 0) {
+            outputLines.push(texte);
+          }
+          i = bloc.indexFin - 1;
+          continue;
+        }
+      }
+
       outputLines.push(ligne);
     }
 
@@ -498,7 +586,7 @@ export class GenerateurLaTeX {
    * @returns Texte échappé pour LaTeX
    */
   private echappeLaTeX(texte: string): string {
-    const texteEchappe = texte
+    return texte
       .replace(/\\/g, '\\textbackslash{}') // Backslash
       .replace(/[&%$#_{}~^]/g, (match) => {
         switch (match) {
@@ -525,7 +613,51 @@ export class GenerateurLaTeX {
         }
       });
 
-    return texteEchappe.replace(/\r?\n+/g, ' \\\\ ');
+  }
+
+  /**
+   * Formate le texte extrait pour le rendu LaTeX.
+   * Les lignes commençant par "- " deviennent une vraie liste itemize.
+   * @param texte Texte déjà échappé pour LaTeX
+   * @returns Texte LaTeX formaté
+   */
+  private formateTextePourLaTeX(texte: string): string {
+    const lignes = texte
+      .split(/\r?\n+/)
+      .map((ligne) => ligne.trim())
+      .filter((ligne) => ligne.length > 0);
+
+    const blocs: string[] = [];
+    let paragrapheEnCours: string[] = [];
+    let pucesEnCours: string[] = [];
+
+    const fermerParagraphe = () => {
+      if (paragrapheEnCours.length === 0) return;
+      blocs.push(paragrapheEnCours.join(' '));
+      paragrapheEnCours = [];
+    };
+
+    const fermerListe = () => {
+      if (pucesEnCours.length === 0) return;
+      blocs.push(`\\begin{itemize}\n${pucesEnCours.map((puce) => `\\item ${puce}`).join('\n')}\n\\end{itemize}`);
+      pucesEnCours = [];
+    };
+
+    for (const ligne of lignes) {
+      if (ligne.startsWith('- ')) {
+        fermerParagraphe();
+        pucesEnCours.push(ligne.substring(2).trim());
+        continue;
+      }
+
+      fermerListe();
+      paragrapheEnCours.push(ligne);
+    }
+
+    fermerParagraphe();
+    fermerListe();
+
+    return blocs.join('\n\n');
   }
 }
 
