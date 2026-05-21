@@ -396,6 +396,29 @@ export class GenerateurLaTeX {
 
     const getIndentation = (ligne: string): number => ligne.match(/^\s*/)?.[0].length ?? 0;
     const normaliseTexte = (texte: string): string => texte.replace(/\s+/g, ' ').trim();
+    const estUrl = (texte: string): boolean => /^https?:\/\//i.test(normaliseTexte(texte));
+    const choisisTexteLien = (href: string, texteInline: string, texteBloc: string): string => {
+      const hrefNormalise = normaliseTexte(href);
+      const parties = [texteInline, texteBloc]
+        .map((partie) => normaliseTexte(partie))
+        .filter((partie) => partie.length > 0);
+
+      if (parties.length === 0) {
+        return hrefNormalise;
+      }
+
+      if (parties.some((partie) => estUrl(partie))) {
+        return hrefNormalise;
+      }
+
+      const partiesNonUrl = parties.filter((partie) => partie !== hrefNormalise);
+
+      if (partiesNonUrl.length === 0) {
+        return hrefNormalise;
+      }
+
+      return normaliseTexte(partiesNonUrl.join(' '));
+    };
 
     const extraireTexteDeBloc = (indexDepart: number, indentationParent: number): { texte: string; indexFin: number } => {
       const lignesBloc: string[] = [];
@@ -424,7 +447,7 @@ export class GenerateurLaTeX {
         const matchLienInline = ligne.match(/^a\s*\(\s*href\s*=\s*["']([^"']+)["']\s*\)\s*(.*)$/);
         if (matchLienInline) {
           const [, href, texteAffiche] = matchLienInline;
-          lignesBloc.push(normaliseTexte(texteAffiche.trim() || href));
+          lignesBloc.push(choisisTexteLien(href, texteAffiche, ''));
           index += 1;
           continue;
         }
@@ -445,7 +468,7 @@ export class GenerateurLaTeX {
             const href = params?.match(/href\s*=\s*["']([^"']+)["']/)?.[1] ?? '';
             const contenu = (texteInline ?? '').trim();
             const bloc = extraireTexteDeBloc(index + 1, indentation);
-            const texteLien = normaliseTexte([contenu || href, bloc.texte].filter(Boolean).join(' '));
+            const texteLien = choisisTexteLien(href, contenu, bloc.texte);
             if (texteLien.length > 0) {
               lignesBloc.push(texteLien);
             }
@@ -527,8 +550,8 @@ export class GenerateurLaTeX {
       if (matchLien) {
         const [, href, texteAffiche] = matchLien;
         const bloc = extraireTexteDeBloc(i + 1, indentation);
-        const texteLien = normaliseTexte([texteAffiche.trim(), bloc.texte].filter(Boolean).join(' '));
-        outputLines.push(texteLien === href ? href : texteLien || href);
+        const texteLien = choisisTexteLien(href, texteAffiche, bloc.texte);
+        outputLines.push(texteLien);
         i = bloc.indexFin - 1;
         continue;
       }
@@ -560,7 +583,15 @@ export class GenerateurLaTeX {
       outputLines.push(ligne);
     }
 
-    let texte = outputLines.join('\n');
+    // Joindre les lignes puis supprimer les lignes consécutives dupliquées
+    const lignesJointes = outputLines.join('\n').split(/\r?\n/).map((l) => l.trim()).filter((l) => l.length > 0);
+    const lignesDedup: string[] = [];
+    for (let idx = 0; idx < lignesJointes.length; idx++) {
+      if (idx === 0 || lignesJointes[idx] !== lignesJointes[idx - 1]) {
+        lignesDedup.push(lignesJointes[idx]);
+      }
+    }
+    let texte = lignesDedup.join('\n');
 
     // Convertir aussi les balises HTML en texte simple (au cas où)
     texte = texte.replace(/<a\s+href=["']([^"']+)["'][^>]*>([^<]*)<\/a>/gi, (_match, href, texteAffiche) => {
