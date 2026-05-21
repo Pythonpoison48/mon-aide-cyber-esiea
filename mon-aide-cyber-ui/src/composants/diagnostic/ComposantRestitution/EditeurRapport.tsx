@@ -155,7 +155,10 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
         `/api/diagnostic/${idDiagnostic}/restitution/latex`,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
           body: JSON.stringify({
             mesuresPrioritaires,
             mesuresComplementaires,
@@ -167,14 +170,34 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
 
-      const text = await response.text();
-      const blob = new Blob([text], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `rapport-${idDiagnostic}.tex`;
-      link.click();
-      URL.revokeObjectURL(url);
+      const resultat = await response.json() as {
+        codeLatex: string;
+        graphiquePolairePdfBase64?: string | null;
+        nomFichierGraphiquePolaire?: string;
+      };
+
+      const telechargeBlob = (blob: Blob, nomFichier: string) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = nomFichier;
+        link.click();
+        URL.revokeObjectURL(url);
+      };
+
+      telechargeBlob(
+        new Blob([resultat.codeLatex], { type: 'text/plain' }),
+        `rapport-${idDiagnostic}.tex`
+      );
+
+      if (resultat.graphiquePolairePdfBase64) {
+        const binaire = atob(resultat.graphiquePolairePdfBase64);
+        const octets = Uint8Array.from(binaire, (caractere) => caractere.charCodeAt(0));
+        telechargeBlob(
+          new Blob([octets], { type: 'application/pdf' }),
+          resultat.nomFichierGraphiquePolaire || `graphique-polaire-${idDiagnostic}.pdf`
+        );
+      }
     } catch (erreur) {
       console.error('Erreur téléchargement LaTeX:', erreur);
       alert('Erreur lors du téléchargement du code LaTeX');

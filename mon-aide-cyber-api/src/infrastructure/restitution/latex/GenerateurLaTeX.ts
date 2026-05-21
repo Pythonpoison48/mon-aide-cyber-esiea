@@ -10,6 +10,11 @@ export interface DonneesRapport {
   indicateurs?: { [thematique: string]: { moyennePonderee: number } };
 }
 
+export interface GenerationLatexAvecGraphique {
+  contenuLatex: string;
+  graphiquePolairePdf?: Buffer;
+}
+
 /**
  * Génère le contenu LaTeX à partir des données de restitution
  */
@@ -32,6 +37,10 @@ export class GenerateurLaTeX {
    * @returns Contenu LaTeX prêt à être compilé
    */
   genere(donnees: DonneesRapport): string {
+    return this.genereAvecGraphique(donnees).contenuLatex;
+  }
+
+  genereAvecGraphique(donnees: DonneesRapport): GenerationLatexAvecGraphique {
     // Charger le template
     const template = fs.readFileSync(this.templatePath, 'utf-8');
 
@@ -47,21 +56,30 @@ export class GenerateurLaTeX {
 
     // Générer l'indicateur polaire si disponible
     let indicateur = '';
+    let graphiquePolairePdf: Buffer | undefined;
     if (donnees.indicateurs) {
       const svgContent = this.genereIndicateurSVG(donnees.indicateurs);
-      indicateur = this.genereLatexPourGraphique(svgContent, donnees.diagnosticId);
+      const resultatGraphique = this.genereLatexPourGraphique(
+        svgContent,
+        donnees.diagnosticId,
+        { retournerPdfBuffer: true }
+      );
+      indicateur = resultatGraphique.contenuLatex;
+      graphiquePolairePdf = resultatGraphique.graphiquePolairePdf;
     }
 
     // Remplacer les placeholders
-    let contenuLatex = template
+    const contenuLatex = template
       .replace('<<DIAGNOSTIC_ID>>', donnees.diagnosticId)
       .replace('<<MESURES_PRIORITAIRES>>', mesuresPrioritaires)
       .replace('<<MESURES_COMPLEMENTAIRES>>', mesuresComplementaires)
       .replace('<<INDICATEUR_POLAIRE>>', indicateur);
 
-    return contenuLatex;
+    return {
+      contenuLatex,
+      ...(graphiquePolairePdf ? { graphiquePolairePdf } : {}),
+    };
   }
-
   /**
    * Génère le code SVG du graphique polaire (identique à la page web)
    * @param indicateurs Indicateurs par thématique
@@ -169,7 +187,11 @@ export class GenerateurLaTeX {
    * @param diagnosticId ID du diagnostic
    * @returns Code LaTeX avec légende
    */
-  private genereLatexPourGraphique(svgContent: string, diagnosticId: string): string {
+    private genereLatexPourGraphique(
+      svgContent: string,
+      diagnosticId: string,
+      options?: { retournerPdfBuffer?: boolean; nettoyerApresLecture?: boolean }
+    ): GenerationLatexAvecGraphique {
     // Sauvegarder le SVG dans un fichier temporaire
     const dossierTemp = this.dossierTemp || path.join(__dirname, 'temp');
     if (!fs.existsSync(dossierTemp)) {
@@ -195,13 +217,17 @@ export class GenerateurLaTeX {
     } catch (e) {
       console.error('Erreur lors de la conversion SVG→PDF:', e);
       // Si la conversion échoue, retourner un message d'erreur
-      return `\\vspace{1cm}\n\\begin{center}\n\\textit{Graphique polaire: erreur de conversion SVG}\n\\end{center}\n`;
+          return {
+            contenuLatex: `\\vspace{1cm}\n\\begin{center}\n\\textit{Graphique polaire: erreur de conversion SVG}\n\\end{center}\n`,
+          };
     }
 
     // Vérifier que le PDF a été créé
     if (!fs.existsSync(cheminPdf)) {
       console.warn(`PDF non généré: ${cheminPdf}`);
-      return `\\vspace{1cm}\n\\begin{center}\n\\textit{Graphique polaire: fichier PDF non généré}\n\\end{center}\n`;
+          return {
+            contenuLatex: `\\vspace{1cm}\n\\begin{center}\n\\textit{Graphique polaire: fichier PDF non généré}\n\\end{center}\n`,
+          };
     }
 
     // Générer le LaTeX pour inclure le PDF
@@ -237,7 +263,15 @@ export class GenerateurLaTeX {
     latex += `\\end{tabular}\n`;
     latex += `\\end{center}\n`;
 
-    return latex;
+    const resultat: GenerationLatexAvecGraphique = {
+      contenuLatex: latex,
+    };
+
+    if (options?.retournerPdfBuffer) {
+      resultat.graphiquePolairePdf = fs.readFileSync(cheminPdf);
+    }
+
+    return resultat;
   }
 
   /**
@@ -273,7 +307,7 @@ export class GenerateurLaTeX {
       if (resultat) resultat += '\n\n';
       resultat += '\\subsubsection*{Mesures techniques}\n\n';
       resultat += mesurestechniques
-        .map((mesure, index) => 
+        .map((mesure, index) =>
           this.genereMesure(mesure, (mesuresNonTechniques.length || 0) + index + 1)
         )
         .join('\n\n');

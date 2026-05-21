@@ -372,17 +372,27 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
         const restitution = await configuration.entrepots.restitution().lis(id);
         const indicateurs = restitution.indicateurs;
 
-        // Générer le code LaTeX
+        // Générer le code LaTeX et le graphique polaire associé
         const generateurLaTeX = new GenerateurLaTeX();
-        const codeLatex = generateurLaTeX.genere({
+        const resultatLatex = generateurLaTeX.genereAvecGraphique({
           diagnosticId: id,
           mesuresPrioritaires,
           mesuresComplementaires,
           indicateurs,
         });
 
-        // Retourner le code LaTeX en tant que texte brut
-        reponse.contentType('text/plain; charset=utf-8').send(codeLatex);
+        if ((requete.headers.accept || '').includes('application/json')) {
+          return reponse.json({
+            codeLatex: resultatLatex.contenuLatex,
+            graphiquePolairePdfBase64: resultatLatex.graphiquePolairePdf
+              ? resultatLatex.graphiquePolairePdf.toString('base64')
+              : null,
+            nomFichierGraphiquePolaire: `graphique-polaire-${id}.pdf`,
+          });
+        }
+
+        // Retourner le code LaTeX en tant que texte brut pour compatibilité
+        reponse.contentType('text/plain; charset=utf-8').send(resultatLatex.contenuLatex);
       } catch (erreur) {
         return suite(
           ErreurMAC.cree(
