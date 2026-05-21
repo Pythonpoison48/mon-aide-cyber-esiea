@@ -428,39 +428,51 @@ export class GenerateurLaTeX {
     });
 
     // Extraire le texte (tout après le pipe | ou après une balise)
-    let texte = lignes
-      .map((ligne) => {
-        if (ligne.length === 0) return '';
-        if (ligne.startsWith('|')) {
-          return ligne.substring(1).trim();
+    const outputLines: string[] = [];
+
+    for (const ligne of lignes) {
+      if (ligne.length === 0) continue;
+
+      if (ligne.startsWith('|')) {
+        outputLines.push(ligne.substring(1).trim());
+        continue;
+      }
+
+      const matchTagAvecTexte = ligne.match(
+        /^(div|p|span|li|ul|ol|h\d|html|head|body|a)(\([^)]*\))?(?:\s+(.*))?$/
+      );
+
+      if (matchTagAvecTexte) {
+        const [, balise, , texteInline] = matchTagAvecTexte;
+
+        if (balise === 'ul' || balise === 'ol') {
+          continue; // the list container itself doesn't carry text
         }
 
-        const matchTagAvecTexte = ligne.match(
-          /^(div|p|span|li|ul|ol|h\d|html|head|body|a)(\([^)]*\))?(?:\s+(.*))?$/
-        );
-
-        if (matchTagAvecTexte) {
-          const [, balise, , texteInline] = matchTagAvecTexte;
-
-          if (
-            balise === 'ul' ||
-            balise === 'ol' ||
-            balise === 'div' ||
-            balise === 'html' ||
-            balise === 'head' ||
-            balise === 'body'
-          ) {
-            return '';
+        if (balise === 'li') {
+          const itemText = (texteInline ?? '').trim();
+          if (itemText.length > 0) {
+            outputLines.push(`- ${itemText}`);
           }
-
-          return (texteInline ?? '').trim();
+          continue;
         }
 
-        // Retourner la ligne telle quelle (peut être du texte direct)
-        return ligne;
-      })
-      .filter((ligne) => ligne.length > 0)
-      .join(' ');
+        // For simple inline tags like p, span, a, hN, return their inline text
+        if (['p', 'span', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(balise)) {
+          const t = (texteInline ?? '').trim();
+          if (t.length > 0) outputLines.push(t);
+          continue;
+        }
+
+        // ignore container tags like div/html/head/body
+        continue;
+      }
+
+      // Plain text line
+      outputLines.push(ligne);
+    }
+
+    let texte = outputLines.join('\n');
 
     // Convertir aussi les balises HTML en texte simple (au cas où)
     texte = texte.replace(/<a\s+href=["']([^"']+)["'][^>]*>([^<]*)<\/a>/gi, (_match, href, texteAffiche) => {
@@ -471,8 +483,13 @@ export class GenerateurLaTeX {
     // Supprimer les autres balises HTML
     texte = texte.replace(/<[^>]+>/g, '');
 
-    // Nettoyer les espaces multiples
-    return texte.replace(/\s+/g, ' ').trim();
+    // Nettoyer les espaces multiples sans supprimer les retours à la ligne
+    return texte
+      .split('\n')
+      .map((ligne) => ligne.replace(/[\t ]+/g, ' ').trim())
+      .filter((ligne) => ligne.length > 0)
+      .join('\n')
+      .trim();
   }
 
   /**
@@ -481,7 +498,7 @@ export class GenerateurLaTeX {
    * @returns Texte échappé pour LaTeX
    */
   private echappeLaTeX(texte: string): string {
-    return texte
+    const texteEchappe = texte
       .replace(/\\/g, '\\textbackslash{}') // Backslash
       .replace(/[&%$#_{}~^]/g, (match) => {
         switch (match) {
@@ -507,6 +524,8 @@ export class GenerateurLaTeX {
             return match;
         }
       });
+
+    return texteEchappe.replace(/\r?\n+/g, ' \\\\ ');
   }
 }
 
