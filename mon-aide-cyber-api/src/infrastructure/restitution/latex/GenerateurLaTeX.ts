@@ -239,24 +239,50 @@ export class GenerateurLaTeX {
     latex += `\\end{figure}\n\n`;
 
     // Ajouter la légende
-    latex += `\\begin{center}\n`;
-    latex += `\\begin{tabular}{ll}\n`;
-    latex += `\\toprule\n`;
-    latex += `\\textbf{Thématique}\\\\\n`;
-    latex += `\\midrule\n`;
-    
+    latex += '\\begin{center}\n';
+    latex += '\\begin{tabular}{p{0.35\\textwidth} p{0.55\\textwidth}}\n';
+    latex += '\\toprule\n';
+    latex += '\\textbf{Thématique} & \\textbf{Description}\\\\\n';
+    latex += '\\midrule\n';
+
     const themes = [
-      { label: 'Gouvernance', couleur: '#6369F1' },
-      { label: 'Sécurité Accès', couleur: '#FEC54B' },
-      { label: 'Sécurité Poste', couleur: '#8248A1' },
-      { label: 'Sécurité Infrastructure', couleur: '#F26C85' },
-      { label: 'Sensibilisation', couleur: '#8ED4A3' },
-      { label: 'Réaction', couleur: '#FD8FB9' },
+      {
+        label: 'Gouvernance',
+        couleur: '#6369F1',
+        description: 'Structuration et gestion des efforts de cybersécurité : politiques, rôles et responsabilités pour une protection cohérente.'
+      },
+      {
+        label: "Sécurité des accès au système d'information",
+        couleur: '#FEC54B',
+        description: 'Contrôle et restriction des accès aux données et systèmes informatiques.'
+      },
+      {
+        label: 'Sécurité des postes',
+        couleur: '#8248A1',
+        description: 'Protection des ordinateurs et appareils informatiques utilisés par les employés.'
+      },
+      {
+        label: 'Sensibilisation des utilisateurs',
+        couleur: '#8ED4A3',
+        description: 'Éducation et information des employés sur les risques et les bonnes pratiques de cybersécurité.'
+      },
+      {
+        label: 'Sécurité des infrastructures',
+        couleur: '#F26C85',
+        description: 'Protection des serveurs, réseaux, bases de données et composants clés du système d\'information.'
+      },
+      {
+        label: 'Réaction à une cyberattaque',
+        couleur: '#FD8FB9',
+        description: 'Capacité de l\'organisation à détecter, contenir, éradiquer et se remettre rapidement d\'une attaque.'
+      },
     ];
 
+    const rowTerm = '\\\\';
     themes.forEach(theme => {
       const couleurHex = theme.couleur.substring(1);
-      latex += `{\\color[HTML]{${couleurHex}} \\rule{6pt}{6pt}} ${theme.label} \\\\\n`;
+      const desc = this.echappeLaTeX(theme.description || '');
+      latex += `{\\color[HTML]{${couleurHex}} \\rule{6pt}{6pt}} \\quad ${this.echappeLaTeX(theme.label)} & ${desc} ${rowTerm}\n`;
     });
 
     latex += `\\bottomrule\n`;
@@ -296,7 +322,8 @@ export class GenerateurLaTeX {
 
     // Section mesures non-techniques d'abord
     if (mesuresNonTechniques.length > 0) {
-      resultat += '\\subsubsection*{Mesures non-techniques}\n\n';
+      resultat += '\\subsection*{Mesures non-techniques}\n';
+      resultat += '\\addcontentsline{toc}{subsection}{Mesures non-techniques}\n\n';
       resultat += mesuresNonTechniques
         .map((mesure, index) => this.genereMesure(mesure, index + 1))
         .join('\n\n');
@@ -305,7 +332,8 @@ export class GenerateurLaTeX {
     // Section mesures techniques
     if (mesurestechniques.length > 0) {
       if (resultat) resultat += '\n\n';
-      resultat += '\\subsubsection*{Mesures techniques}\n\n';
+      resultat += '\\subsection*{Mesures techniques}\n';
+      resultat += '\\addcontentsline{toc}{subsection}{Mesures techniques}\n\n';
       resultat += mesurestechniques
         .map((mesure, index) =>
           this.genereMesure(mesure, (mesuresNonTechniques.length || 0) + index + 1)

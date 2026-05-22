@@ -7,7 +7,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \addto\captionsfrench{%
-	\renewcommand{\contentsname}{\color{esieadarkblue}\sffamily Table des matières}%
+\renewcommand{\contentsname}{\color{esieadarkblue}\sffamily Sommaire}%
 }
 \usepackage{lmodern}
 \usepackage{geometry}
@@ -29,8 +29,8 @@
 \usepackage{microtype}
 \usepackage{tocloft}
 
-% Sections seulement dans le sommaire (pas les sous-sections)
-\setcounter{tocdepth}{1}
+% Sections et sous-sections dans le sommaire
+\setcounter{tocdepth}{2}
 
 % Style des entrées
 \renewcommand{\cftsecfont}{\sffamily\bfseries\color{headerblue}}
@@ -232,7 +232,7 @@
 	% INDICATEURS
 	%--------------------------------------------------
 	\section*{Indicateurs}
-	\addcontentsline{toc}{section}{Indicateurs}
+	\addcontentsline{toc}{section}{Indicateurs MonAideCyber}
 	
 	<<INDICATEUR_POLAIRE>>
 	
