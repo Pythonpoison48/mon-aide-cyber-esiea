@@ -55,6 +55,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
   const [draggedIndex, setDraggedIndex] = useState<{
     section: 'prioritaires' | 'complementaires';
     index: number;
+    categorie?: 'technique' | 'non-technique';
   } | null>(null);
   const [enChargement, setEnChargement] = useState(false);
   const [affichageActif, setAffichageActif] = useState<
@@ -116,9 +117,10 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
 
   const handleDragStart = (
     section: 'prioritaires' | 'complementaires',
-    index: number
+    index: number,
+    categorie?: 'technique' | 'non-technique'
   ) => {
-    setDraggedIndex({ section, index });
+    setDraggedIndex({ section, index, categorie });
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -127,7 +129,8 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
 
   const handleDrop = (
     section: 'prioritaires' | 'complementaires',
-    index: number
+    index: number,
+    categorie?: 'technique' | 'non-technique'
   ) => {
     if (!draggedIndex) return;
 
@@ -136,15 +139,24 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
         ? mesuresPrioritaires
         : mesuresComplementaires;
     if (draggedIndex.section === section) {
-      // Réorganisation dans la même section
-      const nouvelles = [...sourceMesures];
-      const [element] = nouvelles.splice(draggedIndex.index, 1);
-      nouvelles.splice(index, 0, element);
+      if (section === 'complementaires' && draggedIndex.categorie && categorie && draggedIndex.categorie !== categorie) {
+        setDraggedIndex(null);
+        return;
+      }
 
+      // Réorganisation dans la même section
       if (section === 'prioritaires') {
+        const nouvelles = [...sourceMesures];
+        const [element] = nouvelles.splice(draggedIndex.index, 1);
+        nouvelles.splice(index, 0, element);
         setMesuresPrioritaires(nouvelles);
       } else {
-        setMesuresComplementaires(nouvelles);
+        const mesuresNonTechniques = [...mesuresComplementaires.filter((mesure: any) => mesure.categorie !== 'technique')];
+        const mesuresTechniques = [...mesuresComplementaires.filter((mesure: any) => mesure.categorie === 'technique')];
+        const groupe = draggedIndex.categorie === 'technique' ? mesuresTechniques : mesuresNonTechniques;
+        const [element] = groupe.splice(draggedIndex.index, 1);
+        groupe.splice(index, 0, element);
+        setMesuresComplementaires([...mesuresNonTechniques, ...mesuresTechniques]);
       }
     } else {
       // Déplacement entre sections (avancé)
@@ -157,27 +169,37 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
   const deplacerMesure = (
     section: 'prioritaires' | 'complementaires',
     index: number,
-    direction: 'up' | 'down'
+    direction: 'up' | 'down',
+    categorie?: 'technique' | 'non-technique'
   ) => {
-    const mesures =
-      section === 'prioritaires'
-        ? [...mesuresPrioritaires]
-        : [...mesuresComplementaires];
-
-    if (
-      (direction === 'up' && index === 0) ||
-      (direction === 'down' && index === mesures.length - 1)
-    ) {
-      return;
-    }
-
-    const newIndex = direction === 'up' ? index - 1 : index + 1;
-    [mesures[index], mesures[newIndex]] = [mesures[newIndex], mesures[index]];
-
     if (section === 'prioritaires') {
+      const mesures = [...mesuresPrioritaires];
+      if (
+        (direction === 'up' && index === 0) ||
+        (direction === 'down' && index === mesures.length - 1)
+      ) {
+        return;
+      }
+
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+      [mesures[index], mesures[newIndex]] = [mesures[newIndex], mesures[index]];
       setMesuresPrioritaires(mesures);
     } else {
-      setMesuresComplementaires(mesures);
+      const mesuresNonTechniques = [...mesuresComplementaires.filter((mesure: any) => mesure.categorie !== 'technique')];
+      const mesuresTechniques = [...mesuresComplementaires.filter((mesure: any) => mesure.categorie === 'technique')];
+      const groupe = categorie === 'technique' ? mesuresTechniques : mesuresNonTechniques;
+
+      if (
+        (direction === 'up' && index === 0) ||
+        (direction === 'down' && index === groupe.length - 1)
+      ) {
+        return;
+      }
+
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+      [groupe[index], groupe[newIndex]] = [groupe[newIndex], groupe[index]];
+
+      setMesuresComplementaires([...mesuresNonTechniques, ...mesuresTechniques]);
     }
   };
 
@@ -287,26 +309,19 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     <div
       key={index}
       draggable
-      onDragStart={() => handleDragStart(section, index)}
+      onDragStart={() => handleDragStart(section, index, mesure.categorie)}
       onDragOver={handleDragOver}
-      onDrop={() => handleDrop(section, index)}
+      onDrop={() => handleDrop(section, index, mesure.categorie)}
       className={`mesure-item ${draggedIndex?.index === index && draggedIndex?.section === section ? 'dragging' : ''}`}
     >
       <div className="mesure-header">
         <span className="mesure-numero">{index + 1}.</span>
         <span className="mesure-titre">{mesure.titre}</span>
-        {mesure.categorie && (
-          <span
-            className={`mesure-categorie mesure-categorie-${mesure.categorie === 'technique' ? 'technique' : 'non-technique'}`}
-          >
-            {mesure.categorie === 'technique' ? 'Technique' : 'Non-technique'}
-          </span>
-        )}
       </div>
       <div className="mesure-controls">
         <button
           className="btn-small"
-          onClick={() => deplacerMesure(section, index, 'up')}
+          onClick={() => deplacerMesure(section, index, 'up', mesure.categorie)}
           disabled={index === 0}
           title="Déplacer vers le haut"
         >
@@ -314,12 +329,14 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
         </button>
         <button
           className="btn-small"
-          onClick={() => deplacerMesure(section, index, 'down')}
+          onClick={() => deplacerMesure(section, index, 'down', mesure.categorie)}
           disabled={
             index ===
             (section === 'prioritaires'
               ? mesuresPrioritaires.length - 1
-              : mesuresComplementaires.length - 1)
+              : (mesure.categorie === 'technique'
+                ? mesuresComplementaires.filter((item: any) => item.categorie === 'technique').length - 1
+                : mesuresComplementaires.filter((item: any) => item.categorie !== 'technique').length - 1))
           }
           title="Déplacer vers le bas"
         >
@@ -361,7 +378,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
           ) : (
             mesuresAjoutables.map((mesure: MesureDisponiblePourAjout) => (
               <option key={mesure.clef} value={mesure.clef}>
-                {mesure.categorie === 'technique' ? '[Technique]' : '[Non-technique]'} {mesure.titre} - {mesure.niveau}
+                {mesure.titre} - {mesure.niveau}
               </option>
             ))
           )}
@@ -461,10 +478,10 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
                       <div className="mesures-categorie">
                         <h4>📋 Mesures non-techniques</h4>
                         <div className="mesures-list">
-                          {groupes.nonTechniques.map((mesure) =>
+                          {groupes.nonTechniques.map((mesure, indexCategorie) =>
                             renderMesureItem(
                               mesure,
-                              mesuresComplementaires.indexOf(mesure),
+                              indexCategorie,
                               'complementaires'
                             )
                           )}
@@ -475,10 +492,10 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
                       <div className="mesures-categorie">
                         <h4>🔧 Mesures techniques</h4>
                         <div className="mesures-list">
-                          {groupes.techniques.map((mesure) =>
+                          {groupes.techniques.map((mesure, indexCategorie) =>
                             renderMesureItem(
                               mesure,
-                              mesuresComplementaires.indexOf(mesure),
+                              indexCategorie,
                               'complementaires'
                             )
                           )}
