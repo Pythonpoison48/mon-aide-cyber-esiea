@@ -240,7 +240,7 @@ export class GenerateurLaTeX {
 
     // Ajouter la légende
     latex += '\\begin{center}\n';
-    latex += '\\renewcommand{\\ arraystretch}{1.7}\n';
+    latex += '\\renewcommand{\\arraystretch}{1.7}\n';
     latex += '\\begin{tabular}{m{0.5\\textwidth} p{0.45\\textwidth}}\n';
     latex += '\\toprule\n';
     latex += '\\textbf{Thématique} & \\textbf{Description}\\\\\n';
