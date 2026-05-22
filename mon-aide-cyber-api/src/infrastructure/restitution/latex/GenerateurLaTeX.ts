@@ -332,6 +332,7 @@ export class GenerateurLaTeX {
     // Section mesures techniques
     if (mesurestechniques.length > 0) {
       if (resultat) resultat += '\n\n';
+      resultat += '\\newpage\n';
       resultat += '\\subsection*{Mesures techniques}\n';
       resultat += '\\addcontentsline{toc}{subsection}{Mesures techniques}\n\n';
       resultat += mesurestechniques
