@@ -1,20 +1,20 @@
 import { Referentiel } from './Referentiel';
-import { donneesContexte } from './referentiel/donneesContexte';
-import { donneesGouvernance } from './referentiel/donneesGouvernance';
-import { donneesSecuriteAcces } from './referentiel/donneesSecuriteAcces';
-import { donneesSecuritePoste } from './referentiel/donneesSecuritePoste';
-import { donneesSecuriteInfrastructure } from './referentiel/donneesSecuriteInfrastructure';
-import { donneesSensibilisation } from './referentiel/donneesSensibilisation';
-import { donneesReaction } from './referentiel/donneesReaction';
+import { donneesContexteEnglish } from './referentiel-english/donneesContexteEnglish';
+import { donneesGouvernanceEnglish } from './referentiel-english/donneesGouvernanceEnglish';
+import { donneesSecuriteAccesEnglish } from './referentiel-english/donneesSecuriteAccesEnglish';
+import { donneesSecuritePosteEnglish } from './referentiel-english/donneesSecuritePosteEnglish';
+import { donneesSecuriteInfrastructureEnglish } from './referentiel-english/donneesSecuriteInfrastructureEnglish';
+import { donneesSensibilisationEnglish } from './referentiel-english/donneesSensibilisationEnglish';
+import { donneesReactionEnglish } from './referentiel-english/donneesReactionEnglish';
 
 const referentiel: Referentiel = {
-  contexte: donneesContexte,
-  gouvernance: donneesGouvernance,
-  SecuriteAcces: donneesSecuriteAcces,
-  securiteposte: donneesSecuritePoste,
-  securiteinfrastructure: donneesSecuriteInfrastructure,
-  sensibilisation: donneesSensibilisation,
-  reaction: donneesReaction,
+  contexte: donneesContexteEnglish,
+  gouvernance: donneesGouvernanceEnglish,
+  SecuriteAcces: donneesSecuriteAccesEnglish,
+  securiteposte: donneesSecuritePosteEnglish,
+  securiteinfrastructure: donneesSecuriteInfrastructureEnglish,
+  sensibilisation: donneesSensibilisationEnglish,
+  reaction: donneesReactionEnglish,
 };
 
 export { referentiel };

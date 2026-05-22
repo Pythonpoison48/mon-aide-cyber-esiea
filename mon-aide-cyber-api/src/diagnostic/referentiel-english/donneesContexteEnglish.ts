@@ -1,168 +1,168 @@
 import { QuestionsThematique } from '../Referentiel';
 
-export const donneesContexte: QuestionsThematique = {
+export const donneesContexteEnglish: QuestionsThematique = {
   questions: [
     {
-      identifiant: 'contexte-nature-entite',
-      libelle: 'Quelle est la nature de votre entité ?',
+      identifiant: 'context-entity-nature',
+      libelle: 'What is the nature of your entity?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant: 'contexte-nature-entite-entite-publique',
+          identifiant: 'context-entity-nature-public-entity',
           libelle:
-            'Entité publique (ex : collectivité, administration, syndicats mixte, GIP etc.)',
+            'Public entity (e.g., local authority, administration, joint syndicate, GIP, etc.)',
           ordre: 0,
         },
         {
-          identifiant: 'contexte-nature-entite-entreprise-privee',
-          libelle: 'Entreprise privée (ex : TPE, PME, ETI)',
+          identifiant: 'context-entity-nature-private-company',
+          libelle: 'Private company (e.g., VSB, SME, mid-cap)',
           ordre: 1,
         },
         {
-          identifiant: 'contexte-nature-entite-association',
-          libelle: 'Association (ex : association loi 1901)',
+          identifiant: 'context-entity-nature-association',
+          libelle: 'Association / Non-profit (e.g., 1901 law association)',
           ordre: 2,
         },
         {
-          identifiant: 'contexte-nature-entite-autre',
-          libelle: 'Autre',
+          identifiant: 'context-entity-nature-other',
+          libelle: 'Other',
           ordre: 3,
         },
       ],
-      type: 'choixUnique',
+      type: 'choixUnique', // singleChoice
     },
     {
-      identifiant: 'contexte-secteur-activite',
-      libelle: "Quel est son secteur d'activité ?",
+      identifiant: 'context-activity-sector',
+      libelle: 'What is its sector of activity?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant: 'contexte-secteur-activite-administration',
-          libelle: 'Administration',
+          identifiant: 'context-activity-sector-administration',
+          libelle: 'Public Administration',
           ordre: 0,
         },
         {
-          identifiant: 'contexte-secteur-activite-agriculture',
-          libelle: 'Agriculture, sylviculture',
+          identifiant: 'context-activity-sector-agriculture',
+          libelle: 'Agriculture, forestry',
           ordre: 1,
         },
         {
-          identifiant: 'contexte-secteur-activite-agroalimentaire',
-          libelle: 'Agroalimentaire',
+          identifiant: 'context-activity-sector-agrifood',
+          libelle: 'Agrifood / Food industry',
           ordre: 2,
         },
         {
-          identifiant: 'contexte-secteur-activite-industrie',
-          libelle: 'Industrie',
+          identifiant: 'context-activity-sector-industry',
+          libelle: 'Industry',
           ordre: 3,
         },
         {
-          identifiant: 'contexte-secteur-activite-industrie-defense',
-          libelle: 'Industrie de défense',
+          identifiant: 'context-activity-sector-defense-industry',
+          libelle: 'Defense industry',
           ordre: 4,
         },
         {
-          identifiant: 'contexte-secteur-activite-construction',
+          identifiant: 'context-activity-sector-construction',
           libelle: 'Construction',
           ordre: 5,
         },
         {
-          identifiant: 'contexte-secteur-activite-tertiaire',
-          libelle: 'Tertiaire',
+          identifiant: 'context-activity-sector-tertiary',
+          libelle: 'Tertiary / Service sector',
           ordre: 6,
         },
         {
-          identifiant: 'contexte-secteur-activite-commerce',
-          libelle: 'Commerce',
+          identifiant: 'context-activity-sector-commerce',
+          libelle: 'Commerce / Retail',
           ordre: 7,
         },
         {
-          identifiant: 'contexte-secteur-activite-transports',
-          libelle: 'Transports',
+          identifiant: 'context-activity-sector-transport',
+          libelle: 'Transportation',
           ordre: 8,
         },
         {
-          identifiant: 'contexte-secteur-activite-hebergement-et-restauration',
-          libelle: 'Hébergement et restauration',
+          identifiant: 'context-activity-sector-accommodation-and-catering',
+          libelle: 'Accommodation and food services / Hospitality',
           ordre: 9,
         },
         {
-          identifiant: 'contexte-secteur-activite-information-et-communication',
-          libelle: 'Information et communication',
+          identifiant: 'context-activity-sector-information-and-communication',
+          libelle: 'Information and communication',
           ordre: 10,
         },
         {
           identifiant:
-            'contexte-secteur-activite-activites-financieres-et-assurance',
-          libelle: "Activités financières et d'assurance",
+            'context-activity-sector-financial-and-insurance-activities',
+          libelle: 'Financial and insurance activities',
           ordre: 11,
         },
         {
-          identifiant: 'contexte-secteur-activite-activites-immobilieres',
-          libelle: 'Activités immobilières',
+          identifiant: 'context-activity-sector-real-estate-activities',
+          libelle: 'Real estate activities',
           ordre: 12,
         },
         {
           identifiant:
-            'contexte-secteur-activite-activites-specialisees-scientifiques-et-techniques',
-          libelle: 'Activités spécialisées, scientifiques et techniques',
+            'context-activity-sector-specialized-scientific-and-technical-activities',
+          libelle: 'Specialized, scientific, and technical activities',
           ordre: 13,
         },
         {
           identifiant:
-            'contexte-secteur-activite-activites-de-services-administratifs-et-de-soutien',
-          libelle: 'Activités de services administratifs et de soutien',
+            'context-activity-sector-administrative-and-support-service-activities',
+          libelle: 'Administrative and support service activities',
           ordre: 14,
         },
         {
-          identifiant: 'contexte-secteur-activite-enseignement',
-          libelle: 'Enseignement',
+          identifiant: 'context-activity-sector-education',
+          libelle: 'Education',
           ordre: 15,
         },
         {
-          identifiant: 'contexte-secteur-activite-santé',
-          libelle: 'Santé',
+          identifiant: 'context-activity-sector-health',
+          libelle: 'Healthcare',
           ordre: 16,
         },
         {
-          identifiant: 'contexte-secteur-activite-recherche',
-          libelle: 'Recherche, laboratoire',
+          identifiant: 'context-activity-sector-research',
+          libelle: 'Research, laboratory',
           ordre: 17,
         },
         {
-          identifiant: 'contexte-secteur-activite-médico-sociale',
-          libelle: 'Médico-sociale',
+          identifiant: 'context-activity-sector-medico-social',
+          libelle: 'Social work / Medico-social',
           ordre: 18,
         },
         {
           identifiant:
-            'contexte-secteur-activite-arts-spectacles-et-activites-recreatives',
-          libelle: 'Arts, spectacles et activités récréatives',
+            'context-activity-sector-arts-entertainment-and-recreational-activities',
+          libelle: 'Arts, entertainment, and recreation',
           ordre: 19,
         },
         {
-          identifiant: 'contexte-secteur-activite-autres-activites-de-services',
-          libelle: 'Autres activités de services',
+          identifiant: 'context-activity-sector-other-service-activities',
+          libelle: 'Other service activities',
           ordre: 20,
         },
         {
-          identifiant: 'contexte-secteur-activite-services-aux-menages',
-          libelle: 'Services aux ménages',
+          identifiant: 'context-activity-sector-household-services',
+          libelle: 'Services to households',
           ordre: 21,
         },
         {
           identifiant:
-            'contexte-secteur-activite-activites-extra-territoriales',
-          libelle: 'Activités extra-territoriales',
+            'context-activity-sector-extra-territorial-activities',
+          libelle: 'Extra-territorial activities',
           ordre: 22,
         },
       ],
       type: 'choixUnique',
     },
     {
-      identifiant: 'contexte-departement-tom-siege-social',
+      identifiant: 'context-department-tom-headquarters',
       libelle:
-        'Dans quel département, ou DROM-COM, votre siège social est-il basé ?',
+        'In which department or overseas territory (DROM-COM) is your headquarters based?',
       poids: 0,
       reponsesPossibles: [
         {
@@ -714,306 +714,302 @@ export const donneesContexte: QuestionsThematique = {
       type: 'choixUnique',
     },
     {
-      identifiant: 'contexte-nombre-personnes-dans-entite',
-      libelle: 'Combien de personnes compte votre entité ?',
+      identifiant: 'context-people-count-in-entity',
+      libelle: 'How many people belong to your entity?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant: 'contexte-nombre-personnes-dans-entite-entre-1-et-9',
-          libelle: 'Entre 1 et 9',
+          identifiant: 'context-people-count-in-entity-between-1-and-9',
+          libelle: 'Between 1 and 9',
           ordre: 0,
         },
         {
-          identifiant: 'contexte-nombre-personnes-dans-entite-entre-10-et-49',
-          libelle: 'Entre 10 et 49',
+          identifiant: 'context-people-count-in-entity-between-10-and-49',
+          libelle: 'Between 10 and 49',
           ordre: 1,
         },
         {
-          identifiant: 'contexte-nombre-personnes-dans-entite-entre-50-et-249',
-          libelle: 'Entre 50 et 249',
+          identifiant: 'context-people-count-in-entity-between-50-and-249',
+          libelle: 'Between 50 and 249',
           ordre: 2,
         },
         {
-          identifiant: 'contexte-nombre-personnes-dans-entite-plus-de-250',
-          libelle: 'Plus de 250',
+          identifiant: 'context-people-count-in-entity-more-than-250',
+          libelle: 'More than 250',
           ordre: 4,
         },
       ],
       type: 'choixUnique',
     },
     {
-      identifiant: 'contexte-nombre-postes-travail-dans-entite',
-      libelle: 'Combien de postes de travail compte votre entité ?',
+      identifiant: 'context-workstations-count-in-entity',
+      libelle: 'How many workstations does your entity have?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant:
-            'contexte-nombre-postes-travail-dans-entite-entre-1-et-9',
-          libelle: 'Entre 1 et 9',
+          identifiant: 'context-workstations-count-in-entity-between-1-and-9',
+          libelle: 'Between 1 and 9',
           ordre: 0,
           regle: {
             reponses: [
               {
-                identifiantQuestion: 'acces-outil-gestion-des-comptes',
-                reponseDonnee: 'acces-outil-gestion-des-comptes-na',
+                identifiantQuestion: 'account-management-tool-access',
+                reponseDonnee: 'account-management-tool-access-na',
               },
               {
                 identifiantQuestion:
-                  'sensibilisation-collaborateurs-soumis-obligations-usages-securises',
+                  'employee-awareness-secure-usage-obligations',
                 reponseDonnee: '',
               },
             ],
           },
         },
         {
-          identifiant:
-            'contexte-nombre-postes-travail-dans-entite-entre-10-et-49',
-          libelle: 'Entre 10 et 49',
+          identifiant: 'context-workstations-count-in-entity-between-10-and-49',
+          libelle: 'Between 10 and 49',
           ordre: 1,
         },
         {
-          identifiant:
-            'contexte-nombre-postes-travail-dans-entite-entre-50-et-249',
-          libelle: 'Entre 50 et 249',
+          identifiant: 'context-workstations-count-in-entity-between-50-and-249',
+          libelle: 'Between 50 and 249',
           ordre: 2,
         },
         {
-          identifiant: 'contexte-nombre-postes-travail-dans-entite-plus-de-250',
-          libelle: 'Plus de 250',
+          identifiant: 'context-workstations-count-in-entity-more-than-250',
+          libelle: 'More than 250',
           ordre: 3,
         },
       ],
       type: 'choixUnique',
     },
     {
-      identifiant: 'contexte-activites-recherche-et-developpement',
+      identifiant: 'context-research-and-development-activities',
       libelle:
-        'Estimez-vous que votre entité, du fait de ses activités, puisse faire l’objet d’espionnage industriel ou de vol de données ciblé ?',
+        'Do you believe that your entity, due to its activities, could be targeted for industrial espionage or targeted data theft?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant: 'contexte-activites-recherche-et-developpement-nsp',
-          libelle: 'Je ne sais pas',
+          identifiant: 'context-research-and-development-activities-dk',
+          libelle: "I don't know",
           ordre: 0,
         },
         {
-          identifiant: 'contexte-activites-recherche-et-developpement-non',
-          libelle: 'Non',
+          identifiant: 'context-research-and-development-activities-no',
+          libelle: 'No',
           ordre: 1,
           regle: {
             reponses: [
               {
-                identifiantQuestion: 'acces-liste-compte-utilisateurs',
-                reponseDonnee: 'acces-liste-compte-utilisateurs-na',
+                identifiantQuestion: 'user-account-list-access',
+                reponseDonnee: 'user-account-list-access-na',
               },
               {
-                identifiantQuestion: 'acces-droits-acces-utilisateurs-limites',
-                reponseDonnee: 'acces-droits-acces-utilisateurs-limites-na',
-              },
-              {
-                identifiantQuestion:
-                  'acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles',
-                reponseDonnee:
-                  'acces-utilisateurs-donnees-sensibles-mesures-securite-additionnelles-na',
-              },
-              {
-                identifiantQuestion: 'securite-poste-r-et-d-disques-chiffres',
-                reponseDonnee: 'securite-poste-r-et-d-disques-chiffres-na',
+                identifiantQuestion: 'limited-user-access-rights',
+                reponseDonnee: 'limited-user-access-rights-na',
               },
               {
                 identifiantQuestion:
-                  'securite-infrastructure-acces-wifi-securises',
+                  'sensitive-data-user-access-additional-security-measures',
                 reponseDonnee:
-                  'securite-infrastructure-acces-wifi-securises-na',
+                  'sensitive-data-user-access-additional-security-measures-na',
+              },
+              {
+                identifiantQuestion: 'r-and-d-workstation-security-encrypted-disks',
+                reponseDonnee: 'r-and-d-workstation-security-encrypted-disks-na',
               },
               {
                 identifiantQuestion:
-                  'securite-infrastructure-espace-stockage-serveurs',
+                  'infrastructure-security-secure-wifi-access',
                 reponseDonnee:
-                  'securite-infrastructure-espace-stockage-serveurs-na',
+                  'infrastructure-security-secure-wifi-access-na',
               },
               {
                 identifiantQuestion:
-                  'sensibilisation-risque-espionnage-industriel-r-et-d',
+                  'infrastructure-security-server-storage-space',
                 reponseDonnee:
-                  'sensibilisation-risque-espionnage-industriel-r-et-d-na',
+                  'infrastructure-security-server-storage-space-na',
+              },
+              {
+                identifiantQuestion:
+                  'industrial-espionage-risk-awareness-r-and-d',
+                reponseDonnee:
+                  'industrial-espionage-risk-awareness-r-and-d-na',
               },
             ],
           },
         },
         {
-          identifiant: 'contexte-activites-recherche-et-developpement-oui',
-          libelle: 'Oui',
+          identifiant: 'context-research-and-development-activities-yes',
+          libelle: 'Yes',
           ordre: 2,
         },
       ],
       type: 'choixUnique',
     },
     {
-      identifiant: 'contexte-opere-systemes-information-industriels',
-      libelle: 'Votre entité opère-t-elle des systèmes industriels ?',
+      identifiant: 'context-operates-industrial-information-systems',
+      libelle: 'Does your entity operate industrial control systems?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant: 'contexte-opere-systemes-information-industriels-nsp',
-          libelle: 'Je ne sais pas',
+          identifiant: 'context-operates-industrial-information-systems-dk',
+          libelle: "I don't know",
           ordre: 1,
         },
         {
-          identifiant: 'contexte-opere-systemes-information-industriels-non',
-          libelle: 'Non',
+          identifiant: 'context-operates-industrial-information-systems-no',
+          libelle: 'No',
           ordre: 2,
           regle: {
             reponses: [
               {
-                identifiantQuestion: 'gouvernance-schema-si-industriel-a-jour',
-                reponseDonnee: 'gouvernance-schema-si-industriel-a-jour-na',
+                identifiantQuestion: 'governance-industrial-is-blueprint-up-to-date',
+                reponseDonnee: 'governance-industrial-is-blueprint-up-to-date-na',
               },
               {
                 identifiantQuestion:
-                  'acces-si-industriel-teletravail-acces-distants-mesures-particulieres',
+                  'industrial-is-telework-access-remote-access-specific-measures',
                 reponseDonnee:
-                  'acces-si-industriel-teletravail-acces-distants-mesures-particulieres-na',
+                  'industrial-is-telework-access-remote-access-specific-measures-na',
               },
               {
                 identifiantQuestion:
-                  'securite-poste-si-industriel-maj-fonctionnelles-et-securite-deployees',
+                  'industrial-is-workstation-security-functional-and-security-updates-deployed',
                 reponseDonnee:
-                  'securite-poste-si-industriel-maj-fonctionnelles-et-securite-deployees-na',
+                  'industrial-is-workstation-security-functional-and-security-updates-deployed-na',
               },
               {
                 identifiantQuestion:
-                  'securite-poste-si-industriel-antivirus-deploye',
+                  'industrial-is-workstation-security-antivirus-deployed',
                 reponseDonnee:
-                  'securite-poste-si-industriel-antivirus-deploye-na',
+                  'industrial-is-workstation-security-antivirus-deployed-na',
               },
               {
                 identifiantQuestion:
-                  'securite-infrastructure-si-industriel-pare-feu-deploye',
+                  'industrial-is-infrastructure-security-firewall-deployed',
                 reponseDonnee:
-                  'securite-infrastructure-si-industriel-pare-feu-deploye-na',
+                  'industrial-is-infrastructure-security-firewall-deployed-na',
               },
             ],
           },
         },
         {
-          identifiant: 'contexte-opere-systemes-information-industriels-oui',
-          libelle: 'Oui',
+          identifiant: 'context-operates-industrial-information-systems-yes',
+          libelle: 'Yes',
           ordre: 3,
         },
       ],
       type: 'choixUnique',
     },
     {
-      identifiant: 'contexte-cyber-attaque-subie',
-      libelle: 'Avez-vous déjà subi une cyberattaque ?',
+      identifiant: 'context-cyber-attack-suffered',
+      libelle: 'Have you ever suffered a cyberattack?',
       poids: 0,
       reponsesPossibles: [
         {
-          identifiant: 'contexte-cyber-attaque-subie-nsp',
-          libelle: 'Je ne sais pas',
+          identifiant: 'context-cyber-attack-suffered-dk',
+          libelle: "I don't know",
           ordre: 1,
         },
         {
-          identifiant: 'contexte-cyber-attaque-subie-non',
-          libelle: 'Non',
+          identifiant: 'context-cyber-attack-suffered-no',
+          libelle: 'No',
           ordre: 2,
         },
         {
-          identifiant: 'contexte-cyber-attaque-subie-oui',
-          libelle: 'Oui',
+          identifiant: 'context-cyber-attack-suffered-yes',
+          libelle: 'Yes',
           ordre: 3,
           questions: [
             {
-              identifiant: 'contexte-cyber-attaque-subie-oui-tiroir-type',
-              libelle: 'Si oui, de quel type ?',
+              identifiant: 'context-cyber-attack-suffered-yes-sub-type',
+              libelle: 'If yes, what type?',
               poids: 0,
               reponsesPossibles: [
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-compromission',
+                    'context-cyber-attack-suffered-yes-sub-type-compromise',
                   libelle:
-                    "Compromission d'un poste, d'une boîte mail ou d'un compte Cloud",
+                    'Compromise of a workstation, email inbox, or Cloud account',
                   ordre: 0,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-usurpation',
-                  libelle: "Usurpation d'identité",
+                    'context-cyber-attack-suffered-yes-sub-type-impersonation',
+                  libelle: 'Identity theft / Impersonation',
                   ordre: 1,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-rancongiciel',
+                    'context-cyber-attack-suffered-yes-sub-type-ransomware',
                   libelle:
-                    'Rançongiciel ou autre maliciel sur plusieurs postes',
+                    'Ransomware or other malware spreading across multiple workstations',
                   ordre: 2,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-accès',
-                  libelle: "Compromission d'un ou plusieurs accès distants",
+                    'context-cyber-attack-suffered-yes-sub-type-access',
+                  libelle: 'Compromise of one or more remote accesses',
                   ordre: 3,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-web',
-                  libelle: "Compromission d'un ou plusieurs services web",
+                    'context-cyber-attack-suffered-yes-sub-type-web',
+                  libelle: 'Compromise of one or more web services',
                   ordre: 4,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-serveur',
+                    'context-cyber-attack-suffered-yes-sub-type-server',
                   libelle:
-                    "Compromission d'un serveur ou service exposé sur internet",
+                    'Compromise of an internet-facing server or service',
                   ordre: 5,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-reseaux',
-                  libelle:
-                    "Compromission d'un ou plusieurs équipements réseaux",
+                    'context-cyber-attack-suffered-yes-sub-type-networks',
+                  libelle: 'Compromise of one or more network devices',
                   ordre: 6,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-compromission-indirecte',
+                    'context-cyber-attack-suffered-yes-sub-type-indirect-compromise',
                   libelle:
-                    'Compromission indirecte via un prestataire ou un partenaire',
+                    'Indirect compromise via a service provider or partner',
                   ordre: 7,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-oui-tiroir-type-malveillance',
-                  libelle: 'Malveillance interne',
+                    'context-cyber-attack-suffered-yes-sub-type-insider-threat',
+                  libelle: 'Internal malicious act / Insider threat',
                   ordre: 8,
                 },
               ],
-              type: 'choixMultiple',
+              type: 'choixMultiple', // multipleChoice
             },
             {
-              identifiant: 'contexte-cyber-attaque-subie-tiroir-plainte',
+              identifiant: 'context-cyber-attack-suffered-sub-complaint',
               libelle:
-                "Si Oui : avez-vous déposé plainte ou réalisé un signalement auprès d'un service judiciaire ?",
+                'If Yes: Have you filed a official complaint or reported it to judicial authorities?',
               poids: 0,
               reponsesPossibles: [
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-tiroir-plainte-nsp',
-                  libelle: 'Je ne sais pas',
+                    'context-cyber-attack-suffered-sub-complaint-dk',
+                  libelle: "I don't know",
                   ordre: 0,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-tiroir-plainte-non',
-                  libelle: 'Non',
+                    'context-cyber-attack-suffered-sub-complaint-no',
+                  libelle: 'No',
                   ordre: 1,
                 },
                 {
                   identifiant:
-                    'contexte-cyber-attaque-subie-tiroir-plainte-oui',
-                  libelle: 'Oui',
-                  ordre: 2,
+                    'context-cyber-attack-suffered-sub-complaint-yes',
+                  libelle: 'Yes',
+                  ordre: 3,
                 },
               ],
               type: 'choixUnique',
