@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Button from '../../atomes/Button/Button';
 import './EditeurRapport.scss';
@@ -7,12 +7,24 @@ interface EditeurRapportProps {
   idDiagnostic: string;
   mesuresPrioritaires: any[];
   mesuresComplementaires: any[];
+  mesuresDisponibles: any[];
   onClose: () => void;
   onRecompile: (mesures: {
     mesuresPrioritaires: any[];
     mesuresComplementaires: any[];
   }) => Promise<Blob>;
 }
+
+type MesureDisponiblePourAjout = {
+  clef: string;
+  identifiant: string;
+  niveau: 'niveau1' | 'niveau2';
+  titre: string;
+  pourquoi: string;
+  comment: string;
+  priorisation: number;
+  categorie?: 'technique' | 'non-technique';
+};
 
 /**
  * Éditeur du rapport LaTeX avec réorganisation des mesures
@@ -25,6 +37,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
   idDiagnostic,
   mesuresPrioritaires: mesuresInitialesPrioritaires,
   mesuresComplementaires: mesuresInitialesComplementaires,
+  mesuresDisponibles: mesuresInitialesDisponibles,
   onClose,
   onRecompile,
 }) => {
@@ -34,6 +47,11 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
   const [mesuresComplementaires, setMesuresComplementaires] = useState(
     mesuresInitialesComplementaires
   );
+  const [mesuresDisponibles, setMesuresDisponibles] = useState<MesureDisponiblePourAjout[]>(
+    mesuresInitialesDisponibles
+  );
+  const [selectionMesurePrioritaire, setSelectionMesurePrioritaire] = useState('');
+  const [selectionMesureComplementaire, setSelectionMesureComplementaire] = useState('');
   const [draggedIndex, setDraggedIndex] = useState<{
     section: 'prioritaires' | 'complementaires';
     index: number;
@@ -42,6 +60,59 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
   const [affichageActif, setAffichageActif] = useState<
     'prioritaires' | 'complementaires' | 'apercu'
   >('prioritaires');
+
+  useEffect(() => {
+    setMesuresDisponibles(mesuresInitialesDisponibles);
+  }, [mesuresInitialesDisponibles]);
+
+  const cleMesure = (mesure: any) =>
+    [
+      mesure.titre,
+      mesure.pourquoi,
+      mesure.comment,
+      mesure.priorisation,
+      mesure.categorie || '',
+    ].join('||');
+
+  const mesuresDejaPresentes = new Set(
+    [...mesuresPrioritaires, ...mesuresComplementaires].map(cleMesure)
+  );
+
+  const mesuresAjoutables = mesuresDisponibles.filter(
+    (mesure: MesureDisponiblePourAjout) => !mesuresDejaPresentes.has(cleMesure(mesure))
+  );
+
+  useEffect(() => {
+    if (!mesuresAjoutables.some((mesure: MesureDisponiblePourAjout) => mesure.clef === selectionMesurePrioritaire)) {
+      setSelectionMesurePrioritaire(mesuresAjoutables[0]?.clef || '');
+    }
+    if (!mesuresAjoutables.some((mesure: MesureDisponiblePourAjout) => mesure.clef === selectionMesureComplementaire)) {
+      setSelectionMesureComplementaire(mesuresAjoutables[0]?.clef || '');
+    }
+  }, [mesuresAjoutables, selectionMesurePrioritaire, selectionMesureComplementaire]);
+
+  const ajouteMesure = (section: 'prioritaires' | 'complementaires') => {
+    const clefSelectionnee =
+      section === 'prioritaires'
+        ? selectionMesurePrioritaire
+        : selectionMesureComplementaire;
+    const mesure = mesuresAjoutables.find((item: MesureDisponiblePourAjout) => item.clef === clefSelectionnee);
+
+    if (!mesure) {
+      return;
+    }
+
+    const mesureAAjouter = {
+      ...mesure,
+      valeurObtenue: null,
+    };
+
+    if (section === 'prioritaires') {
+      setMesuresPrioritaires((courant: any[]) => [...courant, mesureAAjouter]);
+    } else {
+      setMesuresComplementaires((courant: any[]) => [...courant, mesureAAjouter]);
+    }
+  };
 
   const handleDragStart = (
     section: 'prioritaires' | 'complementaires',
@@ -64,11 +135,6 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
       draggedIndex.section === 'prioritaires'
         ? mesuresPrioritaires
         : mesuresComplementaires;
-    const targetMesures =
-      section === 'prioritaires'
-        ? mesuresPrioritaires
-        : mesuresComplementaires;
-
     if (draggedIndex.section === section) {
       // Réorganisation dans la même section
       const nouvelles = [...sourceMesures];
@@ -142,9 +208,9 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
 
   const supprimerMesure = (section: 'prioritaires' | 'complementaires', index: number) => {
     if (section === 'prioritaires') {
-      setMesuresPrioritaires(mesuresPrioritaires.filter((_, i) => i !== index));
+      setMesuresPrioritaires(mesuresPrioritaires.filter((_: any, i: number) => i !== index));
     } else {
-      setMesuresComplementaires(mesuresComplementaires.filter((_, i) => i !== index));
+      setMesuresComplementaires(mesuresComplementaires.filter((_: any, i: number) => i !== index));
     }
   };
 
@@ -229,6 +295,13 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
       <div className="mesure-header">
         <span className="mesure-numero">{index + 1}.</span>
         <span className="mesure-titre">{mesure.titre}</span>
+        {mesure.categorie && (
+          <span
+            className={`mesure-categorie mesure-categorie-${mesure.categorie === 'technique' ? 'technique' : 'non-technique'}`}
+          >
+            {mesure.categorie === 'technique' ? 'Technique' : 'Non-technique'}
+          </span>
+        )}
       </div>
       <div className="mesure-controls">
         <button
@@ -262,6 +335,48 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
       </div>
     </div>
   );
+
+  const renderAjoutMesure = (section: 'prioritaires' | 'complementaires') => {
+    const valeurSelectionnee =
+      section === 'prioritaires'
+        ? selectionMesurePrioritaire
+        : selectionMesureComplementaire;
+
+    return (
+      <div className="ajout-mesure">
+        <select
+          className="ajout-mesure-select"
+          value={valeurSelectionnee}
+          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+            if (section === 'prioritaires') {
+              setSelectionMesurePrioritaire(event.target.value);
+            } else {
+              setSelectionMesureComplementaire(event.target.value);
+            }
+          }}
+          disabled={mesuresAjoutables.length === 0}
+        >
+          {mesuresAjoutables.length === 0 ? (
+            <option value="">Aucune mesure disponible</option>
+          ) : (
+            mesuresAjoutables.map((mesure: MesureDisponiblePourAjout) => (
+              <option key={mesure.clef} value={mesure.clef}>
+                {mesure.categorie === 'technique' ? '[Technique]' : '[Non-technique]'} {mesure.titre} - {mesure.niveau}
+              </option>
+            ))
+          )}
+        </select>
+        <button
+          className="btn-add-mesure"
+          onClick={() => ajouteMesure(section)}
+          disabled={mesuresAjoutables.length === 0}
+          type="button"
+        >
+          Ajouter une mesure
+        </button>
+      </div>
+    );
+  };
 
   return createPortal(
     <div className="editeur-rapport-modal">
@@ -304,7 +419,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
             <div className="mesures-section">
               {mesuresPrioritaires.length === 0 ? (
                 <p className="info" style={{ color: '#d32f2f' }}>
-                  Aucune mesure prioritaire à afficher. Les mesures se chargeront bientôt...
+                  Aucune mesure prioritaire à afficher.
                 </p>
               ) : (
                 <>
@@ -312,13 +427,14 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
                     Faites glisser les mesures pour les réorganiser, ou utilisez les
                     boutons ↑/↓
                   </p>
-                  <div className="mesures-list">
-                    {mesuresPrioritaires.map((mesure, index) =>
-                      renderMesureItem(mesure, index, 'prioritaires')
-                    )}
-                  </div>
                 </>
               )}
+              {renderAjoutMesure('prioritaires')}
+              <div className="mesures-list">
+                {mesuresPrioritaires.map((mesure, index) =>
+                  renderMesureItem(mesure, index, 'prioritaires')
+                )}
+              </div>
             </div>
           )}
 
@@ -326,7 +442,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
             <div className="mesures-section">
               {mesuresComplementaires.length === 0 ? (
                 <p className="info" style={{ color: '#d32f2f' }}>
-                  Aucune mesure complémentaire à afficher. Les mesures se chargeront bientôt...
+                  Aucune mesure complémentaire à afficher.
                 </p>
               ) : (
                 <>
@@ -334,35 +450,44 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
                     Faites glisser les mesures pour les réorganiser, ou utilisez les
                     boutons ↑/↓
                   </p>
-                  {(() => {
-                    const groupes = groupeMesuresParCategorie(mesuresComplementaires);
-                    return (
-                      <>
-                        {groupes.nonTechniques.length > 0 && (
-                          <div className="mesures-categorie">
-                            <h4>📋 Mesures non-techniques</h4>
-                            <div className="mesures-list">
-                              {groupes.nonTechniques.map((mesure, index) =>
-                                renderMesureItem(mesure, mesuresComplementaires.indexOf(mesure), 'complementaires')
-                              )}
-                            </div>
-                          </div>
-                        )}
-                        {groupes.techniques.length > 0 && (
-                          <div className="mesures-categorie">
-                            <h4>🔧 Mesures techniques</h4>
-                            <div className="mesures-list">
-                              {groupes.techniques.map((mesure, index) =>
-                                renderMesureItem(mesure, mesuresComplementaires.indexOf(mesure), 'complementaires')
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    );
-                  })()}
                 </>
               )}
+              {renderAjoutMesure('complementaires')}
+              {(() => {
+                const groupes = groupeMesuresParCategorie(mesuresComplementaires);
+                return (
+                  <>
+                    {groupes.nonTechniques.length > 0 && (
+                      <div className="mesures-categorie">
+                        <h4>📋 Mesures non-techniques</h4>
+                        <div className="mesures-list">
+                          {groupes.nonTechniques.map((mesure) =>
+                            renderMesureItem(
+                              mesure,
+                              mesuresComplementaires.indexOf(mesure),
+                              'complementaires'
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {groupes.techniques.length > 0 && (
+                      <div className="mesures-categorie">
+                        <h4>🔧 Mesures techniques</h4>
+                        <div className="mesures-list">
+                          {groupes.techniques.map((mesure) =>
+                            renderMesureItem(
+                              mesure,
+                              mesuresComplementaires.indexOf(mesure),
+                              'complementaires'
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           )}
 

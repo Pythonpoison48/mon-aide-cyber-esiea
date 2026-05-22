@@ -235,12 +235,13 @@ export class GenerateurLaTeX {
     let latex = `\\vspace{1cm}\n`;
     latex += `\\begin{figure}[h]\n`;
     latex += `\\centering\n`;
-    latex += `\\includegraphics[width=0.6\\textwidth]{${cheminPdf}}\n`;
+    latex += `\\includegraphics[width=0.5\\textwidth]{${cheminPdf}}\n`;
     latex += `\\end{figure}\n\n`;
 
     // Ajouter la légende
     latex += '\\begin{center}\n';
-    latex += '\\begin{tabular}{p{0.35\\textwidth} p{0.55\\textwidth}}\n';
+    latex += '\\renewcommand{\\ arraystretch}{1.7}\n';
+    latex += '\\begin{tabular}{m{0.5\\textwidth} p{0.45\\textwidth}}\n';
     latex += '\\toprule\n';
     latex += '\\textbf{Thématique} & \\textbf{Description}\\\\\n';
     latex += '\\midrule\n';

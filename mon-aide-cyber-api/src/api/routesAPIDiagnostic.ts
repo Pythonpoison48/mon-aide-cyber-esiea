@@ -29,6 +29,7 @@ import { body } from 'express-validator';
 import { Evenement } from '../domaine/BusEvenement';
 import { FournisseurHorloge } from '../infrastructure/horloge/FournisseurHorloge';
 import { GenerateurLaTeX } from '../infrastructure/restitution/latex/GenerateurLaTeX';
+import { ReferentielDeMesure, ReferentielDeMesures } from '../diagnostic/ReferentielDeMesures';
 
 export type ReponseDiagnostic = ReponseHATEOAS & RepresentationDiagnostic;
 
@@ -65,6 +66,50 @@ export type CorpsRequeteRecompilationRestitution = {
   mesuresComplementaires: MesurePriorisee[];
 };
 
+type MesureDisponiblePourAjout = {
+  clef: string;
+  identifiant: string;
+  niveau: 'niveau1' | 'niveau2';
+  titre: string;
+  pourquoi: string;
+  comment: string;
+  priorisation: number;
+  categorie?: 'technique' | 'non-technique';
+};
+
+const aplatitReferentielMesures = (
+  referentiel: ReferentielDeMesures
+): MesureDisponiblePourAjout[] => {
+  const entreesReferentiel = Object.entries(referentiel) as Array<[
+    string,
+    ReferentielDeMesure,
+  ]>;
+
+  return entreesReferentiel.flatMap(([identifiant, mesure]) => {
+    const niveaux: Array<[
+      MesureDisponiblePourAjout['niveau'],
+      ReferentielDeMesure['niveau1']
+    ]> = [
+      ['niveau1', mesure.niveau1],
+    ];
+
+    if (mesure.niveau2) {
+      niveaux.push(['niveau2', mesure.niveau2]);
+    }
+
+    return niveaux.map(([niveau, contenu]) => ({
+      clef: `${identifiant}:${niveau}`,
+      identifiant,
+      niveau,
+      titre: contenu.titre,
+      pourquoi: contenu.pourquoi,
+      comment: contenu.comment,
+      priorisation: mesure.priorisation,
+      ...(mesure.categorie ? { categorie: mesure.categorie } : {}),
+    }));
+  });
+};
+
 export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
   const routes = express.Router();
 
@@ -92,10 +137,12 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
       try {
         const { id } = requete.params;
         const diagnostic = await entrepots.diagnostic().lis(id);
+        const mesuresDisponibles = aplatitReferentielMesures(diagnostic.mesures);
 
         reponse.json({
           mesuresPrioritaires: diagnostic.restitution?.mesures?.mesuresPrioritaires || [],
           mesuresComplementaires: diagnostic.restitution?.mesures?.autresMesures || [],
+          mesuresDisponibles,
         });
       } catch (erreur) {
         return suite(

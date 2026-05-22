@@ -26,6 +26,7 @@ export const HeaderRestitution = ({
   const [editeurActif, setEditeurActif] = useState(false);
   const [mesuresPrioritaires, setMesuresPrioritaires] = useState<any[]>([]);
   const [mesuresComplementaires, setMesuresComplementaires] = useState<any[]>([]);
+  const [mesuresDisponibles, setMesuresDisponibles] = useState<any[]>([]);
 
   // Charger les mesures depuis l'API
   useEffect(() => {
@@ -50,15 +51,18 @@ export const HeaderRestitution = ({
         console.log('[HeaderRestitution] Mesures chargées avec succès:', {
           prioritaires: data.mesuresPrioritaires?.length ?? 0,
           complementaires: data.mesuresComplementaires?.length ?? 0,
+          disponibles: data.mesuresDisponibles?.length ?? 0,
         });
         
         setMesuresPrioritaires(data.mesuresPrioritaires || []);
         setMesuresComplementaires(data.mesuresComplementaires || []);
+        setMesuresDisponibles(data.mesuresDisponibles || []);
       } catch (err) {
         console.error('[HeaderRestitution] Erreur:', err);
         // Fallback pour que le bouton reste visible
         setMesuresPrioritaires([]);
         setMesuresComplementaires([]);
+        setMesuresDisponibles([]);
       }
     };
 
@@ -202,6 +206,7 @@ export const HeaderRestitution = ({
           idDiagnostic={idDiagnostic}
           mesuresPrioritaires={mesuresPrioritaires}
           mesuresComplementaires={mesuresComplementaires}
+          mesuresDisponibles={mesuresDisponibles}
           onClose={() => setEditeurActif(false)}
           onRecompile={async (mesures) => {
             // Appel API pour recompiler le PDF avec les mesures réorganisées
