@@ -83,21 +83,29 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     (mesure: MesureDisponiblePourAjout) => !mesuresDejaPresentes.has(cleMesure(mesure))
   );
 
+  const mesuresAjoutablesTriees = [...mesuresAjoutables].sort((mesureA, mesureB) => {
+    const comparaisonTitre = mesureA.titre.localeCompare(mesureB.titre, 'fr', {
+      sensitivity: 'base',
+    });
+
+    return comparaisonTitre || mesureA.priorisation - mesureB.priorisation || mesureA.clef.localeCompare(mesureB.clef, 'fr');
+  });
+
   useEffect(() => {
-    if (!mesuresAjoutables.some((mesure: MesureDisponiblePourAjout) => mesure.clef === selectionMesurePrioritaire)) {
-      setSelectionMesurePrioritaire(mesuresAjoutables[0]?.clef || '');
+    if (!mesuresAjoutablesTriees.some((mesure: MesureDisponiblePourAjout) => mesure.clef === selectionMesurePrioritaire)) {
+      setSelectionMesurePrioritaire(mesuresAjoutablesTriees[0]?.clef || '');
     }
-    if (!mesuresAjoutables.some((mesure: MesureDisponiblePourAjout) => mesure.clef === selectionMesureComplementaire)) {
-      setSelectionMesureComplementaire(mesuresAjoutables[0]?.clef || '');
+    if (!mesuresAjoutablesTriees.some((mesure: MesureDisponiblePourAjout) => mesure.clef === selectionMesureComplementaire)) {
+      setSelectionMesureComplementaire(mesuresAjoutablesTriees[0]?.clef || '');
     }
-  }, [mesuresAjoutables, selectionMesurePrioritaire, selectionMesureComplementaire]);
+  }, [mesuresAjoutablesTriees, selectionMesurePrioritaire, selectionMesureComplementaire]);
 
   const ajouteMesure = (section: 'prioritaires' | 'complementaires') => {
     const clefSelectionnee =
       section === 'prioritaires'
         ? selectionMesurePrioritaire
         : selectionMesureComplementaire;
-    const mesure = mesuresAjoutables.find((item: MesureDisponiblePourAjout) => item.clef === clefSelectionnee);
+    const mesure = mesuresAjoutablesTriees.find((item: MesureDisponiblePourAjout) => item.clef === clefSelectionnee);
 
     if (!mesure) {
       return;
@@ -383,12 +391,12 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
               setSelectionMesureComplementaire(event.target.value);
             }
           }}
-          disabled={mesuresAjoutables.length === 0}
+          disabled={mesuresAjoutablesTriees.length === 0}
         >
-          {mesuresAjoutables.length === 0 ? (
+          {mesuresAjoutablesTriees.length === 0 ? (
             <option value="">Aucune mesure disponible</option>
           ) : (
-            mesuresAjoutables.map((mesure: MesureDisponiblePourAjout) => (
+            mesuresAjoutablesTriees.map((mesure: MesureDisponiblePourAjout) => (
               <option key={mesure.clef} value={mesure.clef}>
                 {mesure.titre} - {mesure.niveau}
               </option>
@@ -398,7 +406,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
         <button
           className="btn-add-mesure"
           onClick={() => ajouteMesure(section)}
-          disabled={mesuresAjoutables.length === 0}
+          disabled={mesuresAjoutablesTriees.length === 0}
           type="button"
         >
           Ajouter une mesure

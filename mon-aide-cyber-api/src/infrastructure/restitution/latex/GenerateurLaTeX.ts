@@ -53,6 +53,13 @@ export class GenerateurLaTeX {
       donnees.mesuresComplementaires,
       false
     );
+    const sectionMesuresComplementaires = mesuresComplementaires
+      ? `\section{Recommandations complémentaires}
+\label{sec:autres-recommandations}
+
+${mesuresComplementaires}
+`
+      : '';
 
     // Générer l'indicateur polaire si disponible
     let indicateur = '';
@@ -72,7 +79,7 @@ export class GenerateurLaTeX {
     const contenuLatex = template
       .replace('<<DIAGNOSTIC_ID>>', donnees.diagnosticId)
       .replace('<<MESURES_PRIORITAIRES>>', mesuresPrioritaires)
-      .replace('<<MESURES_COMPLEMENTAIRES>>', mesuresComplementaires)
+      .replace('<<SECTION_MESURES_COMPLEMENTAIRES>>', sectionMesuresComplementaires)
       .replace('<<INDICATEUR_POLAIRE>>', indicateur);
 
     return {
