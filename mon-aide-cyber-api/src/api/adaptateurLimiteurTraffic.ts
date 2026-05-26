@@ -1,10 +1,10 @@
 import rateLimit, { RateLimitRequestHandler } from 'express-rate-limit';
 
 const CINQ_MINUTES = 5 * 60 * 1000;
-const CENT_APPELS = 100;
-const VINGT_APPELS = 20;
-const DIX_APPELS = 10;
-const CINQ_APPELS = 5;
+const CENT_APPELS = 500;
+const VINGT_APPELS = 50;
+const DIX_APPELS = 20;
+const CINQ_APPELS = 10;
 
 type Configuration<Limiteur extends { type: string }> = {
   [E in Limiteur as E['type']]: () => RateLimitRequestHandler;

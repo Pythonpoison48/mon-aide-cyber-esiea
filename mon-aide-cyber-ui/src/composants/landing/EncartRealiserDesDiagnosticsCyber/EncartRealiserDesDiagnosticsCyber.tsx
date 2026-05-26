@@ -23,7 +23,7 @@ export const EncartRealiserDesDiagnosticsCyber = () => {
           <Button
             type="button"
             variant="primary"
-            onClick={() => navigate('/connexion')}
+            onClick={() => navigate('/diagnostic-libre-acces')}
           >
             Réaliser des diagnostics cyber
           </Button>

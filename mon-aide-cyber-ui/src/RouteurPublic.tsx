@@ -1,4 +1,3 @@
-import { Accueil } from './Accueil.tsx';
 import './assets/styles/index.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ComposantIntercepteur } from './composants/intercepteurs/ComposantIntercepteur.tsx';
@@ -27,7 +26,7 @@ export const RouteurPublic = () => {
   return (
     <Routes>
       <Route path="/" element={<LayoutPublic />}>
-        <Route index element={<Accueil />} />
+        <Route index element={<Navigate to="/diagnostic-libre-acces" replace />} />
         <Route path="accessibilite" element={<EcranAccessibilite />} />
         <Route
           path="statistiques-utilisation"
