@@ -7,6 +7,11 @@ services:
     volumes:
       - ./mon-aide-cyber-ui:/usr/src/app/mon-aide-cyber-ui
       - /usr/src/app/mon-aide-cyber-ui/node_modules  # ← masque les node_modules Windows
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /usr/src/app/mon-aide-cyber-ui/dist/index.html"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
     networks:
       - reseau-mon-aide-cyber
 
@@ -42,6 +47,8 @@ services:
       - /usr/src/app/mon-aide-cyber-api/node_modules  # ← masque les node_modules Windows
       - ./mon-aide-cyber-ui/dist/:/usr/src/app/mon-aide-cyber-ui/dist
     depends_on:
+      web:
+        condition: service_healthy
       db:
         condition: service_healthy
     networks:
