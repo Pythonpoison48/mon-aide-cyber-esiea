@@ -228,11 +228,23 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     }
   }, [mesuresPrioritaires, mesuresComplementaires, onRecompile, idDiagnostic, onClose]);
 
-  const supprimerMesure = (section: 'prioritaires' | 'complementaires', mesureASupprimer: any) => {
+  const supprimerMesure = (
+    section: 'prioritaires' | 'complementaires',
+    index: number,
+    categorie?: 'technique' | 'non-technique'
+  ) => {
     if (section === 'prioritaires') {
-      setMesuresPrioritaires(mesuresPrioritaires.filter((mesure: any) => mesure !== mesureASupprimer));
+      setMesuresPrioritaires(mesuresPrioritaires.filter((_: any, i: number) => i !== index));
     } else {
-      setMesuresComplementaires(mesuresComplementaires.filter((mesure: any) => mesure !== mesureASupprimer));
+      const mesuresNonTechniques = mesuresComplementaires.filter(
+        (mesure: any) => mesure.categorie !== 'technique'
+      );
+      const mesuresTechniques = mesuresComplementaires.filter(
+        (mesure: any) => mesure.categorie === 'technique'
+       );
+      const groupe = categorie === 'technique' ? mesuresTechniques : mesuresNonTechniques;
+      groupe.splice(index, 1);
+      setMesuresComplementaires([...mesuresNonTechniques, ...mesuresTechniques]);
     }
   };
 
@@ -344,7 +356,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
         </button>
         <button
           className="btn-small btn-danger"
-          onClick={() => supprimerMesure(section, mesure)}
+          onClick={() => supprimerMesure(section, index, mesure.categorie)}
           title="Supprimer cette mesure"
         >
           ✕
