@@ -122,7 +122,9 @@ export const ComposantRestitution = ({
                     <Button
                       type="button"
                       variant="primary"
-                      className={`fr-btn fr-btn--icon-left fr-icon-download-line bouton-mac bouton-mac-primaire-inverse`}
+                      className={`bouton-mac bouton-mac-primaire-inverse`}
+                      icon="fr-icon-download-line"
+                      iconPos="left"
                       onClick={() => demanderRestitution()}
                       disabled={boutonDemanderRestitutionDesactive}
                     >
