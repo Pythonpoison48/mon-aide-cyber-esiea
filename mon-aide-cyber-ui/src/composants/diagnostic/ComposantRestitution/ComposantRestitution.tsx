@@ -100,7 +100,7 @@ export const ComposantRestitution = ({
               <div className="fr-grid-row fr-grid-row--right">
                 <div className="fr-pl-2w">
                   <button
-                    className={`fr-btn--icon-left fr-icon-pencil-line bouton-mac bouton-mac-secondaire-inverse`}
+                    className={`fr-btn fr-btn--icon-left fr-icon-pencil-line bouton-mac bouton-mac-secondaire-inverse`}
                     onClick={modifierLeDiagnostic}
                   >
                     Modifier le diagnostic
@@ -122,7 +122,7 @@ export const ComposantRestitution = ({
                     <Button
                       type="button"
                       variant="primary"
-                      className={`fr-btn--icon-left  fr-icon-download-line bouton-mac bouton-mac-primaire-inverse`}
+                      className={`fr-btn fr-btn--icon-left fr-icon-download-line bouton-mac bouton-mac-primaire-inverse`}
                       onClick={() => demanderRestitution()}
                       disabled={boutonDemanderRestitutionDesactive}
                     >

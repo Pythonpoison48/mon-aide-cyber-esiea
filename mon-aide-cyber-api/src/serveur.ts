@@ -23,6 +23,7 @@ import { AdaptateurDeVerificationDeCGU } from './adaptateurs/AdaptateurDeVerific
 import { AdaptateurDeGestionDeCookies } from './adaptateurs/AdaptateurDeGestionDeCookies';
 import { AdaptateurRelations } from './relation/AdaptateurRelations';
 import CookieSession from 'cookie-session';
+import crypto from 'crypto';
 import { AdaptateurDeVerificationDesAcces } from './adaptateurs/AdaptateurDeVerificationDesAcces';
 import { ServiceDeChiffrement } from './securite/ServiceDeChiffrement';
 import { AdaptateurMetabase } from './adaptateurs/AdaptateurMetabase';
@@ -91,12 +92,28 @@ const creeApp = (config: ConfigurationServeur) => {
   const ipAutorisees = adaptateurEnvironnement.ipAutorisees();
   if (ipAutorisees) app.use(filtreIp(ipAutorisees));
 
+  // Determine cookie signing keys. In production require explicit config,
+  // in development generate an ephemeral key to avoid empty or predictable keys.
+  const cookieSecret = process.env.SECRET_COOKIE;
+  let cookieKeys: string[];
+  if (!cookieSecret) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('SECRET_COOKIE is not set in production. Exiting.');
+      process.exit(1);
+    } else {
+      console.warn('SECRET_COOKIE not set; generating ephemeral key for development.');
+      cookieKeys = [crypto.randomBytes(32).toString('hex')];
+    }
+  } else {
+    cookieKeys = [cookieSecret];
+  }
+
   app.use(
     CookieSession({
       sameSite: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: COOKIE_DUREE_SESSION,
-      keys: [process.env.SECRET_COOKIE || ''],
+      keys: cookieKeys,
     })
   );
 

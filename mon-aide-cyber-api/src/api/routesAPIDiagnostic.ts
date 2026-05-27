@@ -354,6 +354,8 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
   routes.post(
     '/:id/restitution/recompile',
     express.json(),
+    session.verifie('Demande la restitution'),
+    verifieRelations(relations, entrepots),
     async (
       requete: RequeteUtilisateur<CorpsRequeteRecompilationRestitution>,
       reponse: Response,
@@ -400,6 +402,8 @@ export const routesAPIDiagnostic = (configuration: ConfigurationServeur) => {
   routes.post(
     '/:id/restitution/latex',
     express.json(),
+    session.verifie('Demande la restitution'),
+    verifieRelations(relations, entrepots),
     async (
       requete: RequeteUtilisateur<CorpsRequeteRecompilationRestitution>,
       reponse: Response,

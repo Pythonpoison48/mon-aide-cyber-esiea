@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import '@gouvfr/dsfr/dist/utility/icons/icons.min.css';
+import '@gouvfr/dsfr/dist/dsfr.min.css';
 import './assets/styles/index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import { ComposantAffichageErreur } from './composants/alertes/ComposantAffichageErreur.tsx';

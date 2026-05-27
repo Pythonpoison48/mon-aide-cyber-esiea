@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import * as os from 'os';
 
 export interface CompilationLaTeXOptions {
@@ -77,14 +77,11 @@ export class Compilateur {
     const nomFichier = path.basename(cheminFichierTex, '.tex');
 
     try {
-      execSync(
-        `pdflatex -interaction=nonstopmode -output-directory="${dossier}" "${cheminFichierTex}"`,
-        {
-          cwd: dossier,
-          stdio: 'pipe',
-          encoding: 'utf-8',
-        }
-      );
+      execFileSync('pdflatex', ['-interaction=nonstopmode', '-output-directory', dossier, cheminFichierTex], {
+        cwd: dossier,
+        stdio: 'pipe',
+        encoding: 'utf-8',
+      });
     } catch (erreur) {
       // pdflatex peut retourner un code d'erreur même si le PDF a été généré
       // Donc on ne lance une exception que si le PDF n'existe pas

@@ -32,10 +32,19 @@ import { unAdaptateurCmsCrisp } from './src/adaptateurs/AdaptateurCmsCrispMAC';
 import { AdaptateurSignatureRequeteHTTP } from './src/adaptateurs/AdaptateurSignatureRequeteHTTP';
 import { adaptateurMessagerie } from './src/adaptateurs/adaptateurMessagerie';
 import { unAdaptateurGeographie } from './src/adaptateurs/AdaptateurGeographie';
+import crypto from 'crypto';
 
-const gestionnaireDeJeton = new GestionnaireDeJetonJWT(
-  process.env.CLEF_SECRETE_SIGNATURE_JETONS_SESSIONS || 'clef-par-defaut'
-);
+let jwtKey = process.env.CLEF_SECRETE_SIGNATURE_JETONS_SESSIONS;
+if (!jwtKey) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error('CLEF_SECRETE_SIGNATURE_JETONS_SESSIONS is not set in production. Exiting.');
+    process.exit(1);
+  } else {
+    console.warn('CLEF_SECRETE_SIGNATURE_JETONS_SESSIONS not set; generating ephemeral key for development.');
+    jwtKey = crypto.randomBytes(32).toString('hex');
+  }
+}
+const gestionnaireDeJeton = new GestionnaireDeJetonJWT(jwtKey);
 
 const adaptateurTranscripteurDonnees = adaptateurTranscripteur();
 

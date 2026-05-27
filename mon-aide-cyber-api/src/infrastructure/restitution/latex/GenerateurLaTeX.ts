@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { MesurePriorisee } from '../../../diagnostic/Diagnostic';
 
 export interface DonneesRapport {
@@ -205,9 +205,10 @@ ${mesuresComplementaires}
       fs.mkdirSync(dossierTemp, { recursive: true });
     }
 
-    const nomFichierSvg = `graphique-polaire-${diagnosticId}.svg`;
+    const safeId = String(diagnosticId).replace(/[^a-zA-Z0-9._-]/g, '_');
+    const nomFichierSvg = `graphique-polaire-${safeId}.svg`;
     const cheminSvg = path.join(dossierTemp, nomFichierSvg);
-    const nomFichierPdf = `graphique-polaire-${diagnosticId}.pdf`;
+    const nomFichierPdf = `graphique-polaire-${safeId}.pdf`;
     const cheminPdf = path.join(dossierTemp, nomFichierPdf);
 
     // Sauvegarder le SVG
@@ -215,12 +216,15 @@ ${mesuresComplementaires}
 
     // Convertir SVG → PDF avec rsvg-convert
     try {
-      // Utiliser des guillemets appropriés pour les chemins
-      const cmdSvgToPdf = `rsvg-convert -f pdf -o "${cheminPdf}" "${cheminSvg}"`;
-      execSync(cmdSvgToPdf, { 
-        encoding: 'utf-8',
-        cwd: dossierTemp,
-      });
+      // Use execFileSync to avoid shell interpolation and arguments escaping issues.
+      execFileSync(
+        'rsvg-convert',
+        ['-f', 'pdf', '-o', cheminPdf, cheminSvg],
+        {
+          encoding: 'utf-8',
+          cwd: dossierTemp,
+        }
+      );
     } catch (e) {
       console.error('Erreur lors de la conversion SVG→PDF:', e);
       // Si la conversion échoue, retourner un message d'erreur

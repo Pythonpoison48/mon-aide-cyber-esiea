@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Cookies, { Option } from 'cookies';
+import crypto from 'crypto';
 import { Contexte, ErreurMAC } from '../domaine/erreurMAC';
 import {
   ErreurAccesRefuse,
@@ -24,16 +25,18 @@ const recuperateurDeCookies = (
   requete: Request,
   reponse: Response,
   parametres: ParametresCookies = {
-    clef: {
-      keys: [process.env.SECRET_COOKIE || ''],
-    },
     nom: 'session',
     signed: true,
   }
 ): string | undefined => {
-  const options: Option | undefined = parametres.clef
-    ? { keys: parametres.clef.keys }
-    : undefined;
+  // Determine keys: prefer explicit config, otherwise generate ephemeral key in dev.
+  const keys = parametres.clef?.keys
+    ? parametres.clef.keys
+    : process.env.SECRET_COOKIE
+    ? [process.env.SECRET_COOKIE]
+    : [crypto.randomBytes(32).toString('hex')];
+
+  const options: Option = { keys };
   return new Cookies(requete, reponse, options).get(
     parametres.nom,
     parametres.signed ? { signed: true } : undefined
@@ -73,9 +76,10 @@ const jwtPayload = (
 };
 
 const reinitialiseLaSession = (requete: Request, reponse: Response): void => {
-  const cookies = new Cookies(requete, reponse, {
-    keys: [process.env.SECRET_COOKIE || ''],
-  });
+  const keys = process.env.SECRET_COOKIE
+    ? [process.env.SECRET_COOKIE]
+    : [crypto.randomBytes(32).toString('hex')];
+  const cookies = new Cookies(requete, reponse, { keys });
   cookies.set('session');
 };
 
