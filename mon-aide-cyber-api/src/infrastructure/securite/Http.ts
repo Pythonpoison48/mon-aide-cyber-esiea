@@ -15,6 +15,8 @@ export const positionneLesCsp = (reponse: Response, csp: string) => {
 
   const resultats = [];
   const allowedHosts = " https://cdn.jsdelivr.net https://lab-anssi-ui-kit-prod-s3-assets.cellar-c2.services.clever-cloud.com https://stats.beta.gouv.fr";
+  const allowedImageHosts =
+    ' https://lab-anssi-ui-kit-prod-s3-assets.cellar-c2.services.clever-cloud.com';
 
   const morceaux = csp.split(';').map((m) => m.trim()).filter(Boolean);
   let hasImgSrc = false;
@@ -28,6 +30,9 @@ export const positionneLesCsp = (reponse: Response, csp: string) => {
     } else if (morceau.startsWith('img-src')) {
       hasImgSrc = true;
       if (!morceau.includes('data:')) morceau = morceau + ' data: blob:';
+      if (!morceau.includes('lab-anssi-ui-kit-prod-s3-assets.cellar-c2.services.clever-cloud.com')) {
+        morceau = morceau + allowedImageHosts;
+      }
     }
 
     resultats.push(morceau);

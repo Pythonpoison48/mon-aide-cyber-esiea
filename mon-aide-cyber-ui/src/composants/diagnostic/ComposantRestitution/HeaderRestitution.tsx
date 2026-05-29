@@ -27,13 +27,17 @@ export const HeaderRestitution = ({
   const [mesuresPrioritaires, setMesuresPrioritaires] = useState<any[]>([]);
   const [mesuresComplementaires, setMesuresComplementaires] = useState<any[]>([]);
   const [mesuresDisponibles, setMesuresDisponibles] = useState<any[]>([]);
+  const prefixeApi =
+    typeDiagnostic === 'libre-acces'
+      ? '/api/diagnostic-libre-acces'
+      : '/api/diagnostic';
 
   // Charger les mesures depuis l'API
   useEffect(() => {
     const chargerMesures = async () => {
       try {
         console.log(`[HeaderRestitution] Chargement des mesures pour ${idDiagnostic}`);
-        const reponse = await fetch(`/api/diagnostic/${idDiagnostic}/mesures`);
+        const reponse = await fetch(`${prefixeApi}/${idDiagnostic}/mesures`);
         
         console.log(`[HeaderRestitution] Réponse HTTP: ${reponse.status}`);
         
@@ -67,7 +71,7 @@ export const HeaderRestitution = ({
     };
 
     chargerMesures();
-  }, [idDiagnostic]);
+  }, [idDiagnostic, prefixeApi]);
 
   const { navigue } = useNavigueVersModifierDiagnostic(
     typeDiagnostic === 'libre-acces'
@@ -87,8 +91,12 @@ export const HeaderRestitution = ({
   );
 
   const modifierLeDiagnostic = useCallback(() => {
-    navigue(navigationMAC.etat['modifier-diagnostic']);
-  }, [navigationMAC.etat]);
+    const lienModifierDiagnostic = navigationMAC.etat['modifier-diagnostic'] || {
+      url: `${prefixeApi}/${idDiagnostic}`,
+      methode: 'GET',
+    };
+    navigue(lienModifierDiagnostic);
+  }, [navigationMAC.etat, prefixeApi, idDiagnostic, navigue]);
 
   const quitterDiagnostic = () => {
     affiche({
@@ -204,6 +212,7 @@ export const HeaderRestitution = ({
       {editeurActif && mesuresPrioritaires && mesuresComplementaires && (
         <EditeurRapport
           idDiagnostic={idDiagnostic}
+          prefixeApi={prefixeApi}
           mesuresPrioritaires={mesuresPrioritaires}
           mesuresComplementaires={mesuresComplementaires}
           mesuresDisponibles={mesuresDisponibles}
@@ -211,7 +220,7 @@ export const HeaderRestitution = ({
           onRecompile={async (mesures) => {
             // Appel API pour recompiler le PDF avec les mesures réorganisées
             const reponse = await fetch(
-              `/api/diagnostic/${idDiagnostic}/restitution/recompile`,
+              `${prefixeApi}/${idDiagnostic}/restitution/recompile`,
               {
                 method: 'POST',
                 headers: {

@@ -31,7 +31,6 @@ import { EntrepotEvenementJournal } from '../journalisation/Publication';
 import { AdaptateurRelations } from '../relation/AdaptateurRelations';
 import { AdaptateurRelationsMAC } from '../relation/AdaptateurRelationsMAC';
 import { aidantInitieDiagnostic } from '../espace-aidant/tableau-de-bord/consommateursEvenements';
-import { demandeInitieDiagnosticLibreAcces } from '../diagnostic-libre-acces/consommateursEvenements';
 import { fabriqueEntrepots } from './fabriqueEntrepots';
 import { uneRechercheUtilisateursMAC } from '../recherche-utilisateurs-mac/rechercheUtilisateursMAC';
 import { utilisateurInscritInitieDiagnostic } from '../espace-utilisateur-inscrit/tableau-de-bord/consommateursEvenements';
@@ -145,10 +144,7 @@ export const fabriqueConsommateursEvenements = (
     ],
     [
       'DIAGNOSTIC_LIBRE_ACCES_LANCE',
-      [
-        diagnosticLibreAccesLance(entrepotJournalisation),
-        demandeInitieDiagnosticLibreAcces(adaptateurRelations),
-      ],
+      [diagnosticLibreAccesLance(entrepotJournalisation)],
     ],
     [
       'UTILISATEUR_INSCRIT_CREE',

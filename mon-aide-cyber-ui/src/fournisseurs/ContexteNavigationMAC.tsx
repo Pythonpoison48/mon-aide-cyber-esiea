@@ -93,7 +93,14 @@ export const useNavigueVersModifierDiagnostic = (
   const moteurDeLiens = new MoteurDeLiens(navigationMAC.etat);
 
   const navigue = (lien: Lien) => {
+    if (!lien?.url) {
+      return;
+    }
+
     const idDiagnostic = lien.url.split('/').at(-1);
+    if (!idDiagnostic) {
+      return;
+    }
 
     const existe = moteurDeLiens.existe('modifier-diagnostic');
     if (!existe) {

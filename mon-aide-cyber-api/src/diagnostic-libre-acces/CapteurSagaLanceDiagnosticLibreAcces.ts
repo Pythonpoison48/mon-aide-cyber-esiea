@@ -16,6 +16,8 @@ import { Aggregat } from '../domaine/Aggregat';
 import { adaptateurUUID } from '../infrastructure/adaptateurs/adaptateurUUID';
 import { BusEvenement, Evenement } from '../domaine/BusEvenement';
 import { FournisseurHorloge } from '../infrastructure/horloge/FournisseurHorloge';
+import { AdaptateurRelations } from '../relation/AdaptateurRelations';
+import { unTupleEntiteInitieDiagnosticLibreAcces } from './tuples';
 
 export type DemandeDiagnosticLibreAcces = Aggregat & {
   dateSignatureCGU: Date;
@@ -59,7 +61,8 @@ export class CapteurSagaLanceDiagnosticLibreAcces
     private readonly busCommande: BusCommande,
     private readonly busEvenement: BusEvenement,
     private readonly referentiel: Adaptateur<Referentiel>,
-    private readonly referentielDeMesures: Adaptateur<ReferentielDeMesures>
+    private readonly referentielDeMesures: Adaptateur<ReferentielDeMesures>,
+    private readonly adaptateurRelations?: AdaptateurRelations
   ) {}
 
   execute(saga: SagaLanceDiagnosticLibreAcces): Promise<crypto.UUID> {
@@ -78,6 +81,14 @@ export class CapteurSagaLanceDiagnosticLibreAcces
             return this.entrepots
               .diagnostic()
               .persiste(diagnostic)
+              .then(() =>
+                this.adaptateurRelations?.creeTuple(
+                  unTupleEntiteInitieDiagnosticLibreAcces(
+                    identifiantDemande,
+                    diagnostic.identifiant
+                  )
+                )
+              )
               .then(() => diagnostic.identifiant);
           })
           .then((identifiantDiagnostic) => {

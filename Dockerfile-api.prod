@@ -1,0 +1,34 @@
+FROM docker.io/node:22.21.1
+
+ENV NODE_ENV=production
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+
+RUN apt-get update -y && \
+    apt-get install -y \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-extra \
+    texlive-xetex \
+    librsvg2-bin \
+    jq && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /usr/src/app/
+COPY mon-aide-cyber-api/package.json /usr/src/app/mon-aide-cyber-api/package.json
+COPY mon-aide-cyber-ui/package.json /usr/src/app/mon-aide-cyber-ui/package.json
+
+RUN npm install -g "$(jq -r '.packageManager' package.json)"
+RUN pnpm install --frozen-lockfile
+
+COPY mon-aide-cyber-api/ /usr/src/app/mon-aide-cyber-api/
+COPY mon-aide-cyber-ui/ /usr/src/app/mon-aide-cyber-ui/
+
+RUN pnpm --dir mon-aide-cyber-ui build
+RUN pdflatex --version
+
+EXPOSE 8081
+
+CMD ["sh", "-lc", "attempt=0; max_attempts=30; until pnpm --dir mon-aide-cyber-api run test:migre-bdd; do attempt=$((attempt+1)); if [ \"$attempt\" -ge \"$max_attempts\" ]; then echo 'Database migrations failed after retries.'; exit 1; fi; echo \"Database not ready yet. Retry $attempt/$max_attempts in 2s...\"; sleep 2; done; pnpm --dir mon-aide-cyber-api run start"]

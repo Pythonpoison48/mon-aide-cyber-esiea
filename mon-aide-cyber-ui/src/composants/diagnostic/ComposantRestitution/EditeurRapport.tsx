@@ -5,6 +5,7 @@ import './EditeurRapport.scss';
 
 interface EditeurRapportProps {
   idDiagnostic: string;
+  prefixeApi: '/api/diagnostic' | '/api/diagnostic-libre-acces';
   mesuresPrioritaires: any[];
   mesuresComplementaires: any[];
   mesuresDisponibles: any[];
@@ -35,6 +36,7 @@ type MesureDisponiblePourAjout = {
  */
 export const EditeurRapport: React.FC<EditeurRapportProps> = ({
   idDiagnostic,
+  prefixeApi,
   mesuresPrioritaires: mesuresInitialesPrioritaires,
   mesuresComplementaires: mesuresInitialesComplementaires,
   mesuresDisponibles: mesuresInitialesDisponibles,
@@ -260,7 +262,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     setEnChargement(true);
     try {
       const response = await fetch(
-        `/api/diagnostic/${idDiagnostic}/restitution/latex`,
+        `${prefixeApi}/${idDiagnostic}/restitution/latex`,
         {
           method: 'POST',
           headers: {
@@ -312,7 +314,7 @@ export const EditeurRapport: React.FC<EditeurRapportProps> = ({
     } finally {
       setEnChargement(false);
     }
-  }, [mesuresPrioritaires, mesuresComplementaires, idDiagnostic]);
+  }, [mesuresPrioritaires, mesuresComplementaires, idDiagnostic, prefixeApi]);
 
   const groupeMesuresParCategorie = (mesures: any[]) => {
     return {

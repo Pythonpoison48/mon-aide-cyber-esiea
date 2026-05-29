@@ -22,12 +22,16 @@ import {
 import {
   definitionEntiteInitieDiagnosticLibreAcces,
   DefinitionEntiteInitieDiagnosticLibreAcces,
-} from '../../diagnostic-libre-acces/consommateursEvenements';
+} from '../../diagnostic-libre-acces/tuples';
 import {
   CorpsReponse,
   SagaAjoutReponse,
 } from '../../diagnostic/CapteurSagaAjoutReponse';
-import { Diagnostic, EntrepotDiagnostic } from '../../diagnostic/Diagnostic';
+import {
+  Diagnostic,
+  EntrepotDiagnostic,
+  MesurePriorisee,
+} from '../../diagnostic/Diagnostic';
 import * as core from 'express-serve-static-core';
 import { Restitution } from '../../restitution/Restitution';
 import { RestitutionHTML } from '../../infrastructure/adaptateurs/AdaptateurDeRestitutionHTML';
@@ -38,6 +42,11 @@ import { adaptateurConfigurationLimiteurTraffic } from '../adaptateurLimiteurTra
 import { Evenement } from '../../domaine/BusEvenement';
 import { utilitairesCookies } from '../../adaptateurs/utilitairesDeCookies';
 import { JwtMACPayload } from '../../authentification/GestionnaireDeJeton';
+import { GenerateurLaTeX } from '../../infrastructure/restitution/latex/GenerateurLaTeX';
+import {
+  ReferentielDeMesure,
+  ReferentielDeMesures,
+} from '../../diagnostic/ReferentielDeMesures';
 
 type CorpsReponseDiagnosticLibreAcces = ReponseHATEOAS &
   RepresentationDiagnostic;
@@ -46,6 +55,54 @@ export type CorpsReponseCreerDiagnosticLibreAccesEnErreur =
   ReponseHATEOASEnErreur;
 
 type CorpsRestitution = RepresentationRestitution | Buffer;
+
+type MesureDisponiblePourAjout = {
+  clef: string;
+  identifiant: string;
+  niveau: 'niveau1' | 'niveau2';
+  titre: string;
+  pourquoi: string;
+  comment: string;
+  priorisation: number;
+  categorie?: 'technique' | 'non-technique';
+};
+
+type CorpsReponseMesures = {
+  mesuresPrioritaires: MesurePriorisee[];
+  mesuresComplementaires: MesurePriorisee[];
+  mesuresDisponibles: MesureDisponiblePourAjout[];
+};
+
+const aplatitReferentielMesures = (
+  referentiel: ReferentielDeMesures
+): MesureDisponiblePourAjout[] => {
+  const entreesReferentiel = Object.entries(referentiel) as Array<[
+    string,
+    ReferentielDeMesure,
+  ]>;
+
+  return entreesReferentiel.flatMap(([identifiant, mesure]) => {
+    const niveaux: Array<[
+      MesureDisponiblePourAjout['niveau'],
+      ReferentielDeMesure['niveau1']
+    ]> = [['niveau1', mesure.niveau1]];
+
+    if (mesure.niveau2) {
+      niveaux.push(['niveau2', mesure.niveau2]);
+    }
+
+    return niveaux.map(([niveau, contenu]) => ({
+      clef: `${identifiant}:${niveau}`,
+      identifiant,
+      niveau,
+      titre: contenu.titre,
+      pourquoi: contenu.pourquoi,
+      comment: contenu.comment,
+      priorisation: mesure.priorisation,
+      ...(mesure.categorie ? { categorie: mesure.categorie } : {}),
+    }));
+  });
+};
 
 const validateurDiagnosticLibreAcces = (
   entrepotDiagnostic: EntrepotDiagnostic
@@ -133,6 +190,47 @@ export const routesAPIDiagnosticLibreAcces = (
             .appendHeader('Link', `${requete.originalUrl}/${idDiagnostic}`)
             .send()
         );
+    }
+  );
+
+  routes.get(
+    '/:id/mesures',
+    adaptateurConfigurationLimiteurTraffic('LIMITE'),
+    relations.verifie<DefinitionEntiteInitieDiagnosticLibreAcces>(
+      definitionEntiteInitieDiagnosticLibreAcces.definition
+    ),
+    validateurDiagnosticLibreAcces(entrepots.diagnostic()),
+    async (
+      requete: Request,
+      reponse: Response<CorpsReponseMesures | ReponseHATEOASEnErreur>,
+      suite: NextFunction
+    ) => {
+      const resultatsValidation: Result<FieldValidationError> =
+        validationResult(requete) as Result<FieldValidationError>;
+      if (!resultatsValidation.isEmpty()) {
+        return envoieReponseDiagnosticNonTrouve(reponse);
+      }
+
+      try {
+        const { id } = requete.params;
+        const diagnostic = await entrepots.diagnostic().lis(id);
+        const mesuresDisponibles = aplatitReferentielMesures(diagnostic.mesures);
+
+        return reponse.json({
+          mesuresPrioritaires:
+            diagnostic.restitution?.mesures?.mesuresPrioritaires || [],
+          mesuresComplementaires:
+            diagnostic.restitution?.mesures?.autresMesures || [],
+          mesuresDisponibles,
+        });
+      } catch (erreur) {
+        return suite(
+          ErreurMAC.cree(
+            'Accès diagnostic',
+            erreur instanceof Error ? erreur : new Error(String(erreur))
+          )
+        );
+      }
     }
   );
 
@@ -346,6 +444,100 @@ export const routesAPIDiagnosticLibreAcces = (
         );
     }
   );
+
+    routes.post(
+      '/:id/restitution/recompile',
+      express.json(),
+      async (
+        requete: Request,
+        reponse: Response,
+        suite: NextFunction
+      ) => {
+        try {
+          const { id } = requete.params;
+          const { mesuresPrioritaires, mesuresComplementaires } = requete.body;
+
+          if (!mesuresPrioritaires || !mesuresComplementaires) {
+            return reponse.status(400).json({
+              message: 'mesuresPrioritaires et mesuresComplementaires sont requis',
+            });
+          }
+
+          const restitution = await configuration.entrepots.restitution().lis(id);
+          const restitutionModifiee: Restitution = {
+            ...restitution,
+            mesures: {
+              mesuresPrioritaires,
+              autresMesures: mesuresComplementaires,
+            },
+          };
+
+          const pdfRecompile = await configuration.adaptateursRestitution
+            .pdf()
+            .genereRestitution(restitutionModifiee);
+
+          reponse.contentType('application/pdf').send(pdfRecompile);
+        } catch (erreur) {
+          return suite(
+            ErreurMAC.cree(
+              'Demande la restitution',
+              erreur instanceof Error ? erreur : new Error(String(erreur))
+            )
+          );
+        }
+      }
+    );
+
+    routes.post(
+      '/:id/restitution/latex',
+      express.json(),
+      async (
+        requete: Request,
+        reponse: Response,
+        suite: NextFunction
+      ) => {
+        try {
+          const { id } = requete.params;
+          const { mesuresPrioritaires, mesuresComplementaires } = requete.body;
+
+          if (!mesuresPrioritaires || !mesuresComplementaires) {
+            return reponse.status(400).json({
+              message: 'mesuresPrioritaires et mesuresComplementaires sont requis',
+            });
+          }
+
+          const restitution = await configuration.entrepots.restitution().lis(id);
+          const indicateurs = restitution.indicateurs;
+
+          const generateurLaTeX = new GenerateurLaTeX();
+          const resultatLatex = generateurLaTeX.genereAvecGraphique({
+            diagnosticId: id,
+            mesuresPrioritaires,
+            mesuresComplementaires,
+            indicateurs,
+          });
+
+          if ((requete.headers.accept || '').includes('application/json')) {
+            return reponse.json({
+              codeLatex: resultatLatex.contenuLatex,
+              graphiquePolairePdfBase64: resultatLatex.graphiquePolairePdf
+                ? resultatLatex.graphiquePolairePdf.toString('base64')
+                : null,
+              nomFichierGraphiquePolaire: `graphique-polaire-${id}.pdf`,
+            });
+          }
+
+          reponse.contentType('text/plain; charset=utf-8').send(resultatLatex.contenuLatex);
+        } catch (erreur) {
+          return suite(
+            ErreurMAC.cree(
+              'Demande la restitution',
+              erreur instanceof Error ? erreur : new Error(String(erreur))
+            )
+          );
+        }
+      }
+    );
   return routes;
 };
 

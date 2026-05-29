@@ -54,8 +54,8 @@ export class GenerateurLaTeX {
       false
     );
     const sectionMesuresComplementaires = mesuresComplementaires
-      ? `\section{Recommandations complémentaires}
-\label{sec:autres-recommandations}
+      ? `\\section{Recommandations complémentaires}
+    \\label{sec:autres-recommandations}
 
 ${mesuresComplementaires}
 `
@@ -388,14 +388,21 @@ ${mesuresComplementaires}
    * @returns Contenu extrait du fichier ou texte original
    */
   private chargeContenuFichier(cheminOuContenu: string): string {
-    // Si ce n'est pas un chemin vers un fichier, retourner le contenu tel quel
-    if (!cheminOuContenu.includes('.pug')) {
+    const entree = cheminOuContenu.trim();
+    const ressembleAReferenceFichier =
+      entree.includes('.pug') ||
+      entree.includes('/') ||
+      entree.includes('\\') ||
+      /^[a-z0-9]+(?:-[a-z0-9]+)+$/i.test(entree);
+
+    // Si ce n'est pas une référence probable de fichier, retourner le contenu tel quel.
+    if (!ressembleAReferenceFichier) {
       return cheminOuContenu;
     }
 
     try {
       // Extraire le nom du fichier (en cas de chemin relatif comme ../../mesures/postes/nom.pug)
-      let nomFichier = path.basename(cheminOuContenu);
+      let nomFichier = path.basename(entree);
       
       // Essayer d'ajouter l'extension .pug s'il manque
       if (!nomFichier.endsWith('.pug')) {

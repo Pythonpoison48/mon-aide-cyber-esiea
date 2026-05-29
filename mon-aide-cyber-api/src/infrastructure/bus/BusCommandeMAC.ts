@@ -212,7 +212,8 @@ const capteurs: Map<string, Capteur> = new Map([
           parametres.busCommande!,
           parametres.busEvenements!,
           parametres.services.referentiels.diagnostic,
-          parametres.services.referentiels.mesures
+          parametres.services.referentiels.mesures,
+          parametres.adaptateurRelations
         ),
     },
   ],

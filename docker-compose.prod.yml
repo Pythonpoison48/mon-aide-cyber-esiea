@@ -1,0 +1,50 @@
+services:
+  db:
+    container_name: mon-aide-cyber-bd
+    image: docker.io/postgres:14
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-monaidecyber}
+      POSTGRES_USER: ${POSTGRES_USER:-monaidecyber}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis dans deploiement/.env.production}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-monaidecyber} -d ${POSTGRES_DB:-monaidecyber}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - reseau-mon-aide-cyber
+
+  browserless:
+    image: browserless/chrome:latest
+    networks:
+      - reseau-mon-aide-cyber
+
+  api:
+    container_name: mon-aide-cyber-api
+    build:
+      context: .
+      dockerfile: Dockerfile-api.prod
+    env_file:
+      - ./deploiement/.env.production
+    environment:
+      GENERATION_PDF_URL_DU_SERVICE: ws://browserless:3000
+      URL_MSC: ${URL_MSC:-}
+    ports:
+      - 8081:8081
+    depends_on:
+      db:
+        condition: service_healthy
+      browserless:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - reseau-mon-aide-cyber
+
+networks:
+  reseau-mon-aide-cyber:
+    external: true
+
+volumes:
+  postgres-data:

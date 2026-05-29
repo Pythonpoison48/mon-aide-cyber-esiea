@@ -3,6 +3,10 @@ import { ConsommateurEvenement, Evenement } from '../domaine/BusEvenement';
 import { DiagnosticLibreAccesLance } from './CapteurSagaLanceDiagnosticLibreAcces';
 import crypto from 'crypto';
 import { DefinitionTuple, Tuple, unTuple } from '../relation/Tuple';
+import {
+  DefinitionEntiteInitieDiagnosticLibreAcces,
+  unTupleEntiteInitieDiagnosticLibreAcces,
+} from './tuples';
 
 export const demandeInitieDiagnosticLibreAcces = (
   adaptateurRelations: AdaptateurRelations
@@ -21,29 +25,4 @@ export const demandeInitieDiagnosticLibreAcces = (
     }
   })();
 
-export const unTupleEntiteInitieDiagnosticLibreAcces = (
-  identifiantDemande: crypto.UUID,
-  identifiantDiagnostic: crypto.UUID
-): Tuple =>
-  unTuple<DefinitionEntiteInitieDiagnosticLibreAcces>(
-    definitionEntiteInitieDiagnosticLibreAcces
-  )
-    .avecUtilisateur(identifiantDemande)
-    .avecObjet(identifiantDiagnostic)
-    .construis();
-
-export type DefinitionEntiteInitieDiagnosticLibreAcces = DefinitionTuple & {
-  relation: 'initiateur';
-  typeObjet: 'auto-diagnostic';
-  typeUtilisateur: 'entité';
-};
-
-export const definitionEntiteInitieDiagnosticLibreAcces: {
-  definition: DefinitionEntiteInitieDiagnosticLibreAcces;
-} = {
-  definition: {
-    relation: 'initiateur',
-    typeObjet: 'auto-diagnostic',
-    typeUtilisateur: 'entité',
-  },
-};
+export { unTupleEntiteInitieDiagnosticLibreAcces };
