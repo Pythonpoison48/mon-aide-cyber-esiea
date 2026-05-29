@@ -1,0 +1,16 @@
+import { ReferentielDeMesures } from './ReferentielDeMesures';
+import { mesuresGouvernance } from './mesures-english/mesuresGouvernanceEnglish';
+import { mesuresSecuriteAcces } from './mesures-english/mesuresSecuriteAccesEnglish';
+import { mesuresSecuritePoste } from './mesures-english/mesuresSecuritePosteEnglish';
+import { mesuresSensibilisation } from './mesures-english/mesuresSensibilisationEnglish';
+import { mesuresReaction } from './mesures-english/mesuresReactionEnglish';
+import { mesuresSecuriteInfrastructure } from './mesures-english/mesuresSecuriteInfrastructureEnglish';
+
+export const tableauMesures: ReferentielDeMesures = {
+  ...mesuresGouvernance,
+  ...mesuresSecuriteAcces,
+  ...mesuresSecuritePoste,
+  ...mesuresSecuriteInfrastructure,
+  ...mesuresSensibilisation,
+  ...mesuresReaction,
+};
