@@ -205,8 +205,7 @@ ${mesuresComplementaires}
       fs.mkdirSync(dossierTemp, { recursive: true });
     }
 
-    const safeId = String(diagnosticId).replace(/[^a-zA-Z0-9._-]/g, '_');
-    const nomFichierSvg = `graphique-polaire-${safeId}.svg`;
+    const nomFichierSvg = `graphique-polaire-${diagnosticId}.svg`;
     const cheminSvg = path.join(dossierTemp, nomFichierSvg);
     const nomFichierPdf = `graphique-polaire-${diagnosticId}.pdf`;
     const cheminPdf = path.join(dossierTemp, nomFichierPdf);
