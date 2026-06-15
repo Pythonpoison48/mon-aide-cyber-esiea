@@ -1,5 +1,5 @@
 div
-    | Les comptes d’administrations sont des comptes à hauts privilèges c’est pourquoi ils sont très ciblés 
+    | Les comptes d’administration sont des comptes à hauts privilèges c’est pourquoi ils sont très ciblés 
     | par les cyberattaquants. Si un de ces comptes est compromis, un cyberattaquant est en mesure de 
     | réaliser une compromission massive rapidement. Il convient donc d’en limiter leur usage.
 
@@ -8,8 +8,8 @@ div
     | ce compte est compromis, l’attaquant dispose directement des privilèges d’administration.
     | Si un administrateur dispose de 2 comptes en séparant ses usages, 1 compte "bureautique" utilisé pour les tâches 
     | bureautiques et 1 compte administrateur utilisé pour les tâches d’administration ; alors le compte le plus exposé 
-    | le compte “bureautique”) pourrait être compromis sans que l’attaquant obtiennent directement les privilèges d’administration. 
-    | En plus, de la compromission du compte "bureautique", l’attaquant devra réaliser d’autres actions malveillantes pour obtenir 
+    | (le compte “bureautique”) pourrait être compromis sans que l’attaquant obtienne directement les privilèges d’administration. 
+    | En plus de la compromission du compte "bureautique", l’attaquant devra réaliser d’autres actions malveillantes pour obtenir 
     | les privilèges administrateur de la personne.
     
 div 
@@ -17,7 +17,7 @@ div
     | NB: cette mesure est rendue caduque notamment par situations suivantes :
     ul 
     li le compte utilisation est “administrateur local” de son poste : si l’utilisateur est “administrateur local” de son poste de 
-        | travail, l’attaquant qui a compromis son compte pourra très facilement compromettre aussi ses comptes d'administrations 
+        | travail, l’attaquant qui a compromis son compte pourra très facilement compromettre aussi ses comptes d'administration 
         | dès qu’ils seront utilisés sur ce même poste de travail.;
     li le compte administrateur est utilisé pour la consultation Internet et la messagerie électronique : si le compte administrateur 
         | est utilisé pour la messagerie électronique et la consultation d’Internet, il devient aussi exposé au risque de compromission qu’un 
@@ -27,7 +27,7 @@ div
 
 div 
     | La séparation des comptes d’administration de l’annuaire centralisé (ex: Active Directory, Samba-AD, etc.) et des sauvegardes 
-    | (ou de la plateforme de virtualisation), relève de la même logique. Elle vise a protéger, en dernier recours, les sauvegardes. 
+    | (ou de la plateforme de virtualisation), relève de la même logique. Elle vise à protéger, en dernier recours, les sauvegardes. 
     | En effet, si le système centralisé de gestion des droits d’accès est compromis et que le compte 
     | d’administration des sauvegardes est géré par ce système, alors l’attaquant sera en mesure d’obtenir facilement les privilèges 
-    | d’administration (notamment la suppression) les sauvegardes.
+    | d’administration (notamment la suppression des sauvegardes).
